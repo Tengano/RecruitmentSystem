@@ -1,0 +1,46 @@
+@model Job
+@{
+    ViewData["Title"] = "Xóa tin tuyển dụng";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="bi bi-trash me-2"></i>Xóa tin tuyển dụng</h1>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            <h4 class="alert-heading"><i class="bi bi-exclamation-triangle me-2"></i>Cảnh báo!</h4>
+            <p>Bạn có chắc chắn muốn xóa tin tuyển dụng này không? Hành động này không thể hoàn tác.</p>
+        </div>
+
+        <div class="mb-4">
+            <h4>Thông tin tin tuyển dụng:</h4>
+            <dl class="row">
+                <dt class="col-sm-3">Tiêu đề:</dt>
+                <dd class="col-sm-9">@Model.Title</dd>
+
+                <dt class="col-sm-3">Công ty:</dt>
+                <dd class="col-sm-9">@Model.Company</dd>
+
+                <dt class="col-sm-3">Địa điểm:</dt>
+                <dd class="col-sm-9">@Model.Location</dd>
+
+                <dt class="col-sm-3">Ngày đăng:</dt>
+                <dd class="col-sm-9">@Model.PostedDate.ToString("dd/MM/yyyy")</dd>
+            </dl>
+        </div>
+
+        <form asp-action="DeleteJob" method="post">
+            <input type="hidden" asp-for="JobId" />
+            <button type="submit" class="btn btn-danger btn-lg">
+                <i class="bi bi-trash me-2"></i>Xác nhận xóa
+            </button>
+            <a asp-action="Jobs" class="btn btn-secondary btn-lg">
+                <i class="bi bi-x-circle me-2"></i>Hủy
+            </a>
+        </form>
+    </div>
+</div>
+

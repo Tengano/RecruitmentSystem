@@ -1,0 +1,162 @@
+@model IEnumerable<Job>
+@{
+    ViewData["Title"] = "Tìm việc làm";
+}
+
+<div class="bg-light py-4">
+    <div class="container">
+        <h1 class="fw-bold mb-3"><i class="bi bi-briefcase-fill me-2"></i>Tìm việc làm</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Tìm việc làm</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-funnel me-2"></i>Bộ lọc</h5>
+                    <form asp-action="Index" method="get">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Từ khóa</label>
+                            <input type="text" class="form-control" name="search" value="@ViewBag.SearchTerm" placeholder="Tìm kiếm...">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Ngành nghề</label>
+                            <select class="form-select" name="category">
+                                <option value="">Tất cả</option>
+                                @if (ViewBag.Categories != null)
+                                {
+                                    @foreach (var cat in ViewBag.Categories)
+                                    {
+                                        <option value="@cat" selected="@(ViewBag.SelectedCategory == cat)">@cat</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Địa điểm</label>
+                            <select class="form-select" name="location">
+                                <option value="">Tất cả</option>
+                                @if (ViewBag.Locations != null)
+                                {
+                                    @foreach (var loc in ViewBag.Locations)
+                                    {
+                                        <option value="@loc" selected="@(ViewBag.SelectedLocation == loc)">@loc</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Loại công việc</label>
+                            <select class="form-select" name="jobType">
+                                <option value="">Tất cả</option>
+                                <option value="Full-time" selected="@(ViewBag.SelectedJobType == "Full-time")">Full-time</option>
+                                <option value="Part-time" selected="@(ViewBag.SelectedJobType == "Part-time")">Part-time</option>
+                                <option value="Contract" selected="@(ViewBag.SelectedJobType == "Contract")">Contract</option>
+                                <option value="Internship" selected="@(ViewBag.SelectedJobType == "Internship")">Internship</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search me-2"></i>Tìm kiếm
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">
+                            <i class="bi bi-arrow-clockwise me-2"></i>Đặt lại
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jobs List -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="mb-0">Tìm thấy <span class="text-primary fw-bold">@Model.Count()</span> việc làm</h5>
+            </div>
+
+            @if (Model.Any())
+            {
+                <div class="row">
+                    @foreach (var job in Model)
+                    {
+                        <div class="col-12 mb-3">
+                            <div class="card shadow-sm border-0 h-100 hover-card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5 class="card-title fw-bold text-primary mb-2">
+                                                <a asp-action="Details" asp-route-id="@job.JobId" class="text-decoration-none">
+                                                    @job.Title
+                                                </a>
+                                            </h5>
+                                            <p class="text-muted mb-2">
+                                                <i class="bi bi-building me-2"></i>@job.Company
+                                            </p>
+                                            <div class="mb-3">
+                                                <span class="badge bg-light text-dark me-2">
+                                                    <i class="bi bi-geo-alt me-1"></i>@job.Location
+                                                </span>
+                                                <span class="badge bg-primary me-2">@job.JobType</span>
+                                                <span class="badge bg-info text-dark">@job.Category</span>
+                                            </div>
+                                            <p class="card-text text-muted small mb-2">
+                                                @(job.Description.Length > 150 ? job.Description.Substring(0, 150) + "..." : job.Description)
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-md-end">
+                                            @if (job.SalaryMin.HasValue && job.SalaryMax.HasValue)
+                                            {
+                                                <h6 class="text-success fw-bold mb-3">
+                                                    @job.SalaryMin.Value.ToString("N0") - @job.SalaryMax.Value.ToString("N0") VNĐ
+                                                </h6>
+                                            }
+                                            <small class="text-muted d-block mb-2">
+                                                <i class="bi bi-clock me-1"></i>@job.PostedDate.ToString("dd/MM/yyyy")
+                                            </small>
+                                            <small class="text-muted d-block mb-3">
+                                                <i class="bi bi-eye me-1"></i>@job.Views lượt xem
+                                            </small>
+                                            <a asp-action="Details" asp-route-id="@job.JobId" class="btn btn-outline-primary btn-sm">
+                                                Xem chi tiết <i class="bi bi-arrow-right ms-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>Không tìm thấy việc làm phù hợp. Vui lòng thử lại với bộ lọc khác.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .hover-card {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+        }
+    </style>
+}
+

@@ -1,0 +1,96 @@
+@model Application
+@{
+    ViewData["Title"] = "Nộp hồ sơ ứng tuyển";
+    var job = ViewBag.Job as Job;
+}
+
+<div class="bg-light py-4">
+    <div class="container">
+        <h1 class="fw-bold mb-3"><i class="bi bi-file-earmark-text me-2"></i>Nộp hồ sơ ứng tuyển</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Tìm việc làm</a></li>
+                <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@job?.JobId">@job?.Title</a></li>
+                <li class="breadcrumb-item active">Nộp hồ sơ</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="alert alert-info mb-4">
+                        <h5 class="fw-bold mb-2">
+                            <i class="bi bi-info-circle me-2"></i>Bạn đang ứng tuyển cho vị trí:
+                        </h5>
+                        <h6 class="mb-1">@job?.Title</h6>
+                        <p class="mb-0 text-muted">@job?.Company</p>
+                    </div>
+
+                    <form asp-action="Apply" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="JobId" />
+                        
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label fw-semibold">
+                                Họ và tên <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên của bạn" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold">
+                                Email <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Email" class="form-control" type="email" placeholder="email@example.com" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Phone" class="form-label fw-semibold">
+                                Số điện thoại <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Phone" class="form-control" placeholder="0123456789" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                CV/Resume <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" name="resume" class="form-control" accept=".pdf,.doc,.docx" required />
+                            <div class="form-text">Định dạng: PDF, DOC, DOCX (Tối đa 5MB)</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="CoverLetter" class="form-label fw-semibold">
+                                Thư xin việc
+                            </label>
+                            <textarea asp-for="CoverLetter" class="form-control" rows="6" 
+                                placeholder="Giới thiệu ngắn gọn về bản thân và lý do bạn phù hợp với vị trí này..."></textarea>
+                            <span asp-validation-for="CoverLetter" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-send me-2"></i>Gửi hồ sơ
+                            </button>
+                            <a asp-action="Details" asp-route-id="@job?.JobId" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-arrow-left me-2"></i>Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

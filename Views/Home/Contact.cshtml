@@ -1,0 +1,68 @@
+@{
+    ViewData["Title"] = "Liên hệ";
+}
+
+<div class="bg-light py-5">
+    <div class="container">
+        <h1 class="fw-bold mb-3">Liên hệ với chúng tôi</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Liên hệ</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <h2 class="fw-bold mb-4">Thông tin liên hệ</h2>
+            <div class="mb-4">
+                <h5 class="fw-bold"><i class="bi bi-geo-alt-fill text-primary me-2"></i>Địa chỉ</h5>
+                <p class="text-muted">123 Đường ABC, Quận XYZ, Hà Nội, Việt Nam</p>
+            </div>
+            <div class="mb-4">
+                <h5 class="fw-bold"><i class="bi bi-envelope-fill text-primary me-2"></i>Email</h5>
+                <p class="text-muted">contact@tuyendungpro.vn<br>support@tuyendungpro.vn</p>
+            </div>
+            <div class="mb-4">
+                <h5 class="fw-bold"><i class="bi bi-phone-fill text-primary me-2"></i>Điện thoại</h5>
+                <p class="text-muted">(024) 1234 5678<br>(024) 8765 4321</p>
+            </div>
+            <div class="mb-4">
+                <h5 class="fw-bold"><i class="bi bi-clock-fill text-primary me-2"></i>Giờ làm việc</h5>
+                <p class="text-muted">Thứ 2 - Thứ 6: 8:00 - 18:00<br>Thứ 7: 8:00 - 12:00</p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h3 class="fw-bold mb-4">Gửi tin nhắn</h3>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Họ và tên *</label>
+                            <input type="text" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nội dung *</label>
+                            <textarea class="form-control" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-send me-2"></i>Gửi tin nhắn
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,111 @@
+body {
+    font-size: .875rem;
+}
+
+.sidebar {
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 56px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    color: #667eea;
+    background-color: rgba(102, 126, 234, 0.1);
+    border-left-color: #667eea;
+}
+
+.sidebar .nav-link.active {
+    color: #667eea;
+    background-color: rgba(102, 126, 234, 0.1);
+    border-left-color: #667eea;
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.5rem;
+}
+
+main {
+    padding-top: 1rem;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.table {
+    font-size: 0.9rem;
+}
+
+.table thead th {
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.btn-toolbar {
+    gap: 0.5rem;
+}
+
+/* Dashboard cards */
+.border-left-primary {
+    border-left: 4px solid #4e73df !important;
+}
+
+.border-left-success {
+    border-left: 4px solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: 4px solid #36b9cc !important;
+}
+
+.border-left-warning {
+    border-left: 4px solid #f6c23e !important;
+}
+
+.text-xs {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Status badges */
+.status-select {
+    width: auto;
+    min-width: 120px;
+}
+

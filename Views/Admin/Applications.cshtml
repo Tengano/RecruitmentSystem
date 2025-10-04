@@ -1,0 +1,89 @@
+@model IEnumerable<Application>
+@{
+    ViewData["Title"] = "Quản lý đơn ứng tuyển";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="bi bi-file-earmark-text me-2"></i>Quản lý đơn ứng tuyển</h1>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ứng viên</th>
+                        <th>Vị trí</th>
+                        <th>Email</th>
+                        <th>SĐT</th>
+                        <th>Ngày nộp</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var app in Model)
+                    {
+                        <tr>
+                            <td>@app.ApplicationId</td>
+                            <td>@app.FullName</td>
+                            <td>@app.Job?.Title</td>
+                            <td>@app.Email</td>
+                            <td>@app.Phone</td>
+                            <td>@app.AppliedDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <select class="form-select form-select-sm status-select" data-id="@app.ApplicationId">
+                                    <option value="Pending" selected="@(app.Status == "Pending")">Chờ duyệt</option>
+                                    <option value="Reviewed" selected="@(app.Status == "Reviewed")">Đã xem</option>
+                                    <option value="Interview" selected="@(app.Status == "Interview")">Phỏng vấn</option>
+                                    <option value="Accepted" selected="@(app.Status == "Accepted")">Chấp nhận</option>
+                                    <option value="Rejected" selected="@(app.Status == "Rejected")">Từ chối</option>
+                                </select>
+                            </td>
+                            <td>
+                                <a asp-action="ApplicationDetails" asp-route-id="@app.ApplicationId" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-eye"></i> Chi tiết
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.status-select').forEach(select => {
+            select.addEventListener('change', async function() {
+                const id = this.dataset.id;
+                const status = this.value;
+                
+                try {
+                    const response = await fetch('@Url.Action("UpdateApplicationStatus", "Admin")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id, status })
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('Cập nhật trạng thái thành công!');
+                    } else {
+                        alert('Có lỗi xảy ra!');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra!');
+                }
+            });
+        });
+    </script>
+}
+
