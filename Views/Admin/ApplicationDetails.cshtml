@@ -43,46 +43,50 @@
                     <dt class="col-sm-4">Trạng thái:</dt>
                     <dd class="col-sm-8">
                         <select class="form-select w-auto status-select" data-id="@Model.ApplicationId">
-                            <option value="Pending" selected="@(Model.Status == "Pending")">Chờ duyệt</option>
-                            <option value="Reviewed" selected="@(Model.Status == "Reviewed")">Đã xem</option>
-                            <option value="Interview" selected="@(Model.Status == "Interview")">Phỏng vấn</option>
-                            <option value="Accepted" selected="@(Model.Status == "Accepted")">Chấp nhận</option>
-                            <option value="Rejected" selected="@(Model.Status == "Rejected")">Từ chối</option>
+                            <option value="Chờ xem xét" selected="@(Model.Status == "Chờ xem xét")">Chờ xem xét</option>
+                            <option value="Đã phỏng vấn" selected="@(Model.Status == "Đã phỏng vấn")">Đã phỏng vấn</option>
+                            <option value="Đã từ chối" selected="@(Model.Status == "Đã từ chối")">Đã từ chối</option>
                         </select>
                     </dd>
                 </dl>
 
-                @if (!string.IsNullOrEmpty(Model.CoverLetter))
+                @if (!string.IsNullOrEmpty(Model.Experience))
                 {
                     <hr />
-                    <h5 class="mb-3">Thư xin việc:</h5>
-                    <p class="bg-light p-3 rounded" style="white-space: pre-line;">@Model.CoverLetter</p>
+                    <h5 class="mb-3">Kinh nghiệm:</h5>
+                    <p class="bg-light p-3 rounded" style="white-space: pre-line;">@Model.Experience</p>
                 }
 
-                @if (!string.IsNullOrEmpty(Model.ResumeUrl))
+                @if (!string.IsNullOrEmpty(Model.Skills))
                 {
                     <hr />
-                    <h5 class="mb-3">CV/Resume:</h5>
-                    <a href="@Model.ResumeUrl" class="btn btn-outline-primary" target="_blank">
-                        <i class="bi bi-download me-2"></i>Tải xuống CV
-                    </a>
+                    <h5 class="mb-3">Kỹ năng:</h5>
+                    <p class="bg-light p-3 rounded" style="white-space: pre-line;">@Model.Skills</p>
                 }
             </div>
         </div>
 
         <div class="card shadow">
             <div class="card-header">
-                <h5 class="mb-0">Ghi chú</h5>
+                <h5 class="mb-0">Thông tin bổ sung</h5>
             </div>
             <div class="card-body">
-                <form>
-                    <div class="mb-3">
-                        <textarea class="form-control" rows="4" placeholder="Thêm ghi chú về ứng viên...">@Model.Notes</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-save me-2"></i>Lưu ghi chú
-                    </button>
-                </form>
+                @if (!string.IsNullOrEmpty(Model.Address))
+                {
+                    <p><strong>Địa chỉ:</strong> @Model.Address</p>
+                }
+                @if (Model.DateOfBirth.HasValue)
+                {
+                    <p><strong>Ngày sinh:</strong> @Model.DateOfBirth.Value.ToString("dd/MM/yyyy")</p>
+                }
+                @if (!string.IsNullOrEmpty(Model.Gender))
+                {
+                    <p><strong>Giới tính:</strong> @Model.Gender</p>
+                }
+                @if (!string.IsNullOrEmpty(Model.Education))
+                {
+                    <p><strong>Trình độ học vấn:</strong> @Model.Education</p>
+                }
             </div>
         </div>
     </div>

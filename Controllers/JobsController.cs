@@ -15,32 +15,32 @@ namespace RecruitmentSystem.Controllers
         }
 
         // GET: Jobs
-        public async Task<IActionResult> Index(string? category, string? location, string? jobType, string? search)
+        public async Task<IActionResult> Index(string? danhMuc, string? diaDiem, string? loaiCongViec, string? timKiem)
         {
-            var jobs = _context.Jobs.Where(j => j.IsActive).AsQueryable();
+            var congViec = _context.Jobs.Where(j => j.IsActive).AsQueryable();
 
-            if (!string.IsNullOrEmpty(category))
+            if (!string.IsNullOrEmpty(danhMuc))
             {
-                jobs = jobs.Where(j => j.Category == category);
-                ViewBag.SelectedCategory = category;
+                congViec = congViec.Where(j => j.Category == danhMuc);
+                ViewBag.SelectedCategory = danhMuc;
             }
 
-            if (!string.IsNullOrEmpty(location))
+            if (!string.IsNullOrEmpty(diaDiem))
             {
-                jobs = jobs.Where(j => j.Location.Contains(location));
-                ViewBag.SelectedLocation = location;
+                congViec = congViec.Where(j => j.Location.Contains(diaDiem));
+                ViewBag.SelectedLocation = diaDiem;
             }
 
-            if (!string.IsNullOrEmpty(jobType))
+            if (!string.IsNullOrEmpty(loaiCongViec))
             {
-                jobs = jobs.Where(j => j.JobType == jobType);
-                ViewBag.SelectedJobType = jobType;
+                congViec = congViec.Where(j => j.JobType == loaiCongViec);
+                ViewBag.SelectedJobType = loaiCongViec;
             }
 
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(timKiem))
             {
-                jobs = jobs.Where(j => j.Title.Contains(search) || j.Company.Contains(search) || j.Description.Contains(search));
-                ViewBag.SearchTerm = search;
+                congViec = congViec.Where(j => j.Title.Contains(timKiem) || j.Company.Contains(timKiem) || j.Description.Contains(timKiem));
+                ViewBag.SearchTerm = timKiem;
             }
 
             ViewBag.Categories = await _context.Jobs
@@ -55,7 +55,7 @@ namespace RecruitmentSystem.Controllers
                 .Distinct()
                 .ToListAsync();
 
-            return View(await jobs.OrderByDescending(j => j.PostedDate).ToListAsync());
+            return View(await congViec.OrderByDescending(j => j.PostedDate).ToListAsync());
         }
 
         // GET: Jobs/Details/5
@@ -66,19 +66,19 @@ namespace RecruitmentSystem.Controllers
                 return NotFound();
             }
 
-            var job = await _context.Jobs
+            var congViec = await _context.Jobs
                 .FirstOrDefaultAsync(m => m.JobId == id);
 
-            if (job == null)
+            if (congViec == null)
             {
                 return NotFound();
             }
 
-            // Increment view count
-            job.Views++;
+            // Tăng số lượt xem
+            congViec.Views++;
             await _context.SaveChangesAsync();
 
-            return View(job);
+            return View(congViec);
         }
 
         // GET: Jobs/Apply/5
@@ -89,54 +89,55 @@ namespace RecruitmentSystem.Controllers
                 return NotFound();
             }
 
-            var job = await _context.Jobs.FindAsync(id);
-            if (job == null)
+            var congViec = await _context.Jobs.FindAsync(id);
+            if (congViec == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Job = job;
-            var application = new Application { JobId = job.JobId };
-            return View(application);
+            ViewBag.Job = congViec;
+            var donUngTuyen = new Application { JobId = congViec.JobId };
+            return View(donUngTuyen);
         }
 
         // POST: Jobs/Apply
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Apply(Application application, IFormFile? resume)
+        public async Task<IActionResult> Apply(Application donUngTuyen, IFormFile? hoSo)
         {
             if (ModelState.IsValid)
             {
-                // Handle file upload
-                if (resume != null && resume.Length > 0)
+                // Xử lý tải file (nếu cần)
+                if (hoSo != null && hoSo.Length > 0)
                 {
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "resumes");
-                    Directory.CreateDirectory(uploadsFolder);
+                    var thuMucTaiLen = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "resumes");
+                    Directory.CreateDirectory(thuMucTaiLen);
 
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + resume.FileName;
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    var tenFileDuyNhat = Guid.NewGuid().ToString() + "_" + hoSo.FileName;
+                    var duongDanFile = Path.Combine(thuMucTaiLen, tenFileDuyNhat);
 
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    using (var fileStream = new FileStream(duongDanFile, FileMode.Create))
                     {
-                        await resume.CopyToAsync(fileStream);
+                        await hoSo.CopyToAsync(fileStream);
                     }
 
-                    application.ResumeUrl = "/uploads/resumes/" + uniqueFileName;
+                    // Lưu đường dẫn file vào Skills hoặc Experience nếu cần
+                    donUngTuyen.Skills += $" | File đính kèm: /uploads/resumes/{tenFileDuyNhat}";
                 }
 
-                application.AppliedDate = DateTime.Now;
-                application.Status = "Pending";
+                donUngTuyen.AppliedDate = DateTime.Now;
+                donUngTuyen.Status = "Chờ xem xét";
 
-                _context.Add(application);
+                _context.Add(donUngTuyen);
                 await _context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Ứng tuyển thành công! Chúng tôi sẽ liên hệ với bạn sớm.";
                 return RedirectToAction(nameof(Index));
             }
 
-            var job = await _context.Jobs.FindAsync(application.JobId);
-            ViewBag.Job = job;
-            return View(application);
+            var congViec = await _context.Jobs.FindAsync(donUngTuyen.JobId);
+            ViewBag.Job = congViec;
+            return View(donUngTuyen);
         }
     }
 }

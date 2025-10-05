@@ -59,20 +59,74 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                CV/Resume <span class="text-danger">*</span>
+                            <label asp-for="Address" class="form-label fw-semibold">
+                                Địa chỉ
                             </label>
-                            <input type="file" name="resume" class="form-control" accept=".pdf,.doc,.docx" required />
-                            <div class="form-text">Định dạng: PDF, DOC, DOCX (Tối đa 5MB)</div>
+                            <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ của bạn" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-4">
-                            <label asp-for="CoverLetter" class="form-label fw-semibold">
-                                Thư xin việc
+                        <div class="mb-3">
+                            <label asp-for="DateOfBirth" class="form-label fw-semibold">
+                                Ngày sinh
                             </label>
-                            <textarea asp-for="CoverLetter" class="form-control" rows="6" 
-                                placeholder="Giới thiệu ngắn gọn về bản thân và lý do bạn phù hợp với vị trí này..."></textarea>
-                            <span asp-validation-for="CoverLetter" class="text-danger"></span>
+                            <input asp-for="DateOfBirth" class="form-control" type="date" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Gender" class="form-label fw-semibold">
+                                Giới tính
+                            </label>
+                            <select asp-for="Gender" class="form-control">
+                                <option value="">Chọn giới tính</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Education" class="form-label fw-semibold">
+                                Trình độ học vấn
+                            </label>
+                            <select asp-for="Education" class="form-control">
+                                <option value="">Chọn trình độ học vấn</option>
+                                <option value="Trung học phổ thông">Trung học phổ thông</option>
+                                <option value="Trung cấp">Trung cấp</option>
+                                <option value="Cao đẳng">Cao đẳng</option>
+                                <option value="Đại học">Đại học</option>
+                                <option value="Thạc sĩ">Thạc sĩ</option>
+                                <option value="Tiến sĩ">Tiến sĩ</option>
+                            </select>
+                            <span asp-validation-for="Education" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Experience" class="form-label fw-semibold">
+                                Kinh nghiệm làm việc
+                            </label>
+                            <textarea asp-for="Experience" class="form-control" rows="4" 
+                                placeholder="Mô tả kinh nghiệm làm việc của bạn..."></textarea>
+                            <span asp-validation-for="Experience" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Skills" class="form-label fw-semibold">
+                                Kỹ năng
+                            </label>
+                            <textarea asp-for="Skills" class="form-control" rows="3" 
+                                placeholder="Liệt kê các kỹ năng của bạn..."></textarea>
+                            <span asp-validation-for="Skills" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                CV/Resume (Tùy chọn)
+                            </label>
+                            <input type="file" name="hoSo" class="form-control" accept=".pdf,.doc,.docx" />
+                            <div class="form-text">Định dạng: PDF, DOC, DOCX (Tối đa 5MB)</div>
                         </div>
 
                         <div class="d-flex gap-2">

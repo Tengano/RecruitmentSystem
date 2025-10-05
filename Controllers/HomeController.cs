@@ -19,7 +19,7 @@ namespace RecruitmentSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var featuredJobs = await _context.Jobs
+            var congViecNoiBat = await _context.Jobs
                 .Where(j => j.IsActive)
                 .OrderByDescending(j => j.PostedDate)
                 .Take(6)
@@ -27,9 +27,9 @@ namespace RecruitmentSystem.Controllers
 
             ViewBag.TotalJobs = await _context.Jobs.Where(j => j.IsActive).CountAsync();
             ViewBag.TotalApplications = await _context.Applications.CountAsync();
-            ViewBag.TotalCandidates = await _context.Candidates.Where(c => c.IsActive).CountAsync();
+            ViewBag.TotalCandidates = await _context.Candidates.CountAsync();
 
-            return View(featuredJobs);
+            return View(congViecNoiBat);
         }
 
         public IActionResult About()

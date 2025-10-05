@@ -1,16 +1,16 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RecruitmentSystem.Models;
 
 namespace RecruitmentSystem.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<Candidate> Candidates { get; set; }
@@ -19,28 +19,91 @@ namespace RecruitmentSystem.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configure User entity
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("NguoiDung");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.TenDangNhap).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.MatKhau).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.HoTen).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.VaiTro).IsRequired().HasMaxLength(20).HasDefaultValue("User");
+                entity.Property(e => e.NgayTao).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.HoatDong).HasDefaultValue(true);
+                
+                // Tạo unique index
+                entity.HasIndex(e => e.TenDangNhap).IsUnique();
+                entity.HasIndex(e => e.Email).IsUnique();
+            });
+
             // Configure Job entity
             modelBuilder.Entity<Job>(entity =>
             {
+                entity.ToTable("CongViec"); // Đổi tên bảng sang tiếng Việt
                 entity.HasKey(e => e.JobId);
                 entity.Property(e => e.SalaryMin).HasColumnType("decimal(18,2)");
                 entity.Property(e => e.SalaryMax).HasColumnType("decimal(18,2)");
+                
+                // Đổi tên các cột sang tiếng Việt
+                entity.Property(e => e.Title).HasColumnName("TieuDe");
+                entity.Property(e => e.Description).HasColumnName("MoTa");
+                entity.Property(e => e.Requirements).HasColumnName("YeuCau");
+                entity.Property(e => e.Benefits).HasColumnName("PhucLoi");
+                entity.Property(e => e.Location).HasColumnName("DiaDiem");
+                entity.Property(e => e.JobType).HasColumnName("LoaiCongViec");
+                entity.Property(e => e.SalaryMin).HasColumnName("LuongToiThieu");
+                entity.Property(e => e.SalaryMax).HasColumnName("LuongToiDa");
+                entity.Property(e => e.Company).HasColumnName("CongTy");
+                entity.Property(e => e.PostedDate).HasColumnName("NgayDang");
+                entity.Property(e => e.ClosingDate).HasColumnName("NgayKetThuc");
+                entity.Property(e => e.IsActive).HasColumnName("HoatDong");
+                entity.Property(e => e.Views).HasColumnName("LuotXem");
+                entity.Property(e => e.Category).HasColumnName("DanhMuc");
+                entity.Property(e => e.ExperienceYears).HasColumnName("NamKinhNghiem");
             });
 
             // Configure Application entity
             modelBuilder.Entity<Application>(entity =>
             {
+                entity.ToTable("DonUngTuyen");
                 entity.HasKey(e => e.ApplicationId);
                 entity.HasOne(e => e.Job)
                     .WithMany(j => j.Applications)
                     .HasForeignKey(e => e.JobId)
                     .OnDelete(DeleteBehavior.Cascade);
+                
+                // Map to Vietnamese column names
+                entity.Property(e => e.FullName).HasColumnName("HoTen");
+                entity.Property(e => e.Email).HasColumnName("Email");
+                entity.Property(e => e.Phone).HasColumnName("SoDienThoai");
+                entity.Property(e => e.Address).HasColumnName("DiaChi");
+                entity.Property(e => e.DateOfBirth).HasColumnName("NgaySinh");
+                entity.Property(e => e.Gender).HasColumnName("GioiTinh");
+                entity.Property(e => e.Education).HasColumnName("TrinhDoHocVan");
+                entity.Property(e => e.Experience).HasColumnName("KinhNghiem");
+                entity.Property(e => e.Skills).HasColumnName("KyNang");
+                entity.Property(e => e.AppliedDate).HasColumnName("NgayUngTuyen");
+                entity.Property(e => e.Status).HasColumnName("TrangThai");
             });
 
             // Configure Candidate entity
             modelBuilder.Entity<Candidate>(entity =>
             {
+                entity.ToTable("UngVien");
                 entity.HasKey(e => e.CandidateId);
+                
+                // Map to Vietnamese column names
+                entity.Property(e => e.FullName).HasColumnName("HoTen");
+                entity.Property(e => e.Email).HasColumnName("Email");
+                entity.Property(e => e.Phone).HasColumnName("SoDienThoai");
+                entity.Property(e => e.Address).HasColumnName("DiaChi");
+                entity.Property(e => e.DateOfBirth).HasColumnName("NgaySinh");
+                entity.Property(e => e.Gender).HasColumnName("GioiTinh");
+                entity.Property(e => e.Education).HasColumnName("TrinhDoHocVan");
+                entity.Property(e => e.Experience).HasColumnName("KinhNghiem");
+                entity.Property(e => e.Skills).HasColumnName("KyNang");
+                entity.Property(e => e.RegisteredDate).HasColumnName("NgayTao");
             });
 
             // Seed data

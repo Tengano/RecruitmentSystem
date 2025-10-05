@@ -34,14 +34,7 @@
                                 <td>@candidate.Phone</td>
                                 <td>@candidate.RegisteredDate.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    @if (candidate.IsActive)
-                                    {
-                                        <span class="badge bg-success">Đang hoạt động</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">Không hoạt động</span>
-                                    }
+                                    <span class="badge bg-success">Đang hoạt động</span>
                                 </td>
                             </tr>
                         }
