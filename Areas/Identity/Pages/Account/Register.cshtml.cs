@@ -67,14 +67,22 @@ namespace RecruitmentSystem.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("Tài khoản đã được tạo thành công cho email: {Email}", Input.Email);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    if (error.Code == "DuplicateUserName" || error.Code == "DuplicateEmail")
+                    {
+                        _logger.LogWarning("Đã có người dùng tạo tài khoản với email này rồi: {Email}", Input.Email);
+                        ModelState.AddModelError(string.Empty, "Email này đã được sử dụng. Vui lòng chọn email khác.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
 
