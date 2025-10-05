@@ -18,9 +18,9 @@ namespace RecruitmentSystem.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel ThongTinDauVao { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string UrlTraVe { get; set; }
 
         [TempData]
         public string ErrorMessage { get; set; }
@@ -33,46 +33,46 @@ namespace RecruitmentSystem.Areas.Identity.Pages.Account
 
             [Required(ErrorMessage = "Mật khẩu là bắt buộc")]
             [DataType(DataType.Password)]
-            public string Password { get; set; }
+            public string MatKhau { get; set; }
 
             [Display(Name = "Ghi nhớ đăng nhập")]
-            public bool RememberMe { get; set; }
+            public bool GhiNhoDangNhap { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string urlTraVe = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            returnUrl ??= Url.Content("~/");
+            urlTraVe ??= Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ReturnUrl = returnUrl;
+            UrlTraVe = urlTraVe;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string urlTraVe = null)
         {
-            returnUrl ??= Url.Content("~/");
+            urlTraVe ??= Url.Content("~/");
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var ketQua = await _signInManager.PasswordSignInAsync(ThongTinDauVao.Email, ThongTinDauVao.MatKhau, ThongTinDauVao.GhiNhoDangNhap, lockoutOnFailure: false);
+                if (ketQua.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    _logger.LogInformation("Người dùng đã đăng nhập thành công.");
+                    return LocalRedirect(urlTraVe);
                 }
-                if (result.RequiresTwoFactor)
+                if (ketQua.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = urlTraVe, RememberMe = ThongTinDauVao.GhiNhoDangNhap });
                 }
-                if (result.IsLockedOut)
+                if (ketQua.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("Tài khoản người dùng đã bị khóa.");
                     return RedirectToPage("./Lockout");
                 }
                 else

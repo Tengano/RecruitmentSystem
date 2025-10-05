@@ -12,22 +12,22 @@
                     <h2 class="card-title text-center mb-4">
                         <i class="bi bi-person-plus me-2"></i>Đăng ký
                     </h2>
-                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <form id="registerForm" asp-route-returnUrl="@Model.UrlTraVe" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                         <div class="mb-3">
-                            <label asp-for="Input.Email" class="form-label">Email</label>
-                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            <label asp-for="ThongTinDauVao.Email" class="form-label">Email</label>
+                            <input asp-for="ThongTinDauVao.Email" class="form-control" autocomplete="username" aria-required="true" />
+                            <span asp-validation-for="ThongTinDauVao.Email" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Input.Password" class="form-label">Mật khẩu</label>
-                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <label asp-for="ThongTinDauVao.MatKhau" class="form-label">Mật khẩu</label>
+                            <input asp-for="ThongTinDauVao.MatKhau" class="form-control" autocomplete="new-password" aria-required="true" />
+                            <span asp-validation-for="ThongTinDauVao.MatKhau" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Input.ConfirmPassword" class="form-label">Xác nhận mật khẩu</label>
-                            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            <label asp-for="ThongTinDauVao.XacNhanMatKhau" class="form-label">Xác nhận mật khẩu</label>
+                            <input asp-for="ThongTinDauVao.XacNhanMatKhau" class="form-control" autocomplete="new-password" aria-required="true" />
+                            <span asp-validation-for="ThongTinDauVao.XacNhanMatKhau" class="text-danger"></span>
                         </div>
                         <div class="d-grid">
                             <button id="registerSubmit" type="submit" class="btn btn-primary">
@@ -36,7 +36,7 @@
                         </div>
                         <div class="text-center mt-3">
                             <p>
-                                <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Đã có tài khoản? Đăng nhập</a>
+                                <a asp-page="./Login" asp-route-returnUrl="@Model.UrlTraVe">Đã có tài khoản? Đăng nhập</a>
                             </p>
                         </div>
                     </form>

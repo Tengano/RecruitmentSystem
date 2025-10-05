@@ -16,18 +16,18 @@
                     <form id="account" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                         <div class="mb-3">
-                            <label asp-for="Input.Email" class="form-label">Email</label>
-                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            <label asp-for="ThongTinDauVao.Email" class="form-label">Email</label>
+                            <input asp-for="ThongTinDauVao.Email" class="form-control" autocomplete="username" aria-required="true" />
+                            <span asp-validation-for="ThongTinDauVao.Email" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Input.Password" class="form-label">Mật khẩu</label>
-                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <label asp-for="ThongTinDauVao.MatKhau" class="form-label">Mật khẩu</label>
+                            <input asp-for="ThongTinDauVao.MatKhau" class="form-control" autocomplete="current-password" aria-required="true" />
+                            <span asp-validation-for="ThongTinDauVao.MatKhau" class="text-danger"></span>
                         </div>
                         <div class="mb-3 form-check">
-                            <input class="form-check-input" asp-for="Input.RememberMe" />
-                            <label class="form-check-label" asp-for="Input.RememberMe">
+                            <input class="form-check-input" asp-for="ThongTinDauVao.GhiNhoDangNhap" />
+                            <label class="form-check-label" asp-for="ThongTinDauVao.GhiNhoDangNhap">
                                 Ghi nhớ đăng nhập
                             </label>
                         </div>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="text-center mt-3">
                             <p>
-                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Đăng ký tài khoản mới</a>
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.UrlTraVe">Đăng ký tài khoản mới</a>
                             </p>
                         </div>
                     </form>

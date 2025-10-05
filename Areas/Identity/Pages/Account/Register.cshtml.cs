@@ -28,9 +28,9 @@ namespace RecruitmentSystem.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel ThongTinDauVao { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string UrlTraVe { get; set; }
 
         public class InputModel
         {
@@ -41,47 +41,47 @@ namespace RecruitmentSystem.Areas.Identity.Pages.Account
             [Required(ErrorMessage = "Mật khẩu là bắt buộc")]
             [StringLength(100, ErrorMessage = "Mật khẩu phải có ít nhất {2} và tối đa {1} ký tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            public string Password { get; set; }
+            public string MatKhau { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Xác nhận mật khẩu")]
-            [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp.")]
-            public string ConfirmPassword { get; set; }
+            [Compare("MatKhau", ErrorMessage = "Mật khẩu xác nhận không khớp.")]
+            public string XacNhanMatKhau { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string urlTraVe = null)
         {
-            ReturnUrl = returnUrl;
+            UrlTraVe = urlTraVe;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string urlTraVe = null)
         {
-            returnUrl ??= Url.Content("~/");
+            urlTraVe ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var nguoiDung = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                await _userStore.SetUserNameAsync(nguoiDung, ThongTinDauVao.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(nguoiDung, ThongTinDauVao.Email, CancellationToken.None);
+                var ketQua = await _userManager.CreateAsync(nguoiDung, ThongTinDauVao.MatKhau);
 
-                if (result.Succeeded)
+                if (ketQua.Succeeded)
                 {
-                    _logger.LogInformation("Tài khoản đã được tạo thành công cho email: {Email}", Input.Email);
+                    _logger.LogInformation("Tài khoản đã được tạo thành công cho email: {Email}", ThongTinDauVao.Email);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    await _signInManager.SignInAsync(nguoiDung, isPersistent: false);
+                    return LocalRedirect(urlTraVe);
                 }
-                foreach (var error in result.Errors)
+                foreach (var loi in ketQua.Errors)
                 {
-                    if (error.Code == "DuplicateUserName" || error.Code == "DuplicateEmail")
+                    if (loi.Code == "DuplicateUserName" || loi.Code == "DuplicateEmail")
                     {
-                        _logger.LogWarning("Đã có người dùng tạo tài khoản với email này rồi: {Email}", Input.Email);
+                        _logger.LogWarning("Đã có người dùng tạo tài khoản với email này rồi: {Email}", ThongTinDauVao.Email);
                         ModelState.AddModelError(string.Empty, "Email này đã được sử dụng. Vui lòng chọn email khác.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        ModelState.AddModelError(string.Empty, loi.Description);
                     }
                 }
             }
