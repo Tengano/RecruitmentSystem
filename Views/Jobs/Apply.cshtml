@@ -11,7 +11,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
                 <li class="breadcrumb-item"><a asp-action="Index">Tìm việc làm</a></li>
-                <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@job?.JobId">@job?.Title</a></li>
+                <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@job?.MaCongViec">@job?.TieuDe</a></li>
                 <li class="breadcrumb-item active">Nộp hồ sơ</li>
             </ol>
         </nav>
@@ -27,19 +27,19 @@
                         <h5 class="fw-bold mb-2">
                             <i class="bi bi-info-circle me-2"></i>Bạn đang ứng tuyển cho vị trí:
                         </h5>
-                        <h6 class="mb-1">@job?.Title</h6>
-                        <p class="mb-0 text-muted">@job?.Company</p>
+                        <h6 class="mb-1">@job?.TieuDe</h6>
+                        <p class="mb-0 text-muted">@job?.CongTy</p>
                     </div>
 
                     <form asp-action="Apply" method="post" enctype="multipart/form-data">
-                        <input type="hidden" asp-for="JobId" />
+                        <input type="hidden" asp-for="MaCongViec" />
                         
                         <div class="mb-3">
-                            <label asp-for="FullName" class="form-label fw-semibold">
+                            <label asp-for="HoTen" class="form-label fw-semibold">
                                 Họ và tên <span class="text-danger">*</span>
                             </label>
-                            <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên của bạn" />
-                            <span asp-validation-for="FullName" class="text-danger"></span>
+                            <input asp-for="HoTen" class="form-control" placeholder="Nhập họ và tên của bạn" />
+                            <span asp-validation-for="HoTen" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
@@ -51,47 +51,47 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Phone" class="form-label fw-semibold">
+                            <label asp-for="SoDienThoai" class="form-label fw-semibold">
                                 Số điện thoại <span class="text-danger">*</span>
                             </label>
-                            <input asp-for="Phone" class="form-control" placeholder="0123456789" />
-                            <span asp-validation-for="Phone" class="text-danger"></span>
+                            <input asp-for="SoDienThoai" class="form-control" placeholder="0123456789" />
+                            <span asp-validation-for="SoDienThoai" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Address" class="form-label fw-semibold">
+                            <label asp-for="DiaChi" class="form-label fw-semibold">
                                 Địa chỉ
                             </label>
-                            <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ của bạn" />
-                            <span asp-validation-for="Address" class="text-danger"></span>
+                            <input asp-for="DiaChi" class="form-control" placeholder="Nhập địa chỉ của bạn" />
+                            <span asp-validation-for="DiaChi" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="DateOfBirth" class="form-label fw-semibold">
+                            <label asp-for="NgaySinh" class="form-label fw-semibold">
                                 Ngày sinh
                             </label>
-                            <input asp-for="DateOfBirth" class="form-control" type="date" />
-                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                            <input asp-for="NgaySinh" class="form-control" type="date" />
+                            <span asp-validation-for="NgaySinh" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Gender" class="form-label fw-semibold">
+                            <label asp-for="GioiTinh" class="form-label fw-semibold">
                                 Giới tính
                             </label>
-                            <select asp-for="Gender" class="form-control">
+                            <select asp-for="GioiTinh" class="form-control">
                                 <option value="">Chọn giới tính</option>
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                                 <option value="Khác">Khác</option>
                             </select>
-                            <span asp-validation-for="Gender" class="text-danger"></span>
+                            <span asp-validation-for="GioiTinh" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Education" class="form-label fw-semibold">
+                            <label asp-for="TrinhDoHocVan" class="form-label fw-semibold">
                                 Trình độ học vấn
                             </label>
-                            <select asp-for="Education" class="form-control">
+                            <select asp-for="TrinhDoHocVan" class="form-control">
                                 <option value="">Chọn trình độ học vấn</option>
                                 <option value="Trung học phổ thông">Trung học phổ thông</option>
                                 <option value="Trung cấp">Trung cấp</option>
@@ -100,25 +100,25 @@
                                 <option value="Thạc sĩ">Thạc sĩ</option>
                                 <option value="Tiến sĩ">Tiến sĩ</option>
                             </select>
-                            <span asp-validation-for="Education" class="text-danger"></span>
+                            <span asp-validation-for="TrinhDoHocVan" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Experience" class="form-label fw-semibold">
+                            <label asp-for="KinhNghiem" class="form-label fw-semibold">
                                 Kinh nghiệm làm việc
                             </label>
-                            <textarea asp-for="Experience" class="form-control" rows="4" 
+                            <textarea asp-for="KinhNghiem" class="form-control" rows="4" 
                                 placeholder="Mô tả kinh nghiệm làm việc của bạn..."></textarea>
-                            <span asp-validation-for="Experience" class="text-danger"></span>
+                            <span asp-validation-for="KinhNghiem" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Skills" class="form-label fw-semibold">
+                            <label asp-for="KyNang" class="form-label fw-semibold">
                                 Kỹ năng
                             </label>
-                            <textarea asp-for="Skills" class="form-control" rows="3" 
+                            <textarea asp-for="KyNang" class="form-control" rows="3" 
                                 placeholder="Liệt kê các kỹ năng của bạn..."></textarea>
-                            <span asp-validation-for="Skills" class="text-danger"></span>
+                            <span asp-validation-for="KyNang" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
@@ -133,7 +133,7 @@
                             <button type="submit" class="btn btn-primary btn-lg px-5">
                                 <i class="bi bi-send me-2"></i>Gửi hồ sơ
                             </button>
-                            <a asp-action="Details" asp-route-id="@job?.JobId" class="btn btn-outline-secondary btn-lg">
+                            <a asp-action="Details" asp-route-id="@job?.MaCongViec" class="btn btn-outline-secondary btn-lg">
                                 <i class="bi bi-arrow-left me-2"></i>Quay lại
                             </a>
                         </div>

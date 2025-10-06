@@ -95,34 +95,26 @@
                     @foreach (var app in Model)
                     {
                         <tr>
-                            <td>@app.FullName</td>
-                            <td>@app.Job?.Title</td>
+                            <td>@app.HoTen</td>
+                            <td>@app.CongViec?.TieuDe</td>
                             <td>@app.Email</td>
-                            <td>@app.AppliedDate.ToString("dd/MM/yyyy")</td>
+                            <td>@app.NgayUngTuyen.ToString("dd/MM/yyyy")</td>
                             <td>
-                                @if (app.Status == "Pending")
+                                @if (app.TrangThai == "Chờ xem xét")
                                 {
-                                    <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                    <span class="badge bg-warning text-dark">Chờ xem xét</span>
                                 }
-                                else if (app.Status == "Reviewed")
+                                else if (app.TrangThai == "Đã phỏng vấn")
                                 {
-                                    <span class="badge bg-info">Đã xem</span>
+                                    <span class="badge bg-primary">Đã phỏng vấn</span>
                                 }
-                                else if (app.Status == "Interview")
+                                else if (app.TrangThai == "Đã từ chối")
                                 {
-                                    <span class="badge bg-primary">Phỏng vấn</span>
-                                }
-                                else if (app.Status == "Accepted")
-                                {
-                                    <span class="badge bg-success">Chấp nhận</span>
-                                }
-                                else if (app.Status == "Rejected")
-                                {
-                                    <span class="badge bg-danger">Từ chối</span>
+                                    <span class="badge bg-danger">Đã từ chối</span>
                                 }
                             </td>
                             <td>
-                                <a asp-action="ApplicationDetails" asp-route-id="@app.ApplicationId" class="btn btn-sm btn-primary">
+                                <a asp-action="ApplicationDetails" asp-route-id="@app.MaDonUngTuyen" class="btn btn-sm btn-primary">
                                     <i class="bi bi-eye"></i>
                                 </a>
                             </td>

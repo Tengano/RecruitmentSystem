@@ -17,45 +17,45 @@ namespace RecruitmentSystem.Controllers
         // GET: Jobs
         public async Task<IActionResult> Index(string? danhMuc, string? diaDiem, string? loaiCongViec, string? timKiem)
         {
-            var congViec = _context.Jobs.Where(j => j.IsActive).AsQueryable();
+            var congViec = _context.Jobs.Where(j => j.HoatDong).AsQueryable();
 
             if (!string.IsNullOrEmpty(danhMuc))
             {
-                congViec = congViec.Where(j => j.Category == danhMuc);
+                congViec = congViec.Where(j => j.DanhMuc == danhMuc);
                 ViewBag.SelectedCategory = danhMuc;
             }
 
             if (!string.IsNullOrEmpty(diaDiem))
             {
-                congViec = congViec.Where(j => j.Location.Contains(diaDiem));
+                congViec = congViec.Where(j => j.DiaDiem.Contains(diaDiem));
                 ViewBag.SelectedLocation = diaDiem;
             }
 
             if (!string.IsNullOrEmpty(loaiCongViec))
             {
-                congViec = congViec.Where(j => j.JobType == loaiCongViec);
+                congViec = congViec.Where(j => j.LoaiCongViec == loaiCongViec);
                 ViewBag.SelectedJobType = loaiCongViec;
             }
 
             if (!string.IsNullOrEmpty(timKiem))
             {
-                congViec = congViec.Where(j => j.Title.Contains(timKiem) || j.Company.Contains(timKiem) || j.Description.Contains(timKiem));
+                congViec = congViec.Where(j => j.TieuDe.Contains(timKiem) || j.CongTy.Contains(timKiem) || j.MoTa.Contains(timKiem));
                 ViewBag.SearchTerm = timKiem;
             }
 
             ViewBag.Categories = await _context.Jobs
-                .Where(j => j.IsActive)
-                .Select(j => j.Category)
+                .Where(j => j.HoatDong)
+                .Select(j => j.DanhMuc)
                 .Distinct()
                 .ToListAsync();
 
             ViewBag.Locations = await _context.Jobs
-                .Where(j => j.IsActive)
-                .Select(j => j.Location)
+                .Where(j => j.HoatDong)
+                .Select(j => j.DiaDiem)
                 .Distinct()
                 .ToListAsync();
 
-            return View(await congViec.OrderByDescending(j => j.PostedDate).ToListAsync());
+            return View(await congViec.OrderByDescending(j => j.NgayDang).ToListAsync());
         }
 
         // GET: Jobs/Details/5
@@ -67,7 +67,7 @@ namespace RecruitmentSystem.Controllers
             }
 
             var congViec = await _context.Jobs
-                .FirstOrDefaultAsync(m => m.JobId == id);
+                .FirstOrDefaultAsync(m => m.MaCongViec == id);
 
             if (congViec == null)
             {
@@ -75,7 +75,7 @@ namespace RecruitmentSystem.Controllers
             }
 
             // Tăng số lượt xem
-            congViec.Views++;
+            congViec.LuotXem++;
             await _context.SaveChangesAsync();
 
             return View(congViec);
@@ -96,7 +96,7 @@ namespace RecruitmentSystem.Controllers
             }
 
             ViewBag.Job = congViec;
-            var donUngTuyen = new Application { JobId = congViec.JobId };
+            var donUngTuyen = new Application { MaCongViec = congViec.MaCongViec };
             return View(donUngTuyen);
         }
 
@@ -122,23 +122,22 @@ namespace RecruitmentSystem.Controllers
                     }
 
                     // Lưu đường dẫn file vào Skills hoặc Experience nếu cần
-                    donUngTuyen.Skills += $" | File đính kèm: /uploads/resumes/{tenFileDuyNhat}";
+                    donUngTuyen.KyNang += $" | File đính kèm: /uploads/resumes/{tenFileDuyNhat}";
                 }
 
-                donUngTuyen.AppliedDate = DateTime.Now;
-                donUngTuyen.Status = "Chờ xem xét";
+                donUngTuyen.NgayUngTuyen = DateTime.Now;
+                donUngTuyen.TrangThai = "Chờ xem xét";
 
                 _context.Add(donUngTuyen);
                 await _context.SaveChangesAsync();
 
-                TempData["SuccessMessage"] = "Ứng tuyển thành công! Chúng tôi sẽ liên hệ với bạn sớm.";
+                TempData["SuccessMessage"] = "Đã gửi đơn ứng tuyển thành công! Chúng tôi sẽ liên hệ với bạn sớm.";
                 return RedirectToAction(nameof(Index));
             }
 
-            var congViec = await _context.Jobs.FindAsync(donUngTuyen.JobId);
+            var congViec = await _context.Jobs.FindAsync(donUngTuyen.MaCongViec);
             ViewBag.Job = congViec;
             return View(donUngTuyen);
         }
     }
 }
-

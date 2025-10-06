@@ -1,6 +1,6 @@
 @model Job
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.TieuDe;
 }
 
 <div class="bg-light py-4">
@@ -9,7 +9,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
                 <li class="breadcrumb-item"><a asp-action="Index">Tìm việc làm</a></li>
-                <li class="breadcrumb-item active">@Model.Title</li>
+                <li class="breadcrumb-item active">@Model.TieuDe</li>
             </ol>
         </nav>
     </div>
@@ -22,35 +22,35 @@
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div>
-                            <h1 class="fw-bold mb-2">@Model.Title</h1>
+                            <h1 class="fw-bold mb-2">@Model.TieuDe</h1>
                             <h5 class="text-muted mb-3">
-                                <i class="bi bi-building me-2"></i>@Model.Company
+                                <i class="bi bi-building me-2"></i>@Model.CongTy
                             </h5>
                         </div>
-                        <span class="badge bg-primary fs-6">@Model.JobType</span>
+                        <span class="badge bg-primary fs-6">@Model.LoaiCongViec</span>
                     </div>
 
                     <div class="row mb-4">
                         <div class="col-md-6 mb-3">
                             <p class="mb-2">
                                 <i class="bi bi-geo-alt-fill text-primary me-2"></i>
-                                <strong>Địa điểm:</strong> @Model.Location
+                                <strong>Địa điểm:</strong> @Model.DiaDiem
                             </p>
                         </div>
                         <div class="col-md-6 mb-3">
                             <p class="mb-2">
                                 <i class="bi bi-tag-fill text-primary me-2"></i>
-                                <strong>Ngành nghề:</strong> @Model.Category
+                                <strong>Ngành nghề:</strong> @Model.DanhMuc
                             </p>
                         </div>
-                        @if (Model.SalaryMin.HasValue && Model.SalaryMax.HasValue)
+                        @if (Model.LuongToiThieu.HasValue && Model.LuongToiDa.HasValue)
                         {
                             <div class="col-md-6 mb-3">
                                 <p class="mb-2">
                                     <i class="bi bi-cash text-primary me-2"></i>
                                     <strong>Mức lương:</strong> 
                                     <span class="text-success fw-semibold">
-                                        @Model.SalaryMin.Value.ToString("N0") - @Model.SalaryMax.Value.ToString("N0") VNĐ
+                                        @Model.LuongToiThieu.Value.ToString("N0") - @Model.LuongToiDa.Value.ToString("N0") VNĐ
                                     </span>
                                 </p>
                             </div>
@@ -58,22 +58,22 @@
                         <div class="col-md-6 mb-3">
                             <p class="mb-2">
                                 <i class="bi bi-calendar-check text-primary me-2"></i>
-                                <strong>Đăng ngày:</strong> @Model.PostedDate.ToString("dd/MM/yyyy")
+                                <strong>Đăng ngày:</strong> @Model.NgayDang.ToString("dd/MM/yyyy")
                             </p>
                         </div>
-                        @if (Model.ClosingDate.HasValue)
+                        @if (Model.NgayKetThuc.HasValue)
                         {
                             <div class="col-md-6 mb-3">
                                 <p class="mb-2">
                                     <i class="bi bi-calendar-x text-danger me-2"></i>
-                                    <strong>Hạn nộp:</strong> @Model.ClosingDate.Value.ToString("dd/MM/yyyy")
+                                    <strong>Hạn nộp:</strong> @Model.NgayKetThuc.Value.ToString("dd/MM/yyyy")
                                 </p>
                             </div>
                         }
                         <div class="col-md-6 mb-3">
                             <p class="mb-2">
                                 <i class="bi bi-hourglass-split text-primary me-2"></i>
-                                <strong>Kinh nghiệm:</strong> @Model.ExperienceYears năm
+                                <strong>Kinh nghiệm:</strong> @Model.NamKinhNghiem năm
                             </p>
                         </div>
                     </div>
@@ -82,19 +82,19 @@
 
                     <div class="mb-4">
                         <h4 class="fw-bold mb-3"><i class="bi bi-file-text me-2"></i>Mô tả công việc</h4>
-                        <div class="text-muted" style="white-space: pre-line;">@Model.Description</div>
+                        <div class="text-muted" style="white-space: pre-line;">@Model.MoTa</div>
                     </div>
 
                     <div class="mb-4">
                         <h4 class="fw-bold mb-3"><i class="bi bi-clipboard-check me-2"></i>Yêu cầu công việc</h4>
-                        <div class="text-muted" style="white-space: pre-line;">@Model.Requirements</div>
+                        <div class="text-muted" style="white-space: pre-line;">@Model.YeuCau</div>
                     </div>
 
-                    @if (!string.IsNullOrEmpty(Model.Benefits))
+                    @if (!string.IsNullOrEmpty(Model.PhucLoi))
                     {
                         <div class="mb-4">
                             <h4 class="fw-bold mb-3"><i class="bi bi-gift me-2"></i>Quyền lợi</h4>
-                            <div class="text-muted" style="white-space: pre-line;">@Model.Benefits</div>
+                            <div class="text-muted" style="white-space: pre-line;">@Model.PhucLoi</div>
                         </div>
                     }
                 </div>
@@ -106,7 +106,7 @@
                 <div class="card-body p-4">
                     <h5 class="fw-bold mb-3">Ứng tuyển ngay</h5>
                     <p class="text-muted mb-4">Gửi hồ sơ của bạn cho vị trí này</p>
-                    <a asp-action="Apply" asp-route-id="@Model.JobId" class="btn btn-primary w-100 btn-lg mb-3">
+                    <a asp-action="Apply" asp-route-id="@Model.MaCongViec" class="btn btn-primary w-100 btn-lg mb-3">
                         <i class="bi bi-file-earmark-text me-2"></i>Nộp hồ sơ
                     </a>
                     <button class="btn btn-outline-secondary w-100" onclick="shareJob()">
@@ -118,12 +118,12 @@
             <div class="card shadow-sm border-0 mt-4">
                 <div class="card-body p-4">
                     <h5 class="fw-bold mb-3">Thông tin công ty</h5>
-                    <h6 class="text-primary mb-3">@Model.Company</h6>
+                    <h6 class="text-primary mb-3">@Model.CongTy</h6>
                     <p class="text-muted small">
-                        <i class="bi bi-geo-alt me-2"></i>@Model.Location
+                        <i class="bi bi-geo-alt me-2"></i>@Model.DiaDiem
                     </p>
                     <p class="text-muted small">
-                        <i class="bi bi-briefcase me-2"></i>@Model.Category
+                        <i class="bi bi-briefcase me-2"></i>@Model.DanhMuc
                     </p>
                 </div>
             </div>
@@ -136,8 +136,8 @@
         function shareJob() {
             if (navigator.share) {
                 navigator.share({
-                    title: '@Model.Title',
-                    text: 'Xem tin tuyển dụng: @Model.Title tại @Model.Company',
+                    title: '@Model.TieuDe',
+                    text: 'Xem tin tuyển dụng: @Model.TieuDe tại @Model.CongTy',
                     url: window.location.href
                 }).catch(console.error);
             } else {

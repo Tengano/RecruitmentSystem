@@ -95,38 +95,38 @@
                                     <div class="row">
                                         <div class="col-md-8">
                                             <h5 class="card-title fw-bold text-primary mb-2">
-                                                <a asp-action="Details" asp-route-id="@job.JobId" class="text-decoration-none">
-                                                    @job.Title
+                                                <a asp-action="Details" asp-route-id="@job.MaCongViec" class="text-decoration-none">
+                                                    @job.TieuDe
                                                 </a>
                                             </h5>
                                             <p class="text-muted mb-2">
-                                                <i class="bi bi-building me-2"></i>@job.Company
+                                                <i class="bi bi-building me-2"></i>@job.CongTy
                                             </p>
                                             <div class="mb-3">
                                                 <span class="badge bg-light text-dark me-2">
-                                                    <i class="bi bi-geo-alt me-1"></i>@job.Location
+                                                    <i class="bi bi-geo-alt me-1"></i>@job.DiaDiem
                                                 </span>
-                                                <span class="badge bg-primary me-2">@job.JobType</span>
-                                                <span class="badge bg-info text-dark">@job.Category</span>
+                                                <span class="badge bg-primary me-2">@job.LoaiCongViec</span>
+                                                <span class="badge bg-info text-dark">@job.DanhMuc</span>
                                             </div>
                                             <p class="card-text text-muted small mb-2">
-                                                @(job.Description.Length > 150 ? job.Description.Substring(0, 150) + "..." : job.Description)
+                                                @(job.MoTa.Length > 150 ? job.MoTa.Substring(0, 150) + "..." : job.MoTa)
                                             </p>
                                         </div>
                                         <div class="col-md-4 text-md-end">
-                                            @if (job.SalaryMin.HasValue && job.SalaryMax.HasValue)
+                                            @if (job.LuongToiThieu.HasValue && job.LuongToiDa.HasValue)
                                             {
                                                 <h6 class="text-success fw-bold mb-3">
-                                                    @job.SalaryMin.Value.ToString("N0") - @job.SalaryMax.Value.ToString("N0") VNĐ
+                                                    @job.LuongToiThieu.Value.ToString("N0") - @job.LuongToiDa.Value.ToString("N0") VNĐ
                                                 </h6>
                                             }
                                             <small class="text-muted d-block mb-2">
-                                                <i class="bi bi-clock me-1"></i>@job.PostedDate.ToString("dd/MM/yyyy")
+                                                <i class="bi bi-clock me-1"></i>@job.NgayDang.ToString("dd/MM/yyyy")
                                             </small>
                                             <small class="text-muted d-block mb-3">
-                                                <i class="bi bi-eye me-1"></i>@job.Views lượt xem
+                                                <i class="bi bi-eye me-1"></i>@job.LuotXem lượt xem
                                             </small>
-                                            <a asp-action="Details" asp-route-id="@job.JobId" class="btn btn-outline-primary btn-sm">
+                                            <a asp-action="Details" asp-route-id="@job.MaCongViec" class="btn btn-outline-primary btn-sm">
                                                 Xem chi tiết <i class="bi bi-arrow-right ms-1"></i>
                                             </a>
                                         </div>

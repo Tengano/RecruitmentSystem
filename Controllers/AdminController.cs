@@ -32,19 +32,19 @@ namespace RecruitmentSystem.Controllers
         {
             if (!IsAdmin())
             {
-                TempData["ErrorMessage"] = "Bạn không có quyền truy cập trang này!";
+                TempData["ErrorMessage"] = "Bạn không có quyền quản trị để truy cập trang này!";
                 return RedirectToAction("Index", "Home");
             }
 
             ViewBag.TotalJobs = await _context.Jobs.CountAsync();
-            ViewBag.ActiveJobs = await _context.Jobs.Where(j => j.IsActive).CountAsync();
+            ViewBag.ActiveJobs = await _context.Jobs.Where(j => j.HoatDong).CountAsync();
             ViewBag.TotalApplications = await _context.Applications.CountAsync();
-            ViewBag.PendingApplications = await _context.Applications.Where(a => a.Status == "Chờ xem xét").CountAsync();
+            ViewBag.PendingApplications = await _context.Applications.Where(a => a.TrangThai == "Chờ xem xét").CountAsync();
             ViewBag.TotalCandidates = await _context.Candidates.CountAsync();
 
             var donUngTuyenGanDay = await _context.Applications
-                .Include(a => a.Job)
-                .OrderByDescending(a => a.AppliedDate)
+                .Include(a => a.CongViec)
+                .OrderByDescending(a => a.NgayUngTuyen)
                 .Take(10)
                 .ToListAsync();
 
@@ -54,7 +54,7 @@ namespace RecruitmentSystem.Controllers
         // Jobs Management
         public async Task<IActionResult> Jobs()
         {
-            var congViec = await _context.Jobs.OrderByDescending(j => j.PostedDate).ToListAsync();
+            var congViec = await _context.Jobs.OrderByDescending(j => j.NgayDang).ToListAsync();
             return View(congViec);
         }
 
@@ -71,7 +71,7 @@ namespace RecruitmentSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                congViec.PostedDate = DateTime.Now;
+                congViec.NgayDang = DateTime.Now;
                 _context.Add(congViec);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Tạo tin tuyển dụng thành công!";
@@ -101,7 +101,7 @@ namespace RecruitmentSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditJob(int id, Job congViec)
         {
-            if (id != congViec.JobId)
+            if (id != congViec.MaCongViec)
             {
                 return NotFound();
             }
@@ -116,7 +116,7 @@ namespace RecruitmentSystem.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!JobExists(congViec.JobId))
+                    if (!JobExists(congViec.MaCongViec))
                     {
                         return NotFound();
                     }
@@ -139,7 +139,7 @@ namespace RecruitmentSystem.Controllers
             }
 
             var congViec = await _context.Jobs
-                .FirstOrDefaultAsync(m => m.JobId == id);
+                .FirstOrDefaultAsync(m => m.MaCongViec == id);
             if (congViec == null)
             {
                 return NotFound();
@@ -168,8 +168,8 @@ namespace RecruitmentSystem.Controllers
         public async Task<IActionResult> Applications()
         {
             var donUngTuyen = await _context.Applications
-                .Include(a => a.Job)
-                .OrderByDescending(a => a.AppliedDate)
+                .Include(a => a.CongViec)
+                .OrderByDescending(a => a.NgayUngTuyen)
                 .ToListAsync();
             return View(donUngTuyen);
         }
@@ -183,8 +183,8 @@ namespace RecruitmentSystem.Controllers
             }
 
             var donUngTuyen = await _context.Applications
-                .Include(a => a.Job)
-                .FirstOrDefaultAsync(m => m.ApplicationId == id);
+                .Include(a => a.CongViec)
+                .FirstOrDefaultAsync(m => m.MaDonUngTuyen == id);
 
             if (donUngTuyen == null)
             {
@@ -201,7 +201,7 @@ namespace RecruitmentSystem.Controllers
             var donUngTuyen = await _context.Applications.FindAsync(id);
             if (donUngTuyen != null)
             {
-                donUngTuyen.Status = trangThai;
+                donUngTuyen.TrangThai = trangThai;
                 await _context.SaveChangesAsync();
                 return Json(new { success = true, message = "Cập nhật trạng thái thành công!" });
             }
@@ -212,15 +212,14 @@ namespace RecruitmentSystem.Controllers
         public async Task<IActionResult> Candidates()
         {
             var ungVien = await _context.Candidates
-                .OrderByDescending(c => c.RegisteredDate)
+                .OrderByDescending(c => c.NgayTao)
                 .ToListAsync();
             return View(ungVien);
         }
 
         private bool JobExists(int id)
         {
-            return _context.Jobs.Any(e => e.JobId == id);
+            return _context.Jobs.Any(e => e.MaCongViec == id);
         }
     }
 }
-

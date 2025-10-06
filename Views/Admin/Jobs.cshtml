@@ -34,14 +34,14 @@
                     @foreach (var job in Model)
                     {
                         <tr>
-                            <td>@job.JobId</td>
-                            <td>@job.Title</td>
-                            <td>@job.Company</td>
-                            <td>@job.Location</td>
-                            <td><span class="badge bg-primary">@job.JobType</span></td>
-                            <td>@job.PostedDate.ToString("dd/MM/yyyy")</td>
+                            <td>@job.MaCongViec</td>
+                            <td>@job.TieuDe</td>
+                            <td>@job.CongTy</td>
+                            <td>@job.DiaDiem</td>
+                            <td><span class="badge bg-primary">@job.LoaiCongViec</span></td>
+                            <td>@job.NgayDang.ToString("dd/MM/yyyy")</td>
                             <td>
-                                @if (job.IsActive)
+                                @if (job.HoatDong)
                                 {
                                     <span class="badge bg-success">Đang tuyển</span>
                                 }
@@ -50,13 +50,13 @@
                                     <span class="badge bg-secondary">Đã đóng</span>
                                 }
                             </td>
-                            <td>@job.Views</td>
+                            <td>@job.LuotXem</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a asp-action="EditJob" asp-route-id="@job.JobId" class="btn btn-sm btn-warning">
+                                    <a asp-action="EditJob" asp-route-id="@job.MaCongViec" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a asp-action="DeleteJob" asp-route-id="@job.JobId" class="btn btn-sm btn-danger">
+                                    <a asp-action="DeleteJob" asp-route-id="@job.MaCongViec" class="btn btn-sm btn-danger">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

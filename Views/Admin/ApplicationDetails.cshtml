@@ -22,46 +22,46 @@
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-4">Họ và tên:</dt>
-                    <dd class="col-sm-8">@Model.FullName</dd>
+                    <dd class="col-sm-8">@Model.HoTen</dd>
 
                     <dt class="col-sm-4">Email:</dt>
                     <dd class="col-sm-8"><a href="mailto:@Model.Email">@Model.Email</a></dd>
 
                     <dt class="col-sm-4">Số điện thoại:</dt>
-                    <dd class="col-sm-8"><a href="tel:@Model.Phone">@Model.Phone</a></dd>
+                    <dd class="col-sm-8"><a href="tel:@Model.SoDienThoai">@Model.SoDienThoai</a></dd>
 
                     <dt class="col-sm-4">Vị trí ứng tuyển:</dt>
                     <dd class="col-sm-8">
-                        <a asp-controller="Jobs" asp-action="Details" asp-route-id="@Model.Job?.JobId">
-                            @Model.Job?.Title
+                        <a asp-controller="Jobs" asp-action="Details" asp-route-id="@Model.CongViec?.MaCongViec">
+                            @Model.CongViec?.TieuDe
                         </a>
                     </dd>
 
                     <dt class="col-sm-4">Ngày nộp:</dt>
-                    <dd class="col-sm-8">@Model.AppliedDate.ToString("dd/MM/yyyy HH:mm")</dd>
+                    <dd class="col-sm-8">@Model.NgayUngTuyen.ToString("dd/MM/yyyy HH:mm")</dd>
 
                     <dt class="col-sm-4">Trạng thái:</dt>
                     <dd class="col-sm-8">
-                        <select class="form-select w-auto status-select" data-id="@Model.ApplicationId">
-                            <option value="Chờ xem xét" selected="@(Model.Status == "Chờ xem xét")">Chờ xem xét</option>
-                            <option value="Đã phỏng vấn" selected="@(Model.Status == "Đã phỏng vấn")">Đã phỏng vấn</option>
-                            <option value="Đã từ chối" selected="@(Model.Status == "Đã từ chối")">Đã từ chối</option>
+                        <select class="form-select w-auto status-select" data-id="@Model.MaDonUngTuyen">
+                            <option value="Chờ xem xét" selected="@(Model.TrangThai == "Chờ xem xét")">Chờ xem xét</option>
+                            <option value="Đã phỏng vấn" selected="@(Model.TrangThai == "Đã phỏng vấn")">Đã phỏng vấn</option>
+                            <option value="Đã từ chối" selected="@(Model.TrangThai == "Đã từ chối")">Đã từ chối</option>
                         </select>
                     </dd>
                 </dl>
 
-                @if (!string.IsNullOrEmpty(Model.Experience))
+                @if (!string.IsNullOrEmpty(Model.KinhNghiem))
                 {
                     <hr />
                     <h5 class="mb-3">Kinh nghiệm:</h5>
-                    <p class="bg-light p-3 rounded" style="white-space: pre-line;">@Model.Experience</p>
+                    <p class="bg-light p-3 rounded" style="white-space: pre-line;">@Model.KinhNghiem</p>
                 }
 
-                @if (!string.IsNullOrEmpty(Model.Skills))
+                @if (!string.IsNullOrEmpty(Model.KyNang))
                 {
                     <hr />
                     <h5 class="mb-3">Kỹ năng:</h5>
-                    <p class="bg-light p-3 rounded" style="white-space: pre-line;">@Model.Skills</p>
+                    <p class="bg-light p-3 rounded" style="white-space: pre-line;">@Model.KyNang</p>
                 }
             </div>
         </div>
@@ -71,21 +71,21 @@
                 <h5 class="mb-0">Thông tin bổ sung</h5>
             </div>
             <div class="card-body">
-                @if (!string.IsNullOrEmpty(Model.Address))
+                @if (!string.IsNullOrEmpty(Model.DiaChi))
                 {
-                    <p><strong>Địa chỉ:</strong> @Model.Address</p>
+                    <p><strong>Địa chỉ:</strong> @Model.DiaChi</p>
                 }
-                @if (Model.DateOfBirth.HasValue)
+                @if (Model.NgaySinh.HasValue)
                 {
-                    <p><strong>Ngày sinh:</strong> @Model.DateOfBirth.Value.ToString("dd/MM/yyyy")</p>
+                    <p><strong>Ngày sinh:</strong> @Model.NgaySinh.Value.ToString("dd/MM/yyyy")</p>
                 }
-                @if (!string.IsNullOrEmpty(Model.Gender))
+                @if (!string.IsNullOrEmpty(Model.GioiTinh))
                 {
-                    <p><strong>Giới tính:</strong> @Model.Gender</p>
+                    <p><strong>Giới tính:</strong> @Model.GioiTinh</p>
                 }
-                @if (!string.IsNullOrEmpty(Model.Education))
+                @if (!string.IsNullOrEmpty(Model.TrinhDoHocVan))
                 {
-                    <p><strong>Trình độ học vấn:</strong> @Model.Education</p>
+                    <p><strong>Trình độ học vấn:</strong> @Model.TrinhDoHocVan</p>
                 }
             </div>
         </div>
@@ -97,19 +97,19 @@
                 <h5 class="mb-0">Thông tin công việc</h5>
             </div>
             <div class="card-body">
-                <h6 class="text-primary">@Model.Job?.Title</h6>
-                <p class="text-muted mb-2">@Model.Job?.Company</p>
-                <p class="mb-2"><i class="bi bi-geo-alt me-2"></i>@Model.Job?.Location</p>
-                <p class="mb-2"><i class="bi bi-tag me-2"></i>@Model.Job?.JobType</p>
-                @if (Model.Job?.SalaryMin.HasValue == true && Model.Job?.SalaryMax.HasValue == true)
+                <h6 class="text-primary">@Model.CongViec?.TieuDe</h6>
+                <p class="text-muted mb-2">@Model.CongViec?.CongTy</p>
+                <p class="mb-2"><i class="bi bi-geo-alt me-2"></i>@Model.CongViec?.DiaDiem</p>
+                <p class="mb-2"><i class="bi bi-tag me-2"></i>@Model.CongViec?.LoaiCongViec</p>
+                @if (Model.CongViec?.LuongToiThieu.HasValue == true && Model.CongViec?.LuongToiDa.HasValue == true)
                 {
                     <p class="text-success fw-semibold">
                         <i class="bi bi-cash me-2"></i>
-                        @Model.Job?.SalaryMin.Value.ToString("N0") - @Model.Job?.SalaryMax.Value.ToString("N0") VNĐ
+                        @Model.CongViec?.LuongToiThieu.Value.ToString("N0") - @Model.CongViec?.LuongToiDa.Value.ToString("N0") VNĐ
                     </p>
                 }
                 <hr />
-                <a asp-controller="Jobs" asp-action="Details" asp-route-id="@Model.Job?.JobId" class="btn btn-sm btn-outline-primary w-100" target="_blank">
+                <a asp-controller="Jobs" asp-action="Details" asp-route-id="@Model.CongViec?.MaCongViec" class="btn btn-sm btn-outline-primary w-100" target="_blank">
                     <i class="bi bi-eye me-2"></i>Xem chi tiết công việc
                 </a>
             </div>

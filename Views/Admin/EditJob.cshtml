@@ -11,47 +11,47 @@
 <div class="card shadow">
     <div class="card-body">
         <form asp-action="EditJob" method="post">
-            <input type="hidden" asp-for="JobId" />
+            <input type="hidden" asp-for="MaCongViec" />
             
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label asp-for="Title" class="form-label">Tiêu đề công việc *</label>
-                    <input asp-for="Title" class="form-control" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <label asp-for="TieuDe" class="form-label">Tiêu đề công việc *</label>
+                    <input asp-for="TieuDe" class="form-control" />
+                    <span asp-validation-for="TieuDe" class="text-danger"></span>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label asp-for="Company" class="form-label">Công ty *</label>
-                    <input asp-for="Company" class="form-control" />
-                    <span asp-validation-for="Company" class="text-danger"></span>
+                    <label asp-for="CongTy" class="form-label">Công ty *</label>
+                    <input asp-for="CongTy" class="form-control" />
+                    <span asp-validation-for="CongTy" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Description" class="form-label">Mô tả công việc *</label>
-                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="MoTa" class="form-label">Mô tả công việc *</label>
+                <textarea asp-for="MoTa" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="MoTa" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Requirements" class="form-label">Yêu cầu công việc *</label>
-                <textarea asp-for="Requirements" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="Requirements" class="text-danger"></span>
+                <label asp-for="YeuCau" class="form-label">Yêu cầu công việc *</label>
+                <textarea asp-for="YeuCau" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="YeuCau" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Benefits" class="form-label">Quyền lợi</label>
-                <textarea asp-for="Benefits" class="form-control" rows="4"></textarea>
+                <label asp-for="PhucLoi" class="form-label">Quyền lợi</label>
+                <textarea asp-for="PhucLoi" class="form-control" rows="4"></textarea>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label asp-for="Location" class="form-label">Địa điểm *</label>
-                    <input asp-for="Location" class="form-control" />
-                    <span asp-validation-for="Location" class="text-danger"></span>
+                    <label asp-for="DiaDiem" class="form-label">Địa điểm *</label>
+                    <input asp-for="DiaDiem" class="form-control" />
+                    <span asp-validation-for="DiaDiem" class="text-danger"></span>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label asp-for="Category" class="form-label">Ngành nghề *</label>
-                    <select asp-for="Category" class="form-select">
+                    <label asp-for="DanhMuc" class="form-label">Ngành nghề *</label>
+                    <select asp-for="DanhMuc" class="form-select">
                         <option value="">Chọn ngành nghề</option>
                         <option value="Công nghệ thông tin">Công nghệ thông tin</option>
                         <option value="Kinh doanh">Kinh doanh</option>
@@ -60,47 +60,47 @@
                         <option value="Nhân sự">Nhân sự</option>
                         <option value="Kế toán">Kế toán</option>
                     </select>
-                    <span asp-validation-for="Category" class="text-danger"></span>
+                    <span asp-validation-for="DanhMuc" class="text-danger"></span>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label asp-for="JobType" class="form-label">Loại công việc *</label>
-                    <select asp-for="JobType" class="form-select">
+                    <label asp-for="LoaiCongViec" class="form-label">Loại công việc *</label>
+                    <select asp-for="LoaiCongViec" class="form-select">
                         <option value="">Chọn loại</option>
-                        <option value="Full-time">Full-time</option>
-                        <option value="Part-time">Part-time</option>
-                        <option value="Contract">Contract</option>
-                        <option value="Internship">Internship</option>
+                        <option value="Toàn thời gian">Toàn thời gian</option>
+                        <option value="Bán thời gian">Bán thời gian</option>
+                        <option value="Hợp đồng">Hợp đồng</option>
+                        <option value="Thực tập">Thực tập</option>
                     </select>
-                    <span asp-validation-for="JobType" class="text-danger"></span>
+                    <span asp-validation-for="LoaiCongViec" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label asp-for="SalaryMin" class="form-label">Lương tối thiểu (VNĐ)</label>
-                    <input asp-for="SalaryMin" type="number" class="form-control" />
+                    <label asp-for="LuongToiThieu" class="form-label">Lương tối thiểu (VNĐ)</label>
+                    <input asp-for="LuongToiThieu" type="number" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label asp-for="SalaryMax" class="form-label">Lương tối đa (VNĐ)</label>
-                    <input asp-for="SalaryMax" type="number" class="form-control" />
+                    <label asp-for="LuongToiDa" class="form-label">Lương tối đa (VNĐ)</label>
+                    <input asp-for="LuongToiDa" type="number" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label asp-for="ExperienceYears" class="form-label">Số năm kinh nghiệm</label>
-                    <input asp-for="ExperienceYears" type="number" class="form-control" />
+                    <label asp-for="NamKinhNghiem" class="form-label">Số năm kinh nghiệm</label>
+                    <input asp-for="NamKinhNghiem" type="number" class="form-control" />
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label asp-for="ClosingDate" class="form-label">Ngày hết hạn</label>
-                    <input asp-for="ClosingDate" type="date" class="form-control" 
-                           value="@Model.ClosingDate?.ToString("yyyy-MM-dd")" />
+                    <label asp-for="NgayKetThuc" class="form-label">Ngày hết hạn</label>
+                    <input asp-for="NgayKetThuc" type="date" class="form-control" 
+                           value="@Model.NgayKetThuc?.ToString("yyyy-MM-dd")" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label asp-for="IsActive" class="form-label">Trạng thái</label>
+                    <label asp-for="HoatDong" class="form-label">Trạng thái</label>
                     <div class="form-check form-switch mt-2">
-                        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
-                        <label asp-for="IsActive" class="form-check-label">Đang tuyển</label>
+                        <input asp-for="HoatDong" class="form-check-input" type="checkbox" />
+                        <label asp-for="HoatDong" class="form-check-label">Đang tuyển</label>
                     </div>
                 </div>
             </div>

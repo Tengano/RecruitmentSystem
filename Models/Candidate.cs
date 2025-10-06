@@ -6,12 +6,12 @@ namespace RecruitmentSystem.Models
     {
         [Key]
         [Display(Name = "Mã ứng viên")]
-        public int CandidateId { get; set; }
+        public int MaUngVien { get; set; }
 
         [Required(ErrorMessage = "Họ và tên là bắt buộc")]
         [StringLength(100)]
         [Display(Name = "Họ và tên")]
-        public string FullName { get; set; } = string.Empty;
+        public string HoTen { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Email là bắt buộc")]
         [EmailAddress(ErrorMessage = "Email không hợp lệ")]
@@ -23,31 +23,30 @@ namespace RecruitmentSystem.Models
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         [StringLength(20)]
         [Display(Name = "Số điện thoại")]
-        public string Phone { get; set; } = string.Empty;
+        public string SoDienThoai { get; set; } = string.Empty;
 
         [StringLength(200)]
         [Display(Name = "Địa chỉ")]
-        public string Address { get; set; } = string.Empty;
+        public string DiaChi { get; set; } = string.Empty;
 
         [Display(Name = "Ngày sinh")]
-        public DateTime? DateOfBirth { get; set; }
+        public DateTime? NgaySinh { get; set; }
 
         [StringLength(10)]
         [Display(Name = "Giới tính")]
-        public string Gender { get; set; } = string.Empty;
+        public string GioiTinh { get; set; } = string.Empty;
 
         [StringLength(50)]
         [Display(Name = "Trình độ học vấn")]
-        public string Education { get; set; } = string.Empty;
+        public string TrinhDoHocVan { get; set; } = string.Empty;
 
         [Display(Name = "Kinh nghiệm")]
-        public string Experience { get; set; } = string.Empty;
+        public string KinhNghiem { get; set; } = string.Empty;
 
         [Display(Name = "Kỹ năng")]
-        public string Skills { get; set; } = string.Empty;
+        public string KyNang { get; set; } = string.Empty;
 
         [Display(Name = "Ngày tạo")]
-        public DateTime RegisteredDate { get; set; } = DateTime.Now;
+        public DateTime NgayTao { get; set; } = DateTime.Now;
     }
 }
-

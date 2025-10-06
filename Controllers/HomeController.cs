@@ -20,12 +20,12 @@ namespace RecruitmentSystem.Controllers
         public async Task<IActionResult> Index()
         {
             var congViecNoiBat = await _context.Jobs
-                .Where(j => j.IsActive)
-                .OrderByDescending(j => j.PostedDate)
+                .Where(j => j.HoatDong)
+                .OrderByDescending(j => j.NgayDang)
                 .Take(6)
                 .ToListAsync();
 
-            ViewBag.TotalJobs = await _context.Jobs.Where(j => j.IsActive).CountAsync();
+            ViewBag.TotalJobs = await _context.Jobs.Where(j => j.HoatDong).CountAsync();
             ViewBag.TotalApplications = await _context.Applications.CountAsync();
             ViewBag.TotalCandidates = await _context.Candidates.CountAsync();
 
@@ -55,4 +55,3 @@ public class ErrorViewModel
     public string? RequestId { get; set; }
     public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }
-

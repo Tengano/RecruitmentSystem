@@ -28,11 +28,11 @@
                         @foreach (var candidate in Model)
                         {
                             <tr>
-                                <td>@candidate.CandidateId</td>
-                                <td>@candidate.FullName</td>
+                                <td>@candidate.MaUngVien</td>
+                                <td>@candidate.HoTen</td>
                                 <td>@candidate.Email</td>
-                                <td>@candidate.Phone</td>
-                                <td>@candidate.RegisteredDate.ToString("dd/MM/yyyy")</td>
+                                <td>@candidate.SoDienThoai</td>
+                                <td>@candidate.NgayTao.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <span class="badge bg-success">Đang hoạt động</span>
                                 </td>

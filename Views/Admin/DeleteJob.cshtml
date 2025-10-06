@@ -19,21 +19,21 @@
             <h4>Thông tin tin tuyển dụng:</h4>
             <dl class="row">
                 <dt class="col-sm-3">Tiêu đề:</dt>
-                <dd class="col-sm-9">@Model.Title</dd>
+                <dd class="col-sm-9">@Model.TieuDe</dd>
 
                 <dt class="col-sm-3">Công ty:</dt>
-                <dd class="col-sm-9">@Model.Company</dd>
+                <dd class="col-sm-9">@Model.CongTy</dd>
 
                 <dt class="col-sm-3">Địa điểm:</dt>
-                <dd class="col-sm-9">@Model.Location</dd>
+                <dd class="col-sm-9">@Model.DiaDiem</dd>
 
                 <dt class="col-sm-3">Ngày đăng:</dt>
-                <dd class="col-sm-9">@Model.PostedDate.ToString("dd/MM/yyyy")</dd>
+                <dd class="col-sm-9">@Model.NgayDang.ToString("dd/MM/yyyy")</dd>
             </dl>
         </div>
 
         <form asp-action="DeleteJob" method="post">
-            <input type="hidden" asp-for="JobId" />
+            <input type="hidden" asp-for="MaCongViec" />
             <button type="submit" class="btn btn-danger btn-lg">
                 <i class="bi bi-trash me-2"></i>Xác nhận xóa
             </button>

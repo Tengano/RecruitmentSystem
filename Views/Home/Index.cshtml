@@ -102,27 +102,27 @@
                     <div class="card h-100 shadow-sm border-0 hover-shadow">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-3">
-                                <h5 class="card-title fw-bold mb-0">@job.Title</h5>
-                                <span class="badge bg-primary">@job.JobType</span>
+                                <h5 class="card-title fw-bold mb-0">@job.TieuDe</h5>
+                                <span class="badge bg-primary">@job.LoaiCongViec</span>
                             </div>
                             <p class="text-muted mb-2">
-                                <i class="bi bi-building me-1"></i>@job.Company
+                                <i class="bi bi-building me-1"></i>@job.CongTy
                             </p>
                             <p class="text-muted mb-2">
-                                <i class="bi bi-geo-alt me-1"></i>@job.Location
+                                <i class="bi bi-geo-alt me-1"></i>@job.DiaDiem
                             </p>
-                            @if (job.SalaryMin.HasValue && job.SalaryMax.HasValue)
+                            @if (job.LuongToiThieu.HasValue && job.LuongToiDa.HasValue)
                             {
                                 <p class="text-success fw-semibold mb-3">
-                                    <i class="bi bi-cash me-1"></i>@job.SalaryMin.Value.ToString("N0") - @job.SalaryMax.Value.ToString("N0") VNĐ
+                                    <i class="bi bi-cash me-1"></i>@job.LuongToiThieu.Value.ToString("N0") - @job.LuongToiDa.Value.ToString("N0") VNĐ
                                 </p>
                             }
-                            <p class="card-text text-muted small">@job.Description.Substring(0, Math.Min(100, job.Description.Length))...</p>
+                            <p class="card-text text-muted small">@job.MoTa.Substring(0, Math.Min(100, job.MoTa.Length))...</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <small class="text-muted">
-                                    <i class="bi bi-clock me-1"></i>@job.PostedDate.ToString("dd/MM/yyyy")
+                                    <i class="bi bi-clock me-1"></i>@job.NgayDang.ToString("dd/MM/yyyy")
                                 </small>
-                                <a asp-controller="Jobs" asp-action="Details" asp-route-id="@job.JobId" class="btn btn-sm btn-outline-primary">
+                                <a asp-controller="Jobs" asp-action="Details" asp-route-id="@job.MaCongViec" class="btn btn-sm btn-outline-primary">
                                     Chi tiết <i class="bi bi-arrow-right"></i>
                                 </a>
                             </div>

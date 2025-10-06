@@ -28,23 +28,21 @@
                     @foreach (var app in Model)
                     {
                         <tr>
-                            <td>@app.ApplicationId</td>
-                            <td>@app.FullName</td>
-                            <td>@app.Job?.Title</td>
+                            <td>@app.MaDonUngTuyen</td>
+                            <td>@app.HoTen</td>
+                            <td>@app.CongViec?.TieuDe</td>
                             <td>@app.Email</td>
-                            <td>@app.Phone</td>
-                            <td>@app.AppliedDate.ToString("dd/MM/yyyy")</td>
+                            <td>@app.SoDienThoai</td>
+                            <td>@app.NgayUngTuyen.ToString("dd/MM/yyyy")</td>
                             <td>
-                                <select class="form-select form-select-sm status-select" data-id="@app.ApplicationId">
-                                    <option value="Pending" selected="@(app.Status == "Pending")">Chờ duyệt</option>
-                                    <option value="Reviewed" selected="@(app.Status == "Reviewed")">Đã xem</option>
-                                    <option value="Interview" selected="@(app.Status == "Interview")">Phỏng vấn</option>
-                                    <option value="Accepted" selected="@(app.Status == "Accepted")">Chấp nhận</option>
-                                    <option value="Rejected" selected="@(app.Status == "Rejected")">Từ chối</option>
+                                <select class="form-select form-select-sm status-select" data-id="@app.MaDonUngTuyen">
+                                    <option value="Chờ xem xét" selected="@(app.TrangThai == "Chờ xem xét")">Chờ xem xét</option>
+                                    <option value="Đã phỏng vấn" selected="@(app.TrangThai == "Đã phỏng vấn")">Đã phỏng vấn</option>
+                                    <option value="Đã từ chối" selected="@(app.TrangThai == "Đã từ chối")">Đã từ chối</option>
                                 </select>
                             </td>
                             <td>
-                                <a asp-action="ApplicationDetails" asp-route-id="@app.ApplicationId" class="btn btn-sm btn-primary">
+                                <a asp-action="ApplicationDetails" asp-route-id="@app.MaDonUngTuyen" class="btn btn-sm btn-primary">
                                     <i class="bi bi-eye"></i> Chi tiết
                                 </a>
                             </td>
