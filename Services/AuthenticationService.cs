@@ -33,7 +33,6 @@ namespace RecruitmentSystem.Services
         {
             try
             {
-                // Kiểm tra tên đăng nhập và email đã tồn tại chưa
                 var existingUser = await _context.Users
                     .FirstOrDefaultAsync(u => u.TenDangNhap == user.TenDangNhap || u.Email == user.Email);
                 
@@ -57,7 +56,6 @@ namespace RecruitmentSystem.Services
 
         public Task LogoutAsync()
         {
-            // Đơn giản chỉ cần xóa session
             return Task.CompletedTask;
         }
     }

@@ -32,7 +32,7 @@ namespace RecruitmentSystem.Models
         [Required(ErrorMessage = "Vai trò là bắt buộc")]
         [StringLength(20, ErrorMessage = "Vai trò không được vượt quá 20 ký tự")]
         [Display(Name = "Vai trò")]
-        public string VaiTro { get; set; } = "User"; // Admin, User
+        public string VaiTro { get; set; } = "User";
         
         [Display(Name = "Ngày tạo")]
         public DateTime NgayTao { get; set; } = DateTime.Now;

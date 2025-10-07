@@ -32,7 +32,7 @@ namespace RecruitmentSystem.Models
         [Required(ErrorMessage = "Loại công việc là bắt buộc")]
         [StringLength(50)]
         [Display(Name = "Loại công việc")]
-        public string LoaiCongViec { get; set; } = string.Empty; // Toàn thời gian, Bán thời gian, Hợp đồng
+        public string LoaiCongViec { get; set; } = string.Empty;
 
         [Range(0, double.MaxValue, ErrorMessage = "Mức lương phải lớn hơn 0")]
         [Display(Name = "Lương tối thiểu")]
@@ -65,7 +65,6 @@ namespace RecruitmentSystem.Models
         [Display(Name = "Năm kinh nghiệm")]
         public int NamKinhNghiem { get; set; } = 0;
 
-        // Navigation property
         public virtual ICollection<Application> DonUngTuyen { get; set; } = new List<Application>();
     }
 }

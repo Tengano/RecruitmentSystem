@@ -1,0 +1,445 @@
+@model User
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+    Layout = "_Layout";
+}
+
+<!-- Profile Header -->
+<section class="profile-header">
+    <div class="container">
+        <div class="profile-banner">
+            <div class="profile-info">
+                <div class="profile-avatar">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <div class="profile-details">
+                    <h1 class="profile-name">@Model.HoTen</h1>
+                    <p class="profile-role">@Model.VaiTro</p>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">@ViewBag.TotalApplications</span>
+                            <span class="stat-label">Đơn ứng tuyển</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">@ViewBag.SuccessfulApplications</span>
+                            <span class="stat-label">Thành công</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">@ViewBag.PendingApplications</span>
+                            <span class="stat-label">Đang chờ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <a href="#" class="btn btn-primary">
+                    <i class="bi bi-pencil me-2"></i>Chỉnh sửa hồ sơ
+                </a>
+                <a href="#" class="btn btn-outline-primary">
+                    <i class="bi bi-download me-2"></i>Tải CV
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Content -->
+<section class="profile-content">
+    <div class="container">
+        <div class="row">
+            <!-- Profile Sidebar -->
+            <div class="col-lg-3">
+                <div class="profile-sidebar">
+                    <div class="sidebar-section">
+                        <h5>Thông tin cá nhân</h5>
+                        <ul class="profile-menu">
+                            <li><a href="#personal-info" class="active">Thông tin cơ bản</a></li>
+                            <li><a href="#contact-info">Liên hệ</a></li>
+                            <li><a href="#education">Học vấn</a></li>
+                            <li><a href="#experience">Kinh nghiệm</a></li>
+                            <li><a href="#skills">Kỹ năng</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h5>Hoạt động</h5>
+                        <ul class="profile-menu">
+                            <li><a href="#applications">Đơn ứng tuyển</a></li>
+                            <li><a href="#saved-jobs">Việc làm đã lưu</a></li>
+                            <li><a href="#notifications">Thông báo</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Main Content -->
+            <div class="col-lg-9">
+                <div class="profile-main">
+                    <!-- Personal Information -->
+                    <div class="profile-section" id="personal-info">
+                        <div class="section-header">
+                            <h3>Thông tin cá nhân</h3>
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-pencil me-1"></i>Chỉnh sửa
+                            </button>
+                        </div>
+                        <div class="section-content">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <label>Họ và tên</label>
+                                        <p>@Model.HoTen</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <label>Email</label>
+                                        <p>@Model.Email</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <label>Tên đăng nhập</label>
+                                        <p>@Model.TenDangNhap</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <label>Ngày tạo tài khoản</label>
+                                        <p>@Model.NgayTao.ToString("dd/MM/yyyy")</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <label>Trạng thái</label>
+                                        <p>@(Model.HoatDong ? "Hoạt động" : "Không hoạt động")</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <label>Vai trò</label>
+                                        <p>@Model.VaiTro</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Applications History -->
+                    <div class="profile-section" id="applications">
+                        <div class="section-header">
+                            <h3>Lịch sử ứng tuyển</h3>
+                            <a asp-controller="Jobs" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-plus me-1"></i>Tìm việc mới
+                            </a>
+                        </div>
+                        <div class="section-content">
+                            <div class="applications-list">
+                                @if (ViewBag.RecentApplications != null && ((IEnumerable<Application>)ViewBag.RecentApplications).Any())
+                                {
+                                    @foreach (var app in (IEnumerable<Application>)ViewBag.RecentApplications)
+                                    {
+                                        <div class="application-item">
+                                            <div class="application-info">
+                                                <h5>@app.CongViec?.TieuDe</h5>
+                                                <p class="company-name">@app.CongViec?.CongTy</p>
+                                                <p class="application-date">Ứng tuyển: @app.NgayUngTuyen.ToString("dd/MM/yyyy")</p>
+                                            </div>
+                                            <div class="application-status">
+                                                @if (app.TrangThai == "Chờ xem xét")
+                                                {
+                                                    <span class="status-badge status-pending">@app.TrangThai</span>
+                                                }
+                                                else if (app.TrangThai == "Đã phỏng vấn")
+                                                {
+                                                    <span class="status-badge status-interviewed">@app.TrangThai</span>
+                                                }
+                                                else if (app.TrangThai == "Đã từ chối")
+                                                {
+                                                    <span class="status-badge status-rejected">@app.TrangThai</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="status-badge status-approved">@app.TrangThai</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="empty-state">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                        <h5>Chưa có đơn ứng tuyển nào</h5>
+                                        <p>Bắt đầu tìm kiếm việc làm phù hợp với bạn</p>
+                                        <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary">
+                                            <i class="bi bi-search me-2"></i>Tìm việc ngay
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Profile Styles */
+.profile-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+}
+
+.profile-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.profile-avatar {
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.profile-details h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.profile-role {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.profile-content {
+    padding: 3rem 0;
+    background: #f8f9fa;
+}
+
+.profile-sidebar {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-section h5 {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.profile-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-menu li {
+    margin-bottom: 0.5rem;
+}
+
+.profile-menu a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #6c757d;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.profile-menu a:hover,
+.profile-menu a.active {
+    background: #667eea;
+    color: white;
+}
+
+.profile-main {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section {
+    margin-bottom: 3rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.section-header h3 {
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.info-item {
+    margin-bottom: 1.5rem;
+}
+
+.info-item label {
+    display: block;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.info-item p {
+    color: #6c757d;
+    margin: 0;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+}
+
+.application-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.application-item:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.application-info h5 {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.company-name {
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.application-date {
+    color: #adb5bd;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-interviewed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h5 {
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
+@@media (max-width: 768px) {
+    .profile-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-stats {
+        justify-content: center;
+    }
+    
+    .application-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+</style>

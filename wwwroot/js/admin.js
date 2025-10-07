@@ -1,7 +1,15 @@
 // Admin panel JavaScript
 
-// Highlight current sidebar item
+// Disable counter animations for admin dashboard
 document.addEventListener('DOMContentLoaded', function() {
+    // Disable counter animations
+    const counterElements = document.querySelectorAll('.stat-number, .dashboard-number');
+    counterElements.forEach(element => {
+        element.style.transition = 'none';
+        element.style.animation = 'none';
+    });
+    
+    // Highlight current sidebar item
     const currentPath = window.location.pathname;
     const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
     

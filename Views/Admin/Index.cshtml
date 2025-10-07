@@ -4,119 +4,155 @@
     Layout = "_AdminLayout";
 }
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2"><i class="bi bi-speedometer2 me-2"></i>Dashboard</h1>
+<!-- Dashboard Header -->
+<div class="dashboard-header mb-4">
+    <h1 class="dashboard-title">
+        <i class="bi bi-speedometer2 me-3"></i>Dashboard
+    </h1>
+    <p class="dashboard-subtitle">Tổng quan hệ thống tuyển dụng</p>
 </div>
 
-<div class="row mb-4">
-    <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng số việc làm</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalJobs</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="bi bi-briefcase-fill fa-2x text-gray-300" style="font-size: 2rem; color: #4e73df;"></i>
-                    </div>
-                </div>
+<!-- Stats Cards -->
+<div class="row mb-5">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card stat-card-primary">
+            <div class="stat-icon">
+                <i class="bi bi-briefcase-fill"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number">@ViewBag.TotalJobs</div>
+                <div class="stat-label">TỔNG SỐ VIỆC LÀM</div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Việc làm đang tuyển</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ActiveJobs</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="bi bi-check-circle-fill fa-2x" style="font-size: 2rem; color: #1cc88a;"></i>
-                    </div>
-                </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card stat-card-success">
+            <div class="stat-icon">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number">@ViewBag.ActiveJobs</div>
+                <div class="stat-label">VIỆC LÀM ĐANG TUYỂN</div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tổng đơn ứng tuyển</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalApplications</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="bi bi-file-earmark-text-fill fa-2x" style="font-size: 2rem; color: #36b9cc;"></i>
-                    </div>
-                </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card stat-card-info">
+            <div class="stat-icon">
+                <i class="bi bi-file-earmark-text-fill"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number">@ViewBag.TotalApplications</div>
+                <div class="stat-label">TỔNG ĐƠN ỨNG TUYỂN</div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Đơn chờ duyệt</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.PendingApplications</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="bi bi-hourglass-split fa-2x" style="font-size: 2rem; color: #f6c23e;"></i>
-                    </div>
-                </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card stat-card-warning">
+            <div class="stat-icon">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number">@ViewBag.PendingApplications</div>
+                <div class="stat-label">ĐƠN CHỜ DUYỆT</div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Đơn ứng tuyển gần đây</h6>
+<!-- Recent Applications Section -->
+<div class="recent-applications">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="bi bi-clock-history me-2"></i>Đơn ứng tuyển gần đây
+        </h2>
+        <a asp-controller="Admin" asp-action="Applications" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-right me-1"></i>Xem tất cả
+        </a>
     </div>
-    <div class="card-body">
+
+    <div class="applications-table">
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Ứng viên</th>
-                        <th>Vị trí</th>
-                        <th>Email</th>
-                        <th>Ngày nộp</th>
-                        <th>Trạng thái</th>
-                        <th>Thao tác</th>
+                        <th><i class="bi bi-person me-1"></i>Ứng viên</th>
+                        <th><i class="bi bi-briefcase me-1"></i>Vị trí</th>
+                        <th><i class="bi bi-envelope me-1"></i>Email</th>
+                        <th><i class="bi bi-calendar me-1"></i>Ngày nộp</th>
+                        <th><i class="bi bi-flag me-1"></i>Trạng thái</th>
+                        <th><i class="bi bi-gear me-1"></i>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var app in Model)
                     {
-                        <tr>
-                            <td>@app.HoTen</td>
-                            <td>@app.CongViec?.TieuDe</td>
-                            <td>@app.Email</td>
-                            <td>@app.NgayUngTuyen.ToString("dd/MM/yyyy")</td>
+                        <tr class="application-row">
+                            <td>
+                                <div class="applicant-info">
+                                    <div class="applicant-avatar">
+                                        <i class="bi bi-person-circle"></i>
+                                    </div>
+                                    <div class="applicant-details">
+                                        <div class="applicant-name">@app.HoTen</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="job-position">
+                                    <i class="bi bi-briefcase me-1"></i>@app.CongViec?.TieuDe
+                                </div>
+                            </td>
+                            <td>
+                                <div class="email-info">
+                                    <i class="bi bi-envelope me-1"></i>@app.Email
+                                </div>
+                            </td>
+                            <td>
+                                <div class="date-info">
+                                    <i class="bi bi-calendar me-1"></i>@app.NgayUngTuyen.ToString("dd/MM/yyyy")
+                                </div>
+                            </td>
                             <td>
                                 @if (app.TrangThai == "Chờ xem xét")
                                 {
-                                    <span class="badge bg-warning text-dark">Chờ xem xét</span>
+                                    <span class="status-badge status-pending">
+                                        <i class="bi bi-clock me-1"></i>Chờ xem xét
+                                    </span>
                                 }
                                 else if (app.TrangThai == "Đã phỏng vấn")
                                 {
-                                    <span class="badge bg-primary">Đã phỏng vấn</span>
+                                    <span class="status-badge status-interviewed">
+                                        <i class="bi bi-camera-video me-1"></i>Đã phỏng vấn
+                                    </span>
                                 }
                                 else if (app.TrangThai == "Đã từ chối")
                                 {
-                                    <span class="badge bg-danger">Đã từ chối</span>
+                                    <span class="status-badge status-rejected">
+                                        <i class="bi bi-x-circle me-1"></i>Đã từ chối
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-approved">
+                                        <i class="bi bi-check-circle me-1"></i>@app.TrangThai
+                                    </span>
                                 }
                             </td>
                             <td>
-                                <a asp-action="ApplicationDetails" asp-route-id="@app.MaDonUngTuyen" class="btn btn-sm btn-primary">
-                                    <i class="bi bi-eye"></i>
-                                </a>
+                                <div class="action-buttons">
+                                    <a asp-action="ApplicationDetails" asp-route-id="@app.MaDonUngTuyen" 
+                                       class="btn btn-sm btn-primary action-btn" title="Xem chi tiết">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a asp-action="EditApplication" asp-route-id="@app.MaDonUngTuyen" 
+                                       class="btn btn-sm btn-outline-secondary action-btn" title="Chỉnh sửa">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -126,18 +162,56 @@
     </div>
 </div>
 
-<style>
-    .border-left-primary {
-        border-left: 4px solid #4e73df !important;
-    }
-    .border-left-success {
-        border-left: 4px solid #1cc88a !important;
-    }
-    .border-left-info {
-        border-left: 4px solid #36b9cc !important;
-    }
-    .border-left-warning {
-        border-left: 4px solid #f6c23e !important;
-    }
-</style>
+<!-- Quick Actions -->
+<div class="quick-actions mt-5">
+    <h3 class="section-title mb-4">
+        <i class="bi bi-lightning-charge me-2"></i>Thao tác nhanh
+    </h3>
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <a asp-controller="Admin" asp-action="CreateJob" class="quick-action-card">
+                <div class="quick-action-icon">
+                    <i class="bi bi-plus-circle"></i>
+                </div>
+                <div class="quick-action-content">
+                    <h5>Tạo tin tuyển dụng</h5>
+                    <p>Đăng bài tuyển dụng mới</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a asp-controller="Admin" asp-action="Jobs" class="quick-action-card">
+                <div class="quick-action-icon">
+                    <i class="bi bi-briefcase"></i>
+                </div>
+                <div class="quick-action-content">
+                    <h5>Quản lý việc làm</h5>
+                    <p>Xem và chỉnh sửa việc làm</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a asp-controller="Admin" asp-action="Applications" class="quick-action-card">
+                <div class="quick-action-icon">
+                    <i class="bi bi-file-text"></i>
+                </div>
+                <div class="quick-action-content">
+                    <h5>Đơn ứng tuyển</h5>
+                    <p>Xem và xử lý đơn ứng tuyển</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a asp-controller="Admin" asp-action="Candidates" class="quick-action-card">
+                <div class="quick-action-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="quick-action-content">
+                    <h5>Ứng viên</h5>
+                    <p>Quản lý thông tin ứng viên</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
 

@@ -107,7 +107,7 @@ namespace RecruitmentSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Xử lý tải file (nếu cần)
+
                 if (hoSo != null && hoSo.Length > 0)
                 {
                     var thuMucTaiLen = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "resumes");
@@ -121,7 +121,7 @@ namespace RecruitmentSystem.Controllers
                         await hoSo.CopyToAsync(fileStream);
                     }
 
-                    // Lưu đường dẫn file vào Skills hoặc Experience nếu cần
+
                     donUngTuyen.KyNang += $" | File đính kèm: /uploads/resumes/{tenFileDuyNhat}";
                 }
 
@@ -131,7 +131,7 @@ namespace RecruitmentSystem.Controllers
                 _context.Add(donUngTuyen);
                 await _context.SaveChangesAsync();
 
-                TempData["SuccessMessage"] = "Đã gửi đơn ứng tuyển thành công! Chúng tôi sẽ liên hệ với bạn sớm.";
+                TempData["SuccessMessage"] = "Đã gửi đơn ứng tuyển thành công! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.";
                 return RedirectToAction(nameof(Index));
             }
 

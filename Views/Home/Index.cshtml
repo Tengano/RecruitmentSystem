@@ -4,84 +4,109 @@
 }
 
 <!-- Hero Section -->
-<section class="hero-section bg-primary text-white py-5">
+<section class="hero-section">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <h1 class="display-4 fw-bold mb-3">Tìm công việc mơ ước của bạn</h1>
-                <p class="lead mb-4">Khám phá hàng ngàn cơ hội việc làm từ các công ty hàng đầu Việt Nam</p>
-                <a asp-controller="Jobs" asp-action="Index" class="btn btn-light btn-lg px-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="hero-content">
+                    <h1 class="hero-title">Tìm việc làm, tuyển dụng hiệu quả</h1>
+                    <p class="hero-subtitle">Tuyển dụng Dynamic - Nền tảng tuyển dụng hàng đầu Việt Nam</p>
+                    <div class="hero-cta">
+                        <a asp-controller="Jobs" asp-action="Index" class="btn-hero btn-hero-primary">
                     <i class="bi bi-search me-2"></i>Tìm việc ngay
                 </a>
+                        <a asp-controller="Account" asp-action="Register" class="btn-hero btn-hero-secondary">
+                            <i class="bi bi-person-plus me-2"></i>Đăng ký miễn phí
+                        </a>
+                    </div>
             </div>
-            <div class="col-lg-6">
-                <img src="https://illustrations.popsy.co/amber/remote-work.svg" alt="Hero" class="img-fluid" />
             </div>
         </div>
     </div>
 </section>
 
 <!-- Search Section -->
-<section class="search-section py-4 bg-light">
+<section class="search-section">
     <div class="container">
-        <form asp-controller="Jobs" asp-action="Index" method="get" class="row g-3">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control" name="search" placeholder="Từ khóa, công ty...">
+        <div class="search-form">
+            <form asp-controller="Jobs" asp-action="Index" method="get">
+                <div class="search-input-group">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text" class="search-input" name="timKiem" placeholder="Từ khóa, công ty, vị trí...">
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                    <input type="text" class="form-control" name="location" placeholder="Địa điểm">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <select class="form-select" name="category">
+                <div class="search-filters">
+                    <select class="filter-select" name="danhMuc">
                     <option value="">Tất cả ngành nghề</option>
-                    <option>Công nghệ thông tin</option>
-                    <option>Kinh doanh</option>
-                    <option>Marketing</option>
-                    <option>Thiết kế</option>
+                        <option value="Công nghệ thông tin">Công nghệ thông tin</option>
+                        <option value="Kinh doanh">Kinh doanh</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Thiết kế">Thiết kế</option>
+                        <option value="Nhân sự">Nhân sự</option>
+                        <option value="Kế toán">Kế toán</option>
+                        <option value="Tài chính">Tài chính</option>
+                    </select>
+                    <select class="filter-select" name="diaDiem">
+                        <option value="">Tất cả địa điểm</option>
+                        <option value="Hà Nội">Hà Nội</option>
+                        <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                        <option value="Đà Nẵng">Đà Nẵng</option>
+                        <option value="Hải Phòng">Hải Phòng</option>
+                        <option value="Cần Thơ">Cần Thơ</option>
+                    </select>
+                    <select class="filter-select" name="loaiCongViec">
+                        <option value="">Tất cả loại hình</option>
+                        <option value="Toàn thời gian">Toàn thời gian</option>
+                        <option value="Bán thời gian">Bán thời gian</option>
+                        <option value="Hợp đồng">Hợp đồng</option>
+                        <option value="Thực tập">Thực tập</option>
                 </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+                    <button type="submit" class="btn-hero btn-hero-primary w-100">
+                        <i class="bi bi-search me-2"></i>Tìm kiếm
+                    </button>
             </div>
         </form>
+            </div>
     </div>
 </section>
 
 <!-- Stats Section -->
-<section class="stats-section py-5">
+<section class="stats-section">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-md-4 mb-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <i class="bi bi-briefcase-fill text-primary" style="font-size: 3rem;"></i>
-                        <h3 class="mt-3 fw-bold">@ViewBag.TotalJobs</h3>
-                        <p class="text-muted">Việc làm đang tuyển</p>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-briefcase-fill"></i>
                     </div>
+                    <div class="stat-number">@ViewBag.TotalJobs</div>
+                    <div class="stat-label">Việc làm đang tuyển</div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <i class="bi bi-building text-success" style="font-size: 3rem;"></i>
-                        <h3 class="mt-3 fw-bold">500+</h3>
-                        <p class="text-muted">Công ty uy tín</p>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Công ty uy tín</div>
                     </div>
                 </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-people-fill"></i>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <i class="bi bi-people-fill text-info" style="font-size: 3rem;"></i>
-                        <h3 class="mt-3 fw-bold">@ViewBag.TotalCandidates</h3>
-                        <p class="text-muted">Ứng viên đã đăng ký</p>
+                    <div class="stat-number">@ViewBag.TotalCandidates</div>
+                    <div class="stat-label">Ứng viên đã đăng ký</div>
                     </div>
+                </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+            </div>
+                    <div class="stat-number">@ViewBag.TotalApplications</div>
+                    <div class="stat-label">Đơn ứng tuyển</div>
                 </div>
             </div>
         </div>
@@ -89,50 +114,57 @@
 </section>
 
 <!-- Featured Jobs Section -->
-<section class="featured-jobs py-5 bg-light">
+<section class="featured-jobs">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Việc làm nổi bật</h2>
-            <p class="text-muted">Khám phá các cơ hội việc làm mới nhất</p>
+        <div class="section-title">
+            <h2>Việc làm nổi bật</h2>
+            <p>Khám phá các cơ hội việc làm mới nhất từ các công ty hàng đầu</p>
         </div>
         <div class="row">
             @foreach (var job in Model)
             {
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 shadow-sm border-0 hover-shadow">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <h5 class="card-title fw-bold mb-0">@job.TieuDe</h5>
+                    <div class="job-card slide-up">
+                        <div class="job-header">
+                            <div>
+                                <a asp-controller="Jobs" asp-action="Details" asp-route-id="@job.MaCongViec" class="job-title">
+                                    @job.TieuDe
+                                </a>
+                                <div class="job-company">
+                                    <i class="bi bi-building me-1"></i>@job.CongTy
+                                </div>
+                                <div class="job-location">
+                                    <i class="bi bi-geo-alt me-1"></i>@job.DiaDiem
+                                </div>
+                            </div>
                                 <span class="badge bg-primary">@job.LoaiCongViec</span>
                             </div>
-                            <p class="text-muted mb-2">
-                                <i class="bi bi-building me-1"></i>@job.CongTy
-                            </p>
-                            <p class="text-muted mb-2">
-                                <i class="bi bi-geo-alt me-1"></i>@job.DiaDiem
-                            </p>
+                        
                             @if (job.LuongToiThieu.HasValue && job.LuongToiDa.HasValue)
                             {
-                                <p class="text-success fw-semibold mb-3">
+                            <div class="job-salary">
                                     <i class="bi bi-cash me-1"></i>@job.LuongToiThieu.Value.ToString("N0") - @job.LuongToiDa.Value.ToString("N0") VNĐ
-                                </p>
-                            }
-                            <p class="card-text text-muted small">@job.MoTa.Substring(0, Math.Min(100, job.MoTa.Length))...</p>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <small class="text-muted">
-                                    <i class="bi bi-clock me-1"></i>@job.NgayDang.ToString("dd/MM/yyyy")
-                                </small>
-                                <a asp-controller="Jobs" asp-action="Details" asp-route-id="@job.MaCongViec" class="btn btn-sm btn-outline-primary">
-                                    Chi tiết <i class="bi bi-arrow-right"></i>
-                                </a>
                             </div>
+                        }
+                        
+                        <div class="job-description">
+                            @(job.MoTa.Length > 120 ? job.MoTa.Substring(0, 120) + "..." : job.MoTa)
+                        </div>
+                        
+                        <div class="job-footer">
+                            <div class="job-date">
+                                    <i class="bi bi-clock me-1"></i>@job.NgayDang.ToString("dd/MM/yyyy")
+                            </div>
+                            <a asp-controller="Jobs" asp-action="Details" asp-route-id="@job.MaCongViec" class="job-apply">
+                                Xem chi tiết
+                            </a>
                         </div>
                     </div>
                 </div>
             }
         </div>
         <div class="text-center mt-4">
-            <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary btn-lg">
+            <a asp-controller="Jobs" asp-action="Index" class="btn-hero btn-hero-primary">
                 Xem tất cả việc làm <i class="bi bi-arrow-right ms-2"></i>
             </a>
         </div>
@@ -140,52 +172,347 @@
 </section>
 
 <!-- How it works Section -->
-<section class="how-it-works py-5">
+<section class="how-it-works">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Cách thức hoạt động</h2>
-            <p class="text-muted">Quy trình tuyển dụng đơn giản và hiệu quả</p>
+        <div class="section-title">
+            <h2>Cách thức hoạt động</h2>
+            <p>Quy trình tuyển dụng đơn giản và hiệu quả</p>
         </div>
         <div class="row">
-            <div class="col-md-4 text-center mb-4">
-                <div class="mb-3">
-                    <i class="bi bi-search text-primary" style="font-size: 4rem;"></i>
+            <div class="col-md-4 mb-4">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <h4 class="step-title">1. Tìm kiếm việc làm</h4>
+                    <p class="step-description">Tìm kiếm công việc phù hợp với kỹ năng và mong muốn của bạn từ hàng ngàn tin tuyển dụng</p>
                 </div>
-                <h4 class="fw-bold">1. Tìm kiếm việc làm</h4>
-                <p class="text-muted">Tìm kiếm công việc phù hợp với kỹ năng và mong muốn của bạn</p>
             </div>
-            <div class="col-md-4 text-center mb-4">
-                <div class="mb-3">
-                    <i class="bi bi-file-earmark-text text-primary" style="font-size: 4rem;"></i>
+            <div class="col-md-4 mb-4">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+                    <h4 class="step-title">2. Nộp hồ sơ</h4>
+                    <p class="step-description">Gửi CV và thư xin việc trực tuyến chỉ trong vài phút với công cụ tạo CV thông minh</p>
                 </div>
-                <h4 class="fw-bold">2. Nộp hồ sơ</h4>
-                <p class="text-muted">Gửi CV và thư xin việc trực tuyến chỉ trong vài phút</p>
             </div>
-            <div class="col-md-4 text-center mb-4">
-                <div class="mb-3">
-                    <i class="bi bi-check-circle text-primary" style="font-size: 4rem;"></i>
+            <div class="col-md-4 mb-4">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <h4 class="step-title">3. Nhận việc</h4>
+                    <p class="step-description">Chờ phản hồi từ nhà tuyển dụng và bắt đầu công việc mơ ước của bạn</p>
                 </div>
-                <h4 class="fw-bold">3. Nhận việc</h4>
-                <p class="text-muted">Chờ phản hồi và bắt đầu công việc mơ ước của bạn</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Company Showcase Section -->
+<section class="company-showcase">
+    <div class="container">
+        <div class="section-title">
+            <h2>Công ty hàng đầu</h2>
+            <p>Khám phá các công ty uy tín đang tuyển dụng</p>
+        </div>
+        <div class="company-grid">
+            <div class="company-card">
+                <div class="company-logo">
+                    <i class="bi bi-laptop"></i>
+                </div>
+                <h4>FPT Software</h4>
+                <p class="company-jobs">15 việc làm</p>
+                <div class="company-rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <span>4.8</span>
+                </div>
+            </div>
+            <div class="company-card">
+                <div class="company-logo">
+                    <i class="bi bi-phone"></i>
+                </div>
+                <h4>Viettel Group</h4>
+                <p class="company-jobs">23 việc làm</p>
+                <div class="company-rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <span>4.9</span>
+                </div>
+            </div>
+            <div class="company-card">
+                <div class="company-logo">
+                    <i class="bi bi-building"></i>
+                </div>
+                <h4>Vingroup</h4>
+                <p class="company-jobs">31 việc làm</p>
+                <div class="company-rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                    <span>4.7</span>
+                </div>
+            </div>
+            <div class="company-card">
+                <div class="company-logo">
+                    <i class="bi bi-cpu"></i>
+                </div>
+                <h4>Samsung</h4>
+                <p class="company-jobs">18 việc làm</p>
+                <div class="company-rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <span>4.8</span>
+                </div>
+            </div>
+            <div class="company-card">
+                <div class="company-logo">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h4>Grab</h4>
+                <p class="company-jobs">12 việc làm</p>
+                <div class="company-rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star"></i>
+                    <span>4.6</span>
+                </div>
+            </div>
+            <div class="company-card">
+                <div class="company-logo">
+                    <i class="bi bi-shop"></i>
+                </div>
+                <h4>Shopee</h4>
+                <p class="company-jobs">27 việc làm</p>
+                <div class="company-rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <span>4.7</span>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="#" class="btn-hero btn-hero-primary">
+                Xem tất cả công ty <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Job Categories Section -->
+<section class="job-categories">
+    <div class="container">
+        <div class="section-title">
+            <h2>Ngành nghề phổ biến</h2>
+            <p>Tìm kiếm việc làm theo ngành nghề yêu thích</p>
+        </div>
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="bi bi-laptop"></i>
+                </div>
+                <h4>Công nghệ thông tin</h4>
+                <p class="category-count">1,234 việc làm</p>
+                <div class="category-trend">
+                    <i class="bi bi-arrow-up text-success"></i>
+                    <span>+15%</span>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+                <h4>Marketing</h4>
+                <p class="category-count">856 việc làm</p>
+                <div class="category-trend">
+                    <i class="bi bi-arrow-up text-success"></i>
+                    <span>+8%</span>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="bi bi-calculator"></i>
+                </div>
+                <h4>Kế toán</h4>
+                <p class="category-count">642 việc làm</p>
+                <div class="category-trend">
+                    <i class="bi bi-arrow-up text-success"></i>
+                    <span>+12%</span>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h4>Nhân sự</h4>
+                <p class="category-count">423 việc làm</p>
+                <div class="category-trend">
+                    <i class="bi bi-arrow-up text-success"></i>
+                    <span>+6%</span>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="bi bi-palette"></i>
+                </div>
+                <h4>Thiết kế</h4>
+                <p class="category-count">567 việc làm</p>
+                <div class="category-trend">
+                    <i class="bi bi-arrow-up text-success"></i>
+                    <span>+20%</span>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="bi bi-cart"></i>
+                </div>
+                <h4>Bán hàng</h4>
+                <p class="category-count">789 việc làm</p>
+                <div class="category-trend">
+                    <i class="bi bi-arrow-up text-success"></i>
+                    <span>+10%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Dashboard -->
+<section class="stats-dashboard">
+    <div class="container">
+        <div class="section-title">
+            <h2>Thống kê thị trường việc làm</h2>
+            <p>Dữ liệu cập nhật theo thời gian thực</p>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="dashboard-header">
+                    <h4>Việc làm mới hôm nay</h4>
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="dashboard-number">127</div>
+                <div class="dashboard-trend positive">
+                    <i class="bi bi-arrow-up"></i>
+                    <span>+12% so với hôm qua</span>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="dashboard-header">
+                    <h4>Ứng viên đang tìm việc</h4>
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="dashboard-number">2,456</div>
+                <div class="dashboard-trend positive">
+                    <i class="bi bi-arrow-up"></i>
+                    <span>+5% so với tuần trước</span>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="dashboard-header">
+                    <h4>Tỷ lệ ứng tuyển thành công</h4>
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="dashboard-number">68%</div>
+                <div class="dashboard-trend positive">
+                    <i class="bi bi-arrow-up"></i>
+                    <span>+3% so với tháng trước</span>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="dashboard-header">
+                    <h4>Mức lương trung bình</h4>
+                    <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="dashboard-number">15.2M</div>
+                <div class="dashboard-trend positive">
+                    <i class="bi bi-arrow-up"></i>
+                    <span>+8% so với quý trước</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="featured-jobs" style="background-color: var(--light-color);">
+    <div class="container">
+        <div class="section-title">
+            <h2>Tại sao chọn chúng tôi?</h2>
+            <p>Những lợi ích vượt trội khi sử dụng nền tảng tuyển dụng của chúng tôi</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h4 class="step-title">An toàn & Bảo mật</h4>
+                    <p class="step-description">Thông tin cá nhân được bảo mật tuyệt đối, chống lừa đảo và tin tuyển dụng giả mạo</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-lightning-charge"></i>
+                </div>
+                    <h4 class="step-title">Nhanh chóng & Hiệu quả</h4>
+                    <p class="step-description">Tìm việc và ứng tuyển nhanh chóng với công nghệ AI thông minh</p>
+            </div>
+                </div>
+            <div class="col-md-4 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-headset"></i>
+            </div>
+                    <h4 class="step-title">Hỗ trợ 24/7</h4>
+                    <p class="step-description">Đội ngũ hỗ trợ chuyên nghiệp luôn sẵn sàng giúp đỡ bạn mọi lúc</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 @section Scripts {
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <style>
+        /* Additional custom styles if needed */
         .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
         }
         
-        .hover-shadow {
+        .search-section {
+            margin-top: -3rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .job-card {
             transition: all 0.3s ease;
         }
         
-        .hover-shadow:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+        .job-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         }
     </style>
 }
-

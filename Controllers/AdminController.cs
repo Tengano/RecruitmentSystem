@@ -36,19 +36,45 @@ namespace RecruitmentSystem.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewBag.TotalJobs = await _context.Jobs.CountAsync();
-            ViewBag.ActiveJobs = await _context.Jobs.Where(j => j.HoatDong).CountAsync();
-            ViewBag.TotalApplications = await _context.Applications.CountAsync();
-            ViewBag.PendingApplications = await _context.Applications.Where(a => a.TrangThai == "Chờ xem xét").CountAsync();
-            ViewBag.TotalCandidates = await _context.Candidates.CountAsync();
+            try
+            {
+                // Đếm số liệu một cách an toàn
+                ViewBag.TotalJobs = await _context.Jobs.CountAsync();
+                ViewBag.ActiveJobs = await _context.Jobs.Where(j => j.HoatDong == true).CountAsync();
+                ViewBag.TotalApplications = await _context.Applications.CountAsync();
+                ViewBag.PendingApplications = await _context.Applications.Where(a => a.TrangThai == "Chờ xem xét").CountAsync();
+                ViewBag.TotalCandidates = await _context.Candidates.CountAsync();
 
-            var donUngTuyenGanDay = await _context.Applications
-                .Include(a => a.CongViec)
-                .OrderByDescending(a => a.NgayUngTuyen)
-                .Take(10)
-                .ToListAsync();
+                // Lấy đơn ứng tuyển gần đây với kiểm tra null
+                var donUngTuyenGanDay = await _context.Applications
+                    .Include(a => a.CongViec)
+                    .Where(a => a.CongViec != null) // Chỉ lấy những đơn có job còn tồn tại
+                    .OrderByDescending(a => a.NgayUngTuyen)
+                    .Take(10)
+                    .ToListAsync();
 
-            return View(donUngTuyenGanDay);
+                // Chỉ hiển thị banner chào mừng nếu không có message nào khác
+                if (TempData["SuccessMessage"] == null && TempData["ErrorMessage"] == null)
+                {
+                    TempData["SuccessMessage"] = "Chào mừng Quản trị viên hệ thống! Chúc bạn một ngày làm việc hiệu quả!";
+                }
+
+                return View(donUngTuyenGanDay);
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi và hiển thị thông báo
+                TempData["ErrorMessage"] = $"Lỗi khi tải dữ liệu dashboard: {ex.Message}";
+                
+                // Trả về giá trị mặc định
+                ViewBag.TotalJobs = 0;
+                ViewBag.ActiveJobs = 0;
+                ViewBag.TotalApplications = 0;
+                ViewBag.PendingApplications = 0;
+                ViewBag.TotalCandidates = 0;
+
+                return View(new List<Application>());
+            }
         }
 
         // Jobs Management
@@ -153,12 +179,35 @@ namespace RecruitmentSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteJobConfirmed(int id)
         {
-            var congViec = await _context.Jobs.FindAsync(id);
-            if (congViec != null)
+            try
             {
-                _context.Jobs.Remove(congViec);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Xóa tin tuyển dụng thành công!";
+                var congViec = await _context.Jobs.FindAsync(id);
+                if (congViec != null)
+                {
+                    // Kiểm tra xem có đơn ứng tuyển nào liên quan không
+                    var relatedApplications = await _context.Applications
+                        .Where(a => a.MaCongViec == id)
+                        .ToListAsync();
+
+                    if (relatedApplications.Any())
+                    {
+                        // Xóa các đơn ứng tuyển liên quan trước
+                        _context.Applications.RemoveRange(relatedApplications);
+                    }
+
+                    // Sau đó xóa job
+                    _context.Jobs.Remove(congViec);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Xóa tin tuyển dụng thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy tin tuyển dụng!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi khi xóa tin tuyển dụng: {ex.Message}";
             }
 
             return RedirectToAction(nameof(Jobs));
@@ -167,11 +216,20 @@ namespace RecruitmentSystem.Controllers
         // Applications Management
         public async Task<IActionResult> Applications()
         {
-            var donUngTuyen = await _context.Applications
-                .Include(a => a.CongViec)
-                .OrderByDescending(a => a.NgayUngTuyen)
-                .ToListAsync();
-            return View(donUngTuyen);
+            try
+            {
+                var donUngTuyen = await _context.Applications
+                    .Include(a => a.CongViec)
+                    .Where(a => a.CongViec != null) // Chỉ lấy những đơn có job còn tồn tại
+                    .OrderByDescending(a => a.NgayUngTuyen)
+                    .ToListAsync();
+                return View(donUngTuyen);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi khi tải danh sách đơn ứng tuyển: {ex.Message}";
+                return View(new List<Application>());
+            }
         }
 
         // GET: Admin/ApplicationDetails/5

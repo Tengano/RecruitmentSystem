@@ -56,7 +56,7 @@ namespace RecruitmentSystem.Models
 
         [StringLength(50)]
         [Display(Name = "Trạng thái")]
-        public string TrangThai { get; set; } = "Chờ xem xét"; // Chờ xem xét, Đã phỏng vấn, Đã từ chối
+        public string TrangThai { get; set; } = "Chờ xem xét";
 
         // Navigation property
         [ForeignKey("MaCongViec")]
