@@ -15,6 +15,7 @@ namespace RecruitmentSystem.Data
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Candidate> Candidates { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -109,6 +110,22 @@ namespace RecruitmentSystem.Data
                 entity.HasIndex(e => e.MaCongViec);
                 entity.HasIndex(e => e.TrangThai);
                 entity.HasIndex(e => e.NgayUngTuyen);
+            });
+
+            // Cấu hình cho bảng Contact -> LienHe
+            modelBuilder.Entity<Contact>(entity =>
+            {
+                entity.ToTable("LienHe");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.HoTen).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.SoDienThoai).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.NoiDung).IsRequired().HasMaxLength(1000);
+                entity.Property(e => e.NgayGui).HasDefaultValueSql("GETDATE()");
+
+                // Tạo index
+                entity.HasIndex(e => e.Email);
+                entity.HasIndex(e => e.NgayGui);
             });
         }
     }

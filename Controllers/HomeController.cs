@@ -37,9 +37,40 @@ namespace RecruitmentSystem.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Contact()
         {
-            return View();
+            return View(new Contact());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact(Contact model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Lưu vào database
+                    _context.Contacts.Add(model);
+                    await _context.SaveChangesAsync();
+                    
+                    // Log thông tin liên hệ
+                    _logger.LogInformation($"Liên hệ mới từ: {model.HoTen} ({model.Email}) - {model.SoDienThoai}");
+                    _logger.LogInformation($"Nội dung: {model.NoiDung}");
+                    
+                    TempData["SuccessMessage"] = "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.";
+                    return RedirectToAction(nameof(Contact));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Lỗi khi lưu thông tin liên hệ");
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi gửi thông tin liên hệ. Vui lòng thử lại sau.";
+                    return View(model);
+                }
+            }
+            
+            return View(model);
         }
 
         public IActionResult AnimationDemo()

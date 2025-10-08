@@ -220,8 +220,8 @@ namespace RecruitmentSystem.Controllers
             {
                 var donUngTuyen = await _context.Applications
                     .Include(a => a.CongViec)
-                    .Where(a => a.CongViec != null) // Chỉ lấy những đơn có job còn tồn tại
-                    .OrderByDescending(a => a.NgayUngTuyen)
+                    .Where(a => a.CongViec != null)
+                    .OrderBy(a => a.MaDonUngTuyen)
                     .ToListAsync();
                 return View(donUngTuyen);
             }
@@ -270,7 +270,7 @@ namespace RecruitmentSystem.Controllers
         public async Task<IActionResult> Candidates()
         {
             var ungVien = await _context.Candidates
-                .OrderByDescending(c => c.NgayTao)
+                .OrderBy(c => c.MaUngVien)
                 .ToListAsync();
             return View(ungVien);
         }

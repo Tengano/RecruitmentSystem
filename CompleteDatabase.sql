@@ -114,6 +114,16 @@ CREATE TABLE DonUngTuyen (
     FOREIGN KEY (MaCongViec) REFERENCES CongViec(MaCongViec) ON DELETE CASCADE
 );
 
+-- Bảng LienHe (Contact)
+CREATE TABLE LienHe (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    HoTen NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL,
+    SoDienThoai NVARCHAR(20) NOT NULL,
+    NoiDung NVARCHAR(1000) NOT NULL,
+    NgayGui DATETIME NOT NULL DEFAULT GETDATE()
+);
+
 -- =============================================
 -- PHẦN 4: CHÈN DỮ LIỆU MẪU
 -- =============================================
@@ -198,6 +208,8 @@ CREATE INDEX IX_DonUngTuyen_TrangThai ON DonUngTuyen(TrangThai);
 CREATE INDEX IX_DonUngTuyen_NgayUngTuyen ON DonUngTuyen(NgayUngTuyen);
 CREATE INDEX IX_UngVien_Email ON UngVien(Email);
 CREATE INDEX IX_UngVien_NgayTao ON UngVien(NgayTao);
+CREATE INDEX IX_LienHe_Email ON LienHe(Email);
+CREATE INDEX IX_LienHe_NgayGui ON LienHe(NgayGui);
 GO
 
 -- =============================================
@@ -232,6 +244,15 @@ SELECT
     COUNT(CASE WHEN HoatDong = 1 THEN 1 END) as NguoiDungHoatDong,
     COUNT(CASE WHEN NgayTao >= DATEADD(day, -30, GETDATE()) THEN 1 END) as NguoiDungMoiTrong30Ngay
 FROM NguoiDung;
+GO
+
+CREATE VIEW ThongKeLienHe AS
+SELECT 
+    COUNT(*) as TongLienHe,
+    COUNT(CASE WHEN NgayGui >= DATEADD(day, -7, GETDATE()) THEN 1 END) as LienHeTrong7Ngay,
+    COUNT(CASE WHEN NgayGui >= DATEADD(day, -30, GETDATE()) THEN 1 END) as LienHeTrong30Ngay,
+    COUNT(DISTINCT Email) as SoEmailKhongTrung
+FROM LienHe;
 GO
 
 -- =============================================
@@ -360,65 +381,231 @@ ALTER ROLE db_ddladmin ADD MEMBER HeThongTuyenDung_App;
 GO
 
 -- =============================================
--- PHẦN 10: KIỂM TRA VÀ HOÀN THÀNH
+-- PHẦN 10: ĐỒNG BỘ DỮ LIỆU UNGVIEN VÀ DONUNGTUYEN
 -- =============================================
 
--- Kiểm tra các bảng đã tạo
-PRINT '=============================================';
-PRINT 'KIỂM TRA CÁC BẢNG ĐÃ TẠO:';
-SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_NAME;
-
--- Kiểm tra số lượng dữ liệu
-PRINT 'SỐ LƯỢNG DỮ LIỆU:';
-SELECT 'NguoiDung' as Bang, COUNT(*) as SoLuong FROM NguoiDung
-UNION ALL SELECT 'CongViec', COUNT(*) FROM CongViec
-UNION ALL SELECT 'UngVien', COUNT(*) FROM UngVien
-UNION ALL SELECT 'DonUngTuyen', COUNT(*) FROM DonUngTuyen;
-
--- Kiểm tra admin
-PRINT 'TÀI KHOẢN ADMIN:';
-SELECT TenDangNhap, Email, HoTen, VaiTro FROM NguoiDung WHERE VaiTro = 'Admin';
-
--- Kiểm tra thống kê
-PRINT 'THỐNG KÊ TỔNG QUAN:';
-EXEC LayThongKeTongQuan;
-
-PRINT '=============================================';
-PRINT 'ĐÃ TẠO THÀNH CÔNG DATABASE HeThongTuyenDung (PHIÊN BẢN TIẾNG VIỆT)';
-PRINT '=============================================';
-PRINT 'THÔNG TIN ĐĂNG NHẬP ADMIN:';
-PRINT 'Tên đăng nhập: admin';
-PRINT 'Mật khẩu: admin123';
-PRINT '=============================================';
-PRINT 'CÁC BẢNG ĐÃ TẠO:';
-PRINT '- NguoiDung (Người dùng)';
-PRINT '- CongViec (Công việc)';
-PRINT '- UngVien (Ứng viên)';
-PRINT '- DonUngTuyen (Đơn ứng tuyển)';
-PRINT '=============================================';
-PRINT 'DỮ LIỆU MẪU:';
-PRINT '- 3 người dùng (1 admin, 2 user)';
-PRINT '- 8 công việc đa dạng';
-PRINT '- 8 ứng viên';
-PRINT '- 8 đơn ứng tuyển';
-PRINT '=============================================';
-PRINT 'STORED PROCEDURES:';
-PRINT '- TimKiemCongViec: Tìm kiếm công việc nâng cao';
-PRINT '- DangNhap: Đăng nhập người dùng';
-PRINT '- CapNhatTrangThaiUngTuyen: Cập nhật trạng thái ứng tuyển';
-PRINT '- LayThongKeTongQuan: Lấy thống kê tổng quan';
-PRINT '- LayCongViecNoiBat: Lấy công việc nổi bật';
-PRINT '=============================================';
-PRINT 'VIEWS:';
-PRINT '- ThongKeCongViec: Thống kê công việc';
-PRINT '- ThongKeUngTuyen: Thống kê ứng tuyển';
-PRINT '- ThongKeNguoiDung: Thống kê người dùng';
-PRINT '=============================================';
-PRINT 'TÍNH NĂNG ĐẶC BIỆT:';
-PRINT '- Hỗ trợ tìm kiếm nâng cao theo nhiều tiêu chí';
-PRINT '- Thống kê chi tiết và real-time';
-PRINT '- Trigger tự động log các thay đổi';
-PRINT '- Index tối ưu hiệu suất truy vấn';
-PRINT '- Collation tiếng Việt hỗ trợ tìm kiếm tiếng Việt';
-PRINT '=============================================';
+-- Stored Procedure: Đồng bộ ứng viên từ đơn ứng tuyển
+CREATE PROCEDURE DongBoUngVienTuDonUngTuyen
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    -- Thêm ứng viên mới từ đơn ứng tuyển (chỉ những ứng viên chưa tồn tại)
+    INSERT INTO UngVien (HoTen, Email, SoDienThoai, DiaChi, NgaySinh, GioiTinh, TrinhDoHocVan, KinhNghiem, KyNang, NgayTao)
+    SELECT DISTINCT 
+        d.HoTen, 
+        d.Email, 
+        d.SoDienThoai, 
+        d.DiaChi, 
+        d.NgaySinh, 
+        d.GioiTinh, 
+        d.TrinhDoHocVan, 
+        d.KinhNghiem, 
+        d.KyNang,
+        d.NgayUngTuyen -- Sử dụng ngày ứng tuyển làm ngày tạo
+    FROM DonUngTuyen d
+    WHERE NOT EXISTS (
+        SELECT 1 FROM UngVien u 
+        WHERE u.Email = d.Email
+    );
+    
+    PRINT 'Đã đồng bộ ứng viên từ đơn ứng tuyển thành công!';
+END
 GO
+
+-- Stored Procedure: Cập nhật thông tin ứng viên từ đơn ứng tuyển mới nhất
+CREATE PROCEDURE CapNhatThongTinUngVien
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    -- Cập nhật thông tin ứng viên từ đơn ứng tuyển mới nhất của họ
+    UPDATE u
+    SET 
+        HoTen = d.HoTen,
+        SoDienThoai = d.SoDienThoai,
+        DiaChi = d.DiaChi,
+        NgaySinh = d.NgaySinh,
+        GioiTinh = d.GioiTinh,
+        TrinhDoHocVan = d.TrinhDoHocVan,
+        KinhNghiem = d.KinhNghiem,
+        KyNang = d.KyNang
+    FROM UngVien u
+    INNER JOIN (
+        SELECT 
+            Email,
+            HoTen,
+            SoDienThoai,
+            DiaChi,
+            NgaySinh,
+            GioiTinh,
+            TrinhDoHocVan,
+            KinhNghiem,
+            KyNang,
+            ROW_NUMBER() OVER (PARTITION BY Email ORDER BY NgayUngTuyen DESC) as rn
+        FROM DonUngTuyen
+    ) d ON u.Email = d.Email AND d.rn = 1;
+    
+    PRINT 'Đã cập nhật thông tin ứng viên từ đơn ứng tuyển mới nhất!';
+END
+GO
+
+-- Stored Procedure: Đồng bộ hoàn toàn giữa UngVien và DonUngTuyen
+CREATE PROCEDURE DongBoHoanToanUngVienDonUngTuyen
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRANSACTION;
+    
+    TRY
+        -- Bước 1: Đồng bộ ứng viên từ đơn ứng tuyển
+        EXEC DongBoUngVienTuDonUngTuyen;
+        
+        -- Bước 2: Cập nhật thông tin ứng viên
+        EXEC CapNhatThongTinUngVien;
+        
+        -- Bước 3: Xóa ứng viên không còn đơn ứng tuyển nào (tùy chọn)
+        -- UNCOMMENT dòng dưới nếu muốn xóa ứng viên không có đơn ứng tuyển
+        -- DELETE FROM UngVien WHERE Email NOT IN (SELECT DISTINCT Email FROM DonUngTuyen);
+        
+        COMMIT TRANSACTION;
+        PRINT 'Đồng bộ hoàn toàn thành công!';
+        
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        PRINT 'Lỗi khi đồng bộ: ' + ERROR_MESSAGE();
+        THROW;
+    END CATCH
+END
+GO
+
+-- Trigger: Tự động đồng bộ khi có đơn ứng tuyển mới
+CREATE TRIGGER TR_DongBoUngVien_Insert
+ON DonUngTuyen
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    -- Chỉ đồng bộ nếu có đơn ứng tuyển mới
+    IF EXISTS (SELECT 1 FROM inserted)
+    BEGIN
+        -- Thêm ứng viên mới nếu chưa tồn tại
+        INSERT INTO UngVien (HoTen, Email, SoDienThoai, DiaChi, NgaySinh, GioiTinh, TrinhDoHocVan, KinhNghiem, KyNang, NgayTao)
+        SELECT DISTINCT 
+            i.HoTen, 
+            i.Email, 
+            i.SoDienThoai, 
+            i.DiaChi, 
+            i.NgaySinh, 
+            i.GioiTinh, 
+            i.TrinhDoHocVan, 
+            i.KinhNghiem, 
+            i.KyNang,
+            i.NgayUngTuyen
+        FROM inserted i
+        WHERE NOT EXISTS (
+            SELECT 1 FROM UngVien u 
+            WHERE u.Email = i.Email
+        );
+        
+        PRINT 'Đã tự động thêm ứng viên mới từ đơn ứng tuyển!';
+    END
+END
+GO
+
+-- Trigger: Cập nhật thông tin ứng viên khi đơn ứng tuyển được cập nhật
+CREATE TRIGGER TR_DongBoUngVien_Update
+ON DonUngTuyen
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    -- Cập nhật thông tin ứng viên từ đơn ứng tuyển mới nhất
+    UPDATE u
+    SET 
+        HoTen = d.HoTen,
+        SoDienThoai = d.SoDienThoai,
+        DiaChi = d.DiaChi,
+        NgaySinh = d.NgaySinh,
+        GioiTinh = d.GioiTinh,
+        TrinhDoHocVan = d.TrinhDoHocVan,
+        KinhNghiem = d.KinhNghiem,
+        KyNang = d.KyNang
+    FROM UngVien u
+    INNER JOIN (
+        SELECT 
+            Email,
+            HoTen,
+            SoDienThoai,
+            DiaChi,
+            NgaySinh,
+            GioiTinh,
+            TrinhDoHocVan,
+            KinhNghiem,
+            KyNang,
+            ROW_NUMBER() OVER (PARTITION BY Email ORDER BY NgayUngTuyen DESC) as rn
+        FROM DonUngTuyen
+        WHERE Email IN (SELECT DISTINCT Email FROM inserted)
+    ) d ON u.Email = d.Email AND d.rn = 1;
+    
+    PRINT 'Đã cập nhật thông tin ứng viên từ đơn ứng tuyển!';
+END
+GO
+
+-- View: Hiển thị ứng viên và số đơn ứng tuyển của họ
+CREATE VIEW UngVienVoiDonUngTuyen AS
+SELECT 
+    u.MaUngVien,
+    u.HoTen,
+    u.Email,
+    u.SoDienThoai,
+    u.DiaChi,
+    u.NgaySinh,
+    u.GioiTinh,
+    u.TrinhDoHocVan,
+    u.KinhNghiem,
+    u.KyNang,
+    u.NgayTao,
+    COUNT(d.MaDonUngTuyen) as SoDonUngTuyen,
+    MAX(d.NgayUngTuyen) as NgayUngTuyenGanNhat,
+    STRING_AGG(d.TrangThai, ', ') as CacTrangThai
+FROM UngVien u
+LEFT JOIN DonUngTuyen d ON u.Email = d.Email
+GROUP BY 
+    u.MaUngVien, u.HoTen, u.Email, u.SoDienThoai, u.DiaChi, 
+    u.NgaySinh, u.GioiTinh, u.TrinhDoHocVan, u.KinhNghiem, 
+    u.KyNang, u.NgayTao;
+GO
+
+-- View: Hiển thị đơn ứng tuyển với thông tin ứng viên đầy đủ
+CREATE VIEW DonUngTuyenVoiUngVien AS
+SELECT 
+    d.MaDonUngTuyen,
+    d.MaCongViec,
+    d.HoTen,
+    d.Email,
+    d.SoDienThoai,
+    d.DiaChi,
+    d.NgaySinh,
+    d.GioiTinh,
+    d.TrinhDoHocVan,
+    d.KinhNghiem,
+    d.KyNang,
+    d.NgayUngTuyen,
+    d.TrangThai,
+    c.TieuDe as TieuDeCongViec,
+    c.CongTy,
+    c.DiaDiem as DiaDiemCongViec,
+    CASE 
+        WHEN u.MaUngVien IS NOT NULL THEN 'Có trong danh sách ứng viên'
+        ELSE 'Chưa có trong danh sách ứng viên'
+    END as TrangThaiDongBo
+FROM DonUngTuyen d
+LEFT JOIN UngVien u ON d.Email = u.Email
+LEFT JOIN CongViec c ON d.MaCongViec = c.MaCongViec;
+GO
+
