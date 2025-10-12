@@ -2,42 +2,109 @@
 
 @{
     ViewData["Title"] = "Đăng nhập";
+    ViewData["BodyClass"] = "login-page";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Đăng nhập</h3>
+<div class="auth-container">
+    <div class="container-fluid">
+        <div class="row min-vh-100">
+            <!-- Left Column - Login Form -->
+            <div class="col-lg-6 auth-left">
+                <div class="auth-form-wrapper">
+                    <div class="auth-header">
+                        <div class="brand-logo">
+                            <i class="bi bi-briefcase-fill"></i>
+                            <span>Dynamic</span>
+                        </div>
                 </div>
-                <div class="card-body">
+                    
+                    <div class="auth-content">
+                        <h1 class="auth-title">Chào mừng trở lại!</h1>
+                        <p class="auth-subtitle">Đăng nhập vào tài khoản của bạn để tiếp tục.</p>
+                        
                     @if (TempData["ErrorMessage"] != null)
                     {
-                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                            <div class="alert alert-danger auth-alert">@TempData["ErrorMessage"]</div>
                     }
                     @if (TempData["SuccessMessage"] != null)
                     {
-                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                            <div class="alert alert-success auth-alert">@TempData["SuccessMessage"]</div>
                     }
 
-                    <form asp-action="Login" method="post">
-                        <div class="mb-3">
+                        <form asp-action="Login" method="post" class="auth-form">
+                            <div class="form-group">
                             <label for="tenDangNhap" class="form-label">Tên đăng nhập</label>
-                            <input type="text" class="form-control" id="tenDangNhap" name="tenDangNhap" required>
+                                <input type="text" class="form-control auth-input" id="tenDangNhap" name="tenDangNhap" required>
                         </div>
-                        <div class="mb-3">
+                            
+                            <div class="form-group">
                             <label for="matKhau" class="form-label">Mật khẩu</label>
-                            <input type="password" class="form-control" id="matKhau" name="matKhau" required>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Đăng nhập</button>
-                        </div>
-                    </form>
-                    
-                    <div class="text-center mt-3">
-                        <p>Chưa có tài khoản? <a asp-action="Register">Đăng ký ngay</a></p>
+                                <input type="password" class="form-control auth-input" id="matKhau" name="matKhau" required>
+                            </div>
+                            
+                            <div class="form-options">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                                </div>
+                                <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                            </div>
+                            
+                            <div class="auth-buttons">
+                                <button type="submit" class="btn btn-primary auth-btn-primary auth-submit-btn">
+                                    <span class="btn-text">Đăng nhập</span>
+                                    <span class="btn-spinner d-none">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Đang xử lý...
+                                    </span>
+                                </button>
+                                <a asp-action="Register" class="btn btn-outline-primary auth-btn-secondary">Đăng ký</a>
+                            </div>
+                            
+                            <div class="auth-divider">
+                                <span>Hoặc đăng nhập bằng</span>
+                            </div>
+                            
+                            <div class="social-login">
+                                <a href="#" class="social-btn facebook" title="Facebook">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                                <a href="#" class="social-btn google" title="Google">
+                                    <i class="bi bi-google"></i>
+                                </a>
+                                <a href="#" class="social-btn linkedin" title="LinkedIn">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            </div>
+                        </form>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Illustration -->
+            <div class="col-lg-6 auth-right">
+                <div class="auth-illustration">
+                    <div class="illustration-content">
+                        <h2>Kết nối tài năng với cơ hội</h2>
+                        <p>Tìm kiếm việc làm phù hợp hoặc tuyển dụng nhân tài chất lượng cao trên nền tảng hàng đầu Việt Nam.</p>
+                        
+                        <div class="illustration-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">10+</div>
+                                <div class="stat-label">Năm kinh nghiệm</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">3600+</div>
+                                <div class="stat-label">Công ty đối tác</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">95%</div>
+                                <div class="stat-label">Tỷ lệ thành công</div>
+                            </div>
+                        </div>
+                        
+                        </div>
+                    
                 </div>
             </div>
         </div>

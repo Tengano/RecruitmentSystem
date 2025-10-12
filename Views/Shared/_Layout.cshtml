@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/animations.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/modern-auth.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/modern-footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body>
+<body class="@ViewData["BodyClass"]">
     <header>
         <nav class="navbar navbar-expand-lg topcv-header">
             <div class="container">
@@ -29,51 +30,10 @@
                             <a class="nav-link" href="#" id="jobsDropdown" role="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-briefcase me-1"></i>Việc làm
                             </a>
-                            <ul class="dropdown-menu mega-menu">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h6 class="dropdown-header">
-                                                <i class="bi bi-search me-2"></i>Tìm kiếm việc làm
-                                            </h6>
-                                            <li><a class="dropdown-item" asp-controller="Jobs" asp-action="Index">
-                                                <i class="bi bi-search me-2"></i>Tìm việc làm
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-laptop me-2"></i>Việc làm IT
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-graph-up-arrow me-2"></i>Việc làm Marketing
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-calculator me-2"></i>Việc làm Kế toán
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-people me-2"></i>Việc làm Nhân sự
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-cart me-2"></i>Việc làm Bán hàng
-                                            </a></li>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h6 class="dropdown-header">
-                                                <i class="bi bi-building me-2"></i>Công ty & Tuyển dụng
-                                            </h6>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-list-ul me-2"></i>Danh sách công ty
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-trophy me-2"></i>Top công ty
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-plus-circle me-2"></i>Đăng tuyển dụng
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#">
-                                                <i class="bi bi-file-person me-2"></i>Tìm hồ sơ
-                                            </a></li>
-                                        </div>
-                                    </div>
-                                </div>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Jobs" asp-action="Index">
+                                    <i class="bi bi-search me-2"></i>Tìm việc làm
+                                </a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -125,58 +85,91 @@
         @RenderBody()
     </main>
 
-    <footer class="topcv-footer">
+    <!-- Modern Footer -->
+    <footer class="modern-footer">
+        <div class="footer-background"></div>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
-                    <h5><i class="bi bi-briefcase-fill me-2"></i>Tuyển Dụng Dynamic</h5>
-                    <p>Nền tảng tuyển dụng hàng đầu Việt Nam, kết nối nhà tuyển dụng và ứng viên một cách hiệu quả.</p>
-                    <div class="mt-3">
-                        <a href="https://facebook.com/genshin.no" class="text-decoration-none me-3" target="_blank"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-decoration-none me-3" target="_blank"><i class="bi bi-youtube"></i></a>
-                        <a href="#" class="text-decoration-none me-3" target="_blank"><i class="bi bi-twitter-x"></i></a>
-                        <a href="https://github.com/Tengano" class="text-decoration-none" target="_blank"><i class="bi bi-github"></i></a>
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <div class="footer-brand">
+                            <h4 class="brand-title">
+                                <i class="bi bi-briefcase-fill"></i>
+                                Tuyển Dụng Dynamic
+                            </h4>
+                            <p class="brand-description">
+                                Nền tảng tuyển dụng hàng đầu Việt Nam, kết nối nhà tuyển dụng và ứng viên một cách hiệu quả nhất.
+                            </p>
+                            <div class="social-media">
+                                <a href="https://facebook.com/genshin.no" target="_blank" class="social-btn facebook">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                                <a href="https://github.com/Tengano" target="_blank" class="social-btn github">
+                                    <i class="bi bi-github"></i>
+                                </a>
+                                <a href="mailto:xuankhoi288@outlook.com" class="social-btn email">
+                                    <i class="bi bi-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="footer-section">
-                    <h5>Việc làm</h5>
-                    <ul>
-                        <li><a asp-controller="Jobs" asp-action="Index">Tìm việc làm</a></li>
-                        <li><a href="#">Việc làm IT</a></li>
-                        <li><a href="#">Việc làm Marketing</a></li>
-                        <li><a href="#">Việc làm Kế toán</a></li>
-                        <li><a href="#">Việc làm Nhân sự</a></li>
-                        <li><a href="#">Việc làm Bán hàng</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h5>Hỗ trợ</h5>
-                    <ul>
-                        <li><a asp-controller="Home" asp-action="About">Về chúng tôi</a></li>
-                        <li><a asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h5>Liên hệ</h5>
-                    <p>
-                        <i class="bi bi-geo-alt-fill me-2"></i>36 Hồ Tùng Mậu, Phường Trường Vinh, Việt Nam<br />
-                        <i class="bi bi-envelope-fill me-2"></i>xuankhoi288@outlook.com<br />
-                        <i class="bi bi-phone-fill me-2"></i>(0234) 567 890
-                    </p>
-                    <div class="mt-3">
-                        <small class="text-muted">Giờ hành chính: 7:00 - 18:00 (T2-T6)</small>
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <div class="footer-links">
+                            <h5 class="link-title">Việc làm</h5>
+                            <ul class="link-list">
+                                <li><a asp-controller="Jobs" asp-action="Index">Tìm việc làm</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <div class="footer-links">
+                            <h5 class="link-title">Hỗ trợ</h5>
+                            <ul class="link-list">
+                                <li><a asp-controller="Home" asp-action="About">Về chúng tôi</a></li>
+                                <li><a asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <div class="footer-contact">
+                            <h5 class="contact-title">Liên hệ</h5>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                    <span>36 Hồ Tùng Mậu, Phường Trường Vinh, Việt Nam</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-envelope-fill"></i>
+                                    <span>xuankhoi288@outlook.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-phone-fill"></i>
+                                    <span>(0234) 567 890</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024-2025 Tuyển Dụng Dynamic. All rights reserved. | Designed by Nguyễn Xuân Khởi</p>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="copyright">
+                            &copy; 2024-2025 <strong>Tuyển Dụng Dynamic</strong>. All rights reserved.
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="designer">
+                            Designed with <i class="bi bi-heart-fill text-danger"></i> by Nguyễn Xuân Khởi
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/animations.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
