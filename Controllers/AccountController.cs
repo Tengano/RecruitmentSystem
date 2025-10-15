@@ -17,13 +17,11 @@ namespace RecruitmentSystem.Controllers
             _context = context;
         }
 
-        // GET: Account/Login
         public IActionResult Login()
         {
             return View();
         }
 
-        // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string tenDangNhap, string matKhau)
@@ -55,13 +53,11 @@ namespace RecruitmentSystem.Controllers
             }
         }
 
-        // GET: Account/Register
         public IActionResult Register()
         {
             return View();
         }
 
-        // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(User user)
@@ -86,7 +82,6 @@ namespace RecruitmentSystem.Controllers
             return View(user);
         }
 
-        // POST: Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
@@ -96,7 +91,6 @@ namespace RecruitmentSystem.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: Account/Profile
         public async Task<IActionResult> Profile()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -113,7 +107,6 @@ namespace RecruitmentSystem.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Lấy thống kê ứng tuyển
             var totalApplications = await _context.Applications
                 .Where(a => a.Email == user.Email)
                 .CountAsync();
@@ -126,7 +119,6 @@ namespace RecruitmentSystem.Controllers
                 .Where(a => a.Email == user.Email && a.TrangThai == "Chờ xem xét")
                 .CountAsync();
 
-            // Lấy đơn ứng tuyển gần đây
             var recentApplications = await _context.Applications
                 .Include(a => a.CongViec)
                 .Where(a => a.Email == user.Email)

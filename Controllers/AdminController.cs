@@ -17,7 +17,6 @@ namespace RecruitmentSystem.Controllers
             _authService = authService;
         }
 
-        // Kiểm tra quyền admin
         private bool IsAdmin()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -27,7 +26,6 @@ namespace RecruitmentSystem.Controllers
             return user?.VaiTro == "Admin";
         }
 
-        // Dashboard
         public async Task<IActionResult> Index()
         {
             if (!IsAdmin())
@@ -38,22 +36,19 @@ namespace RecruitmentSystem.Controllers
 
             try
             {
-                // Đếm số liệu một cách an toàn
                 ViewBag.TotalJobs = await _context.Jobs.CountAsync();
                 ViewBag.ActiveJobs = await _context.Jobs.Where(j => j.HoatDong == true).CountAsync();
                 ViewBag.TotalApplications = await _context.Applications.CountAsync();
                 ViewBag.PendingApplications = await _context.Applications.Where(a => a.TrangThai == "Chờ xem xét").CountAsync();
                 ViewBag.TotalCandidates = await _context.Candidates.CountAsync();
 
-                // Lấy đơn ứng tuyển gần đây với kiểm tra null
                 var donUngTuyenGanDay = await _context.Applications
                     .Include(a => a.CongViec)
-                    .Where(a => a.CongViec != null) // Chỉ lấy những đơn có job còn tồn tại
+                    .Where(a => a.CongViec != null)
                     .OrderByDescending(a => a.NgayUngTuyen)
                     .Take(10)
                     .ToListAsync();
 
-                // Chỉ hiển thị banner chào mừng nếu không có message nào khác
                 if (TempData["SuccessMessage"] == null && TempData["ErrorMessage"] == null)
                 {
                     TempData["SuccessMessage"] = "Chào mừng Quản trị viên hệ thống! Chúc bạn một ngày làm việc hiệu quả!";
@@ -63,10 +58,8 @@ namespace RecruitmentSystem.Controllers
             }
             catch (Exception ex)
             {
-                // Log lỗi và hiển thị thông báo
                 TempData["ErrorMessage"] = $"Lỗi khi tải dữ liệu dashboard: {ex.Message}";
                 
-                // Trả về giá trị mặc định
                 ViewBag.TotalJobs = 0;
                 ViewBag.ActiveJobs = 0;
                 ViewBag.TotalApplications = 0;
@@ -77,20 +70,17 @@ namespace RecruitmentSystem.Controllers
             }
         }
 
-        // Jobs Management
         public async Task<IActionResult> Jobs()
         {
             var congViec = await _context.Jobs.OrderByDescending(j => j.NgayDang).ToListAsync();
             return View(congViec);
         }
 
-        // GET: Admin/CreateJob
         public IActionResult CreateJob()
         {
             return View();
         }
 
-        // POST: Admin/CreateJob
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateJob(Job congViec)
@@ -106,7 +96,6 @@ namespace RecruitmentSystem.Controllers
             return View(congViec);
         }
 
-        // GET: Admin/EditJob/5
         public async Task<IActionResult> EditJob(int? id)
         {
             if (id == null)
@@ -122,7 +111,6 @@ namespace RecruitmentSystem.Controllers
             return View(congViec);
         }
 
-        // POST: Admin/EditJob/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditJob(int id, Job congViec)
@@ -156,7 +144,6 @@ namespace RecruitmentSystem.Controllers
             return View(congViec);
         }
 
-        // GET: Admin/DeleteJob/5
         public async Task<IActionResult> DeleteJob(int? id)
         {
             if (id == null)
@@ -174,7 +161,6 @@ namespace RecruitmentSystem.Controllers
             return View(congViec);
         }
 
-        // POST: Admin/DeleteJob/5
         [HttpPost, ActionName("DeleteJob")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteJobConfirmed(int id)
@@ -184,18 +170,15 @@ namespace RecruitmentSystem.Controllers
                 var congViec = await _context.Jobs.FindAsync(id);
                 if (congViec != null)
                 {
-                    // Kiểm tra xem có đơn ứng tuyển nào liên quan không
                     var relatedApplications = await _context.Applications
                         .Where(a => a.MaCongViec == id)
                         .ToListAsync();
 
                     if (relatedApplications.Any())
                     {
-                        // Xóa các đơn ứng tuyển liên quan trước
                         _context.Applications.RemoveRange(relatedApplications);
                     }
 
-                    // Sau đó xóa job
                     _context.Jobs.Remove(congViec);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Xóa tin tuyển dụng thành công!";
@@ -213,7 +196,6 @@ namespace RecruitmentSystem.Controllers
             return RedirectToAction(nameof(Jobs));
         }
 
-        // Applications Management
         public async Task<IActionResult> Applications()
         {
             try
@@ -232,7 +214,6 @@ namespace RecruitmentSystem.Controllers
             }
         }
 
-        // GET: Admin/ApplicationDetails/5
         public async Task<IActionResult> ApplicationDetails(int? id)
         {
             if (id == null)
@@ -252,7 +233,6 @@ namespace RecruitmentSystem.Controllers
             return View(donUngTuyen);
         }
 
-        // POST: Admin/UpdateApplicationStatus
         [HttpPost]
         public async Task<IActionResult> UpdateApplicationStatus(int id, string trangThai)
         {
@@ -266,7 +246,6 @@ namespace RecruitmentSystem.Controllers
             return Json(new { success = false, message = "Không tìm thấy đơn ứng tuyển!" });
         }
 
-        // Candidates Management
         public async Task<IActionResult> Candidates()
         {
             var ungVien = await _context.Candidates

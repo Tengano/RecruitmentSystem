@@ -32,10 +32,10 @@
             <form asp-controller="Jobs" asp-action="Index" method="get">
                 <div class="search-input-group">
                     <i class="bi bi-search search-icon"></i>
-                    <input type="text" class="search-input" name="timKiem" placeholder="Từ khóa, công ty, vị trí...">
+                    <input type="text" class="search-input" name="search" placeholder="Từ khóa, công ty, vị trí...">
                 </div>
                 <div class="search-filters">
-                    <select class="filter-select" name="danhMuc">
+                    <select class="filter-select" name="category">
                     <option value="">Tất cả ngành nghề</option>
                         <option value="Công nghệ thông tin">Công nghệ thông tin</option>
                         <option value="Kinh doanh">Kinh doanh</option>
@@ -45,7 +45,7 @@
                         <option value="Kế toán">Kế toán</option>
                         <option value="Tài chính">Tài chính</option>
                     </select>
-                    <select class="filter-select" name="diaDiem">
+                    <select class="filter-select" name="location">
                         <option value="">Tất cả địa điểm</option>
                         <option value="Hà Nội">Hà Nội</option>
                         <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
@@ -53,7 +53,7 @@
                         <option value="Hải Phòng">Hải Phòng</option>
                         <option value="Cần Thơ">Cần Thơ</option>
                     </select>
-                    <select class="filter-select" name="loaiCongViec">
+                    <select class="filter-select" name="jobType">
                         <option value="">Tất cả loại hình</option>
                         <option value="Toàn thời gian">Toàn thời gian</option>
                         <option value="Bán thời gian">Bán thời gian</option>
@@ -349,8 +349,8 @@
 <section class="featured-jobs" style="background-color: var(--light-color);">
     <div class="container">
         <div class="section-title">
-            <h2>Tại sao chọn chúng tôi?</h2>
-            <p>Những lợi ích vượt trội khi sử dụng nền tảng tuyển dụng của chúng tôi</p>
+            <h2>Tại sao bạn nên chọn chúng tôi?</h2>
+            <p>Những lợi ích của bạn khi sử dụng nền tảng tuyển dụng của chúng tôi</p>
         </div>
         <div class="row">
             <div class="col-md-4 mb-4">
@@ -368,7 +368,7 @@
                         <i class="bi bi-lightning-charge"></i>
                 </div>
                     <h4 class="step-title">Nhanh chóng & Hiệu quả</h4>
-                    <p class="step-description">Tìm việc và ứng tuyển nhanh chóng với công nghệ AI thông minh</p>
+                    <p class="step-description">Tìm việc và ứng tuyển nhanh chóng cùng với đội ngũ hỗ trợ chuyên nghiệp</p>
             </div>
                 </div>
             <div class="col-md-4 mb-4">
@@ -387,7 +387,6 @@
 @section Scripts {
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <style>
-        /* Additional custom styles if needed */
         .hero-section {
             min-height: 70vh;
             display: flex;

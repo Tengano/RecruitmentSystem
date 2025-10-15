@@ -14,7 +14,6 @@ namespace RecruitmentSystem.Controllers
             _context = context;
         }
 
-        // GET: Jobs
         public async Task<IActionResult> Index(string? danhMuc, string? diaDiem, string? loaiCongViec, string? timKiem)
         {
             var congViec = _context.Jobs.Where(j => j.HoatDong).AsQueryable();
@@ -58,7 +57,6 @@ namespace RecruitmentSystem.Controllers
             return View(await congViec.OrderByDescending(j => j.NgayDang).ToListAsync());
         }
 
-        // GET: Jobs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -74,14 +72,12 @@ namespace RecruitmentSystem.Controllers
                 return NotFound();
             }
 
-            // Tăng số lượt xem
             congViec.LuotXem++;
             await _context.SaveChangesAsync();
 
             return View(congViec);
         }
 
-        // GET: Jobs/Apply/5
         public async Task<IActionResult> Apply(int? id)
         {
             if (id == null)
@@ -99,8 +95,7 @@ namespace RecruitmentSystem.Controllers
             var donUngTuyen = new Application { MaCongViec = congViec.MaCongViec };
             return View(donUngTuyen);
         }
-
-        // POST: Jobs/Apply
+            
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Apply(Application donUngTuyen, IFormFile? hoSo)

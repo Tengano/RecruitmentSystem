@@ -51,11 +51,9 @@ namespace RecruitmentSystem.Controllers
             {
                 try
                 {
-                    // Lưu vào database
                     _context.Contacts.Add(model);
                     await _context.SaveChangesAsync();
                     
-                    // Log thông tin liên hệ
                     _logger.LogInformation($"Liên hệ mới từ: {model.HoTen} ({model.Email}) - {model.SoDienThoai}");
                     _logger.LogInformation($"Nội dung: {model.NoiDung}");
                     

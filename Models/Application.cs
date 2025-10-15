@@ -58,7 +58,6 @@ namespace RecruitmentSystem.Models
         [Display(Name = "Trạng thái")]
         public string TrangThai { get; set; } = "Chờ xem xét";
 
-        // Navigation property
         [ForeignKey("MaCongViec")]
         public virtual Job? CongViec { get; set; }
     }
