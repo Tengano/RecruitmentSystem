@@ -95,7 +95,7 @@ namespace RecruitmentSystem.Controllers
             var donUngTuyen = new Application { MaCongViec = congViec.MaCongViec };
             return View(donUngTuyen);
         }
-            
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Apply(Application donUngTuyen, IFormFile? hoSo)
@@ -133,6 +133,9 @@ namespace RecruitmentSystem.Controllers
             var congViec = await _context.Jobs.FindAsync(donUngTuyen.MaCongViec);
             ViewBag.Job = congViec;
             return View(donUngTuyen);
+            // chinh sưa
+            //  chỉnh sưa 2
+// chinh sửa 3git
         }
     }
 }
