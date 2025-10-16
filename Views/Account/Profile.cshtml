@@ -172,8 +172,8 @@
                                         <i class="bi bi-file-earmark-text"></i>
                                         <h5>Chưa có đơn ứng tuyển nào</h5>
                                         <p>Bắt đầu tìm kiếm việc làm phù hợp với bạn</p>
-                                        <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-search me-2"></i>Tìm việc ngay
+                                        <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary btn-compact">
+                                            <i class="bi bi-search me-1"></i>Tìm việc ngay
                                         </a>
                                     </div>
                                 }
@@ -187,7 +187,25 @@
 </section>
 
 <style>
-/* Profile Styles */
+/* Compact Button Override */
+.btn-compact {
+    padding: 0.6rem 1.25rem !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    background: linear-gradient(135deg, #5b6fd8 0%, #8b5fc7 100%) !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+    color: white !important;
+}
+
+.btn-compact:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(91, 111, 216, 0.3) !important;
+    background: linear-gradient(135deg, #4e5fcf 0%, #7d52b8 100%) !important;
+    color: white !important;
+}
+
 .profile-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;

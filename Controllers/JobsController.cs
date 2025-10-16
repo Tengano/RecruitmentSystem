@@ -14,32 +14,32 @@ namespace RecruitmentSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string? danhMuc, string? diaDiem, string? loaiCongViec, string? timKiem)
+        public async Task<IActionResult> Index(string? category, string? location, string? jobType, string? search)
         {
             var congViec = _context.Jobs.Where(j => j.HoatDong).AsQueryable();
 
-            if (!string.IsNullOrEmpty(danhMuc))
+            if (!string.IsNullOrEmpty(category))
             {
-                congViec = congViec.Where(j => j.DanhMuc == danhMuc);
-                ViewBag.SelectedCategory = danhMuc;
+                congViec = congViec.Where(j => j.DanhMuc == category);
+                ViewBag.SelectedCategory = category;
             }
 
-            if (!string.IsNullOrEmpty(diaDiem))
+            if (!string.IsNullOrEmpty(location))
             {
-                congViec = congViec.Where(j => j.DiaDiem.Contains(diaDiem));
-                ViewBag.SelectedLocation = diaDiem;
+                congViec = congViec.Where(j => j.DiaDiem.Contains(location));
+                ViewBag.SelectedLocation = location;
             }
 
-            if (!string.IsNullOrEmpty(loaiCongViec))
+            if (!string.IsNullOrEmpty(jobType))
             {
-                congViec = congViec.Where(j => j.LoaiCongViec == loaiCongViec);
-                ViewBag.SelectedJobType = loaiCongViec;
+                congViec = congViec.Where(j => j.LoaiCongViec == jobType);
+                ViewBag.SelectedJobType = jobType;
             }
 
-            if (!string.IsNullOrEmpty(timKiem))
+            if (!string.IsNullOrEmpty(search))
             {
-                congViec = congViec.Where(j => j.TieuDe.Contains(timKiem) || j.CongTy.Contains(timKiem) || j.MoTa.Contains(timKiem));
-                ViewBag.SearchTerm = timKiem;
+                congViec = congViec.Where(j => j.TieuDe.Contains(search) || j.CongTy.Contains(search) || j.MoTa.Contains(search));
+                ViewBag.SearchTerm = search;
             }
 
             ViewBag.Categories = await _context.Jobs
