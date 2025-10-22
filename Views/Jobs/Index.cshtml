@@ -60,10 +60,13 @@
                             <label class="form-label fw-semibold filter-label">Loại công việc</label>
                             <select class="form-select" name="jobType">
                                 <option value="">Tất cả</option>
-                                <option value="Full-time" selected="@(ViewBag.SelectedJobType == "Full-time")">Full-time</option>
-                                <option value="Part-time" selected="@(ViewBag.SelectedJobType == "Part-time")">Part-time</option>
-                                <option value="Contract" selected="@(ViewBag.SelectedJobType == "Contract")">Contract</option>
-                                <option value="Internship" selected="@(ViewBag.SelectedJobType == "Internship")">Internship</option>
+                                @if (ViewBag.JobTypes != null)
+                                {
+                                    @foreach (var jobType in ViewBag.JobTypes)
+                                    {
+                                        <option value="@jobType" selected="@(ViewBag.SelectedJobType == jobType)">@jobType</option>
+                                    }
+                                }
                             </select>
                         </div>
                         
