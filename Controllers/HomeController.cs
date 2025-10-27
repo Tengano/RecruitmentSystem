@@ -37,6 +37,16 @@ namespace RecruitmentSystem.Controllers
             return View();
         }
 
+        public IActionResult TermsOfService()
+        {
+            return View();
+        }
+
+        public IActionResult PrivacyPolicy()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult Contact()
         {

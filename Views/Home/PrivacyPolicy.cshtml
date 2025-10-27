@@ -1,0 +1,198 @@
+@{
+    ViewData["Title"] = "Chính sách bảo mật";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <div class="text-center mb-5">
+                        <i class="bi bi-shield-lock display-3 text-success mb-3"></i>
+                        <h1 class="display-5 fw-bold">Chính sách bảo mật</h1>
+                        <p class="text-muted">Cập nhật lần cuối: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+                    </div>
+
+                    <div class="privacy-content">
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">1. Giới thiệu</h3>
+                            <p>Tại Dynamic, chúng tôi cam kết bảo vệ quyền riêng tư và thông tin cá nhân của bạn. Chính sách bảo mật này giải thích cách chúng tôi thu thập, sử dụng, lưu trữ và bảo vệ thông tin của bạn khi sử dụng dịch vụ của chúng tôi.</p>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">2. Thông tin chúng tôi thu thập</h3>
+                            
+                            <h5 class="fw-bold mt-3">2.1. Thông tin bạn cung cấp trực tiếp</h5>
+                            <ul class="list-unstyled ps-3">
+                                <li class="mb-2"><i class="bi bi-person-badge text-success me-2"></i><strong>Thông tin cá nhân:</strong> Họ tên, email, số điện thoại, địa chỉ</li>
+                                <li class="mb-2"><i class="bi bi-file-earmark-person text-success me-2"></i><strong>Thông tin CV:</strong> Học vấn, kinh nghiệm, kỹ năng, ngày sinh, giới tính</li>
+                                <li class="mb-2"><i class="bi bi-key text-success me-2"></i><strong>Thông tin đăng nhập:</strong> Tên đăng nhập, mật khẩu (được mã hóa)</li>
+                                <li class="mb-2"><i class="bi bi-file-text text-success me-2"></i><strong>Tài liệu đính kèm:</strong> CV, hồ sơ ứng tuyển</li>
+                            </ul>
+
+                            <h5 class="fw-bold mt-3">2.2. Thông tin tự động thu thập</h5>
+                            <ul class="list-unstyled ps-3">
+                                <li class="mb-2"><i class="bi bi-globe text-success me-2"></i><strong>Thông tin kỹ thuật:</strong> Địa chỉ IP, loại trình duyệt, hệ điều hành</li>
+                                <li class="mb-2"><i class="bi bi-activity text-success me-2"></i><strong>Dữ liệu sử dụng:</strong> Trang xem, thời gian truy cập, tương tác với website</li>
+                                <li class="mb-2"><i class="bi bi-cookie text-success me-2"></i><strong>Cookies:</strong> Để cải thiện trải nghiệm người dùng</li>
+                            </ul>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">3. Cách chúng tôi sử dụng thông tin</h3>
+                            <p>Chúng tôi sử dụng thông tin của bạn cho các mục đích sau:</p>
+                            <ul class="list-unstyled ps-3">
+                                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>Cung cấp và vận hành dịch vụ tuyển dụng</li>
+                                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>Xử lý đơn ứng tuyển và kết nối với nhà tuyển dụng</li>
+                                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>Gửi thông báo về trạng thái ứng tuyển</li>
+                                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>Gợi ý công việc phù hợp với hồ sơ của bạn</li>
+                                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>Cải thiện dịch vụ và trải nghiệm người dùng</li>
+                                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>Phân tích thống kê và nghiên cứu thị trường</li>
+                                <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>Tuân thủ yêu cầu pháp lý</li>
+                            </ul>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">4. Chia sẻ thông tin</h3>
+                            <p>Chúng tôi chỉ chia sẻ thông tin của bạn trong các trường hợp sau:</p>
+                            
+                            <div class="alert alert-warning">
+                                <h6 class="fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Lưu ý quan trọng</h6>
+                                <p class="mb-0">Chúng tôi KHÔNG BÁN thông tin cá nhân của bạn cho bên thứ ba.</p>
+                            </div>
+
+                            <ul class="list-unstyled ps-3 mt-3">
+                                <li class="mb-2"><i class="bi bi-building text-success me-2"></i><strong>Nhà tuyển dụng:</strong> Khi bạn nộp đơn ứng tuyển</li>
+                                <li class="mb-2"><i class="bi bi-shield-check text-success me-2"></i><strong>Đối tác dịch vụ:</strong> Bên cung cấp dịch vụ lưu trữ, email, phân tích</li>
+                                <li class="mb-2"><i class="bi bi-gavel text-success me-2"></i><strong>Yêu cầu pháp lý:</strong> Khi có yêu cầu từ cơ quan chức năng</li>
+                                <li class="mb-2"><i class="bi bi-people text-success me-2"></i><strong>Với sự đồng ý:</strong> Khi bạn cho phép rõ ràng</li>
+                            </ul>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">5. Bảo mật thông tin</h3>
+                            <p>Chúng tôi áp dụng các biện pháp bảo mật sau để bảo vệ thông tin của bạn:</p>
+                            <ul class="list-unstyled ps-3">
+                                <li class="mb-2"><i class="bi bi-lock text-success me-2"></i><strong>Mã hóa:</strong> Sử dụng SSL/TLS cho truyền tải dữ liệu</li>
+                                <li class="mb-2"><i class="bi bi-key text-success me-2"></i><strong>Mật khẩu:</strong> Được hash và salt theo chuẩn bảo mật</li>
+                                <li class="mb-2"><i class="bi bi-server text-success me-2"></i><strong>Server:</strong> Lưu trữ tại trung tâm dữ liệu an toàn</li>
+                                <li class="mb-2"><i class="bi bi-shield-lock text-success me-2"></i><strong>Kiểm soát truy cập:</strong> Giới hạn quyền truy cập dữ liệu</li>
+                                <li class="mb-2"><i class="bi bi-journal-check text-success me-2"></i><strong>Sao lưu định kỳ:</strong> Backup dữ liệu thường xuyên</li>
+                                <li class="mb-2"><i class="bi bi-bug text-success me-2"></i><strong>Kiểm tra bảo mật:</strong> Thường xuyên rà soát và cập nhật</li>
+                            </ul>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">6. Quyền của bạn</h3>
+                            <p>Bạn có các quyền sau đối với thông tin cá nhân của mình:</p>
+                            <ul class="list-unstyled ps-3">
+                                <li class="mb-2"><i class="bi bi-eye text-primary me-2"></i><strong>Quyền truy cập:</strong> Xem thông tin cá nhân chúng tôi lưu trữ</li>
+                                <li class="mb-2"><i class="bi bi-pencil text-primary me-2"></i><strong>Quyền chỉnh sửa:</strong> Cập nhật, sửa đổi thông tin của bạn</li>
+                                <li class="mb-2"><i class="bi bi-trash text-primary me-2"></i><strong>Quyền xóa:</strong> Yêu cầu xóa tài khoản và dữ liệu</li>
+                                <li class="mb-2"><i class="bi bi-download text-primary me-2"></i><strong>Quyền xuất dữ liệu:</strong> Tải xuống dữ liệu cá nhân</li>
+                                <li class="mb-2"><i class="bi bi-hand-thumbs-down text-primary me-2"></i><strong>Quyền từ chối:</strong> Từ chối marketing, quảng cáo</li>
+                                <li class="mb-2"><i class="bi bi-exclamation-octagon text-primary me-2"></i><strong>Quyền khiếu nại:</strong> Báo cáo vi phạm bảo mật</li>
+                            </ul>
+
+                            <div class="alert alert-info mt-3">
+                                <p class="mb-0"><i class="bi bi-info-circle me-2"></i>Để thực hiện các quyền trên, vui lòng liên hệ với chúng tôi qua email: <strong>privacy@dynamic.com.vn</strong></p>
+                            </div>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">7. Lưu trữ và xóa dữ liệu</h3>
+                            <ul class="list-unstyled ps-3">
+                                <li class="mb-2"><i class="bi bi-calendar-check text-success me-2"></i><strong>Thời gian lưu trữ:</strong> Chúng tôi giữ thông tin của bạn trong thời gian cần thiết để cung cấp dịch vụ hoặc theo yêu cầu pháp lý</li>
+                                <li class="mb-2"><i class="bi bi-archive text-success me-2"></i><strong>Tài khoản không hoạt động:</strong> Sẽ được xóa sau 2 năm không sử dụng (có thông báo trước)</li>
+                                <li class="mb-2"><i class="bi bi-trash3 text-success me-2"></i><strong>Yêu cầu xóa:</strong> Sẽ được xử lý trong vòng 30 ngày</li>
+                            </ul>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">8. Cookies và công nghệ theo dõi</h3>
+                            <p>Chúng tôi sử dụng cookies và công nghệ tương tự để:</p>
+                            <ul class="list-unstyled ps-3">
+                                <li class="mb-2"><i class="bi bi-person-check text-success me-2"></i>Ghi nhớ đăng nhập của bạn</li>
+                                <li class="mb-2"><i class="bi bi-gear text-success me-2"></i>Lưu tùy chọn và cài đặt</li>
+                                <li class="mb-2"><i class="bi bi-bar-chart text-success me-2"></i>Phân tích lưu lượng truy cập</li>
+                                <li class="mb-2"><i class="bi bi-magic text-success me-2"></i>Cá nhân hóa trải nghiệm</li>
+                            </ul>
+                            <p class="text-muted"><small>Bạn có thể tắt cookies trong trình duyệt, nhưng một số tính năng có thể không hoạt động đúng.</small></p>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">9. Bảo vệ trẻ em</h3>
+                            <p>Dịch vụ của chúng tôi không dành cho người dưới 16 tuổi. Chúng tôi không cố ý thu thập thông tin từ trẻ em. Nếu bạn là phụ huynh và phát hiện con bạn đã cung cấp thông tin cho chúng tôi, vui lòng liên hệ để chúng tôi xóa dữ liệu.</p>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">10. Chuyển giao dữ liệu quốc tế</h3>
+                            <p>Thông tin của bạn được lưu trữ tại Việt Nam. Nếu có chuyển giao dữ liệu ra nước ngoài, chúng tôi sẽ đảm bảo tuân thủ các quy định về bảo vệ dữ liệu cá nhân.</p>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">11. Thay đổi chính sách</h3>
+                            <p>Chúng tôi có thể cập nhật Chính sách bảo mật này theo thời gian. Các thay đổi quan trọng sẽ được thông báo qua email hoặc thông báo trên website. Ngày cập nhật cuối cùng sẽ được hiển thị ở đầu trang.</p>
+                        </section>
+
+                        <section class="mb-4">
+                            <h3 class="h4 fw-bold text-success mb-3">12. Liên hệ về bảo mật</h3>
+                            <p>Nếu bạn có câu hỏi, thắc mắc hoặc khiếu nại về Chính sách bảo mật, vui lòng liên hệ:</p>
+                            <div class="alert alert-success">
+                                <h6 class="fw-bold"><i class="bi bi-person-badge me-2"></i>Bộ phận Bảo mật Dữ liệu</h6>
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="bi bi-envelope me-2"></i><strong>Email:</strong> privacy@dynamic.com.vn</li>
+                                    <li><i class="bi bi-telephone me-2"></i><strong>Hotline:</strong> 1900-1900</li>
+                                    <li><i class="bi bi-geo-alt me-2"></i><strong>Địa chỉ:</strong> 36 Hồ Tùng Mậu, Phường Trường Vinh, Nghệ An </li>
+                                    <li><i class="bi bi-clock me-2"></i><strong>Thời gian xử lý:</strong> Trong vòng 7 ngày làm việc</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <hr class="my-4">
+
+                        <div class="alert alert-light border">
+                            <p class="mb-0"><i class="bi bi-shield-check text-success me-2"></i><strong>Cam kết của chúng tôi:</strong> Dynamic cam kết bảo vệ quyền riêng tư và dữ liệu cá nhân của bạn theo các tiêu chuẩn cao nhất. Chúng tôi liên tục cải thiện các biện pháp bảo mật để đảm bảo an toàn cho thông tin của bạn.</p>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <a asp-action="Register" asp-controller="Account" class="btn btn-success btn-lg me-2">
+                                <i class="bi bi-arrow-left me-2"></i>Quay lại đăng ký
+                            </a>
+                            <a asp-action="TermsOfService" asp-controller="Home" class="btn btn-outline-primary btn-lg">
+                                <i class="bi bi-file-text me-2"></i>Xem Điều khoản sử dụng
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .privacy-content {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: #333;
+    }
+    
+    .privacy-content section {
+        padding: 1.5rem 0;
+    }
+    
+    .privacy-content h3 {
+        border-left: 4px solid #198754;
+        padding-left: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .privacy-content ul {
+        margin-top: 1rem;
+    }
+    
+    .privacy-content li {
+        padding: 0.5rem 0;
+    }
+</style>
+

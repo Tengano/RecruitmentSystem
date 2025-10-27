@@ -61,7 +61,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="agreeTerms" required>
                                     <label class="form-check-label" for="agreeTerms">
-                                        Tôi đồng ý với <a href="#" class="terms-link">Điều khoản sử dụng</a> và <a href="#" class="terms-link">Chính sách bảo mật</a>
+                                        Tôi đồng ý với <a asp-controller="Home" asp-action="TermsOfService" class="terms-link" target="_blank">Điều khoản sử dụng</a> và <a asp-controller="Home" asp-action="PrivacyPolicy" class="terms-link" target="_blank">Chính sách bảo mật</a>
                                     </label>
                                 </div>
                             </div>
@@ -88,11 +88,17 @@
                                 <a href="#" class="social-btn google" title="Google">
                                     <i class="bi bi-google"></i>
                                 </a>
-                                <a href="#" class="social-btn linkedin" title="LinkedIn">
-                                    <i class="bi bi-linkedin"></i>
+                                <a href="#" class="social-btn instagram" title="Instagram">
+                                    <i class="bi bi-instagram"></i>
                                 </a>
                             </div>
                         </form>
+                        
+                        <div class="auth-footer-links">
+                            <a asp-controller="Home" asp-action="TermsOfService" class="auth-footer-link" target="_blank">Điều khoản sử dụng</a>
+                            <span class="auth-footer-separator">•</span>
+                            <a asp-controller="Home" asp-action="PrivacyPolicy" class="auth-footer-link" target="_blank">Chính sách bảo mật</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,3 +149,46 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <style>
+        .terms-link {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .terms-link:hover {
+            color: #0a58ca;
+            text-decoration: underline;
+        }
+        
+        .form-check-label {
+            font-size: 0.95rem;
+            color: #666;
+        }
+        
+        .form-check-input:required {
+            border-color: #dc3545;
+        }
+        
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+    </style>
+
+    <script>
+        // Validation cho checkbox điều khoản
+        document.querySelector('.auth-form').addEventListener('submit', function(e) {
+            const agreeTerms = document.getElementById('agreeTerms');
+            if (!agreeTerms.checked) {
+                e.preventDefault();
+                alert('Bạn cần đồng ý với Điều khoản sử dụng và Chính sách bảo mật để tiếp tục.');
+                agreeTerms.focus();
+                return false;
+            }
+        });
+    </script>
+}

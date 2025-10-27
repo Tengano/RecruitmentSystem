@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     
     <!-- Build optimization settings -->
+    <UseAppHost>false</UseAppHost>
     <ServerGarbageCollection>true</ServerGarbageCollection>
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     <TieredCompilation>true</TieredCompilation>
