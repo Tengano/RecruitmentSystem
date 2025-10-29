@@ -1,32 +1,160 @@
-
+// Admin Dashboard JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-
+    // Disable counter animations
     const counterElements = document.querySelectorAll('.stat-number, .dashboard-number');
     counterElements.forEach(element => {
         element.style.transition = 'none';
         element.style.animation = 'none';
     });
 
+    // Active link highlighting
     const currentPath = window.location.pathname;
-    const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
+    const sidebarLinks = document.querySelectorAll('.sidebar .nav-link, .admin-sidebar .nav-link');
     
     sidebarLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+        const href = link.getAttribute('href');
+        if (href === currentPath || currentPath.includes(href)) {
             link.classList.add('active');
         }
     });
+
+    // Smooth scrolling for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Enhanced table row hover effects
+    const tableRows = document.querySelectorAll('.application-row, tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.01)';
+            this.style.transition = 'all 0.2s ease';
+        });
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+
+    // Auto-dismiss alerts after 5 seconds
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 5000);
+    });
+
+    // Add loading state to buttons
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn && !submitBtn.disabled) {
+                submitBtn.disabled = true;
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Đang xử lý...';
+                
+                // Re-enable after 3 seconds as fallback
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }, 3000);
+            }
+        });
+    });
+
+    // Tooltips initialization
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Card animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    const cards = document.querySelectorAll('.stat-card, .quick-action-card, .applications-table');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+        observer.observe(card);
+    });
 });
 
+// Delete confirmation with modern styling
 document.querySelectorAll('a[href*="Delete"]').forEach(link => {
     link.addEventListener('click', function(e) {
-        if (!confirm('Bạn có chắc chắn muốn xóa?')) {
-            e.preventDefault();
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        
+        if (confirm('⚠️ Bạn có chắc chắn muốn xóa?\n\nHành động này không thể hoàn tác.')) {
+            window.location.href = href;
         }
     });
 });
 
+// Real-time search for tables
+const searchInputs = document.querySelectorAll('input[type="search"], .table-search');
+searchInputs.forEach(input => {
+    input.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const table = this.closest('.applications-table')?.querySelector('table') || 
+                     document.querySelector('table');
+        
+        if (table) {
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+    });
+});
+
+// Status badge color animation
+const statusBadges = document.querySelectorAll('.status-badge');
+statusBadges.forEach(badge => {
+    badge.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05)';
+        this.style.transition = 'all 0.2s ease';
+    });
+    badge.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+    });
+});
+
+// Performance monitoring
 if (window.location.pathname.includes('/Admin')) {
-    setInterval(() => {
-    }, 30000);
+    console.log('🚀 Admin Dashboard Loaded');
+    
+    // Log performance metrics
+    window.addEventListener('load', function() {
+        if (window.performance) {
+            const perfData = window.performance.timing;
+            const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+            console.log(`⚡ Page loaded in ${pageLoadTime}ms`);
+        }
+    });
 }
 
