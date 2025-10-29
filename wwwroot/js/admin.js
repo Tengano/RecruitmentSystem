@@ -32,18 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Enhanced table row hover effects
-    const tableRows = document.querySelectorAll('.application-row, tbody tr');
-    tableRows.forEach(row => {
-        row.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.01)';
-            this.style.transition = 'all 0.2s ease';
-        });
-        row.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-        });
-    });
-
     // Auto-dismiss alerts after 5 seconds
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach(alert => {
@@ -77,29 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-
-    // Card animation on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    const cards = document.querySelectorAll('.stat-card, .quick-action-card, .applications-table');
-    cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = `all 0.5s ease ${index * 0.1}s`;
-        observer.observe(card);
-    });
 });
 
 // Delete confirmation with modern styling
@@ -129,18 +94,6 @@ searchInputs.forEach(input => {
                 row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
         }
-    });
-});
-
-// Status badge color animation
-const statusBadges = document.querySelectorAll('.status-badge');
-statusBadges.forEach(badge => {
-    badge.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.05)';
-        this.style.transition = 'all 0.2s ease';
-    });
-    badge.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
     });
 });
 
