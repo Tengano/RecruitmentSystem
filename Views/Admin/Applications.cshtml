@@ -20,7 +20,6 @@
                         <th>Email</th>
                         <th>SĐT</th>
                         <th>Ngày nộp</th>
-                        <th>CV/Resume</th>
                         <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
@@ -35,20 +34,6 @@
                             <td>@app.Email</td>
                             <td>@app.SoDienThoai</td>
                             <td>@app.NgayUngTuyen.ToString("dd/MM/yyyy")</td>
-                            <td class="text-center">
-                                @if (!string.IsNullOrEmpty(app.DuongDanCV))
-                                {
-                                    <span class="badge bg-success" title="@app.TenFileCV">
-                                        <i class="bi bi-file-earmark-check"></i> Có CV
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">
-                                        <i class="bi bi-x-circle"></i> Chưa có
-                                    </span>
-                                }
-                            </td>
                             <td>
                                 <select class="form-select form-select-sm status-select" data-id="@app.MaDonUngTuyen">
                                     <option value="Chờ xem xét" selected="@(app.TrangThai == "Chờ xem xét")">Chờ xem xét</option>
@@ -57,24 +42,9 @@
                                 </select>
                             </td>
                             <td>
-                                <div class="btn-group" role="group">
-                                    <a asp-action="ApplicationDetails" asp-route-id="@app.MaDonUngTuyen" 
-                                       class="btn btn-sm btn-primary" title="Xem chi tiết">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    @if (!string.IsNullOrEmpty(app.DuongDanCV))
-                                    {
-                                        <a asp-action="DownloadCV" asp-route-id="@app.MaDonUngTuyen" 
-                                           class="btn btn-sm btn-success" title="Tải CV">
-                                            <i class="bi bi-download"></i>
-                                        </a>
-                                    }
-                                    <a asp-action="DeleteApplication" asp-route-id="@app.MaDonUngTuyen" 
-                                       class="btn btn-sm btn-danger" title="Xóa"
-                                       onclick="return confirm('Bạn có chắc muốn xóa đơn ứng tuyển này?')">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-                                </div>
+                                <a asp-action="ApplicationDetails" asp-route-id="@app.MaDonUngTuyen" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-eye"></i> Chi tiết
+                                </a>
                             </td>
                         </tr>
                     }
