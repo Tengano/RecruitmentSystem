@@ -1,0 +1,67 @@
+@model Application
+@{
+    ViewData["Title"] = "Xóa đơn ứng tuyển";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="bi bi-trash me-2"></i>Xóa đơn ứng tuyển</h1>
+</div>
+
+<div class="alert alert-danger">
+    <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-2"></i>Cảnh báo!</h4>
+    <p>Bạn có chắc chắn muốn xóa đơn ứng tuyển này? Hành động này không thể hoàn tác!</p>
+    <hr>
+    <p class="mb-0">File CV đính kèm (nếu có) cũng sẽ bị xóa khỏi hệ thống.</p>
+</div>
+
+<div class="card shadow">
+    <div class="card-header">
+        <h5 class="mb-0">Thông tin đơn ứng tuyển</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã đơn:</dt>
+            <dd class="col-sm-9">@Model.MaDonUngTuyen</dd>
+
+            <dt class="col-sm-3">Ứng viên:</dt>
+            <dd class="col-sm-9">@Model.HoTen</dd>
+
+            <dt class="col-sm-3">Email:</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Vị trí:</dt>
+            <dd class="col-sm-9">@Model.CongViec?.TieuDe</dd>
+
+            <dt class="col-sm-3">Ngày nộp:</dt>
+            <dd class="col-sm-9">@Model.NgayUngTuyen.ToString("dd/MM/yyyy HH:mm")</dd>
+
+            @if (!string.IsNullOrEmpty(Model.DuongDanCV))
+            {
+                <dt class="col-sm-3">File CV:</dt>
+                <dd class="col-sm-9">
+                    <i class="bi bi-file-earmark-pdf text-danger me-2"></i>
+                    @Model.TenFileCV
+                </dd>
+            }
+
+            <dt class="col-sm-3">Trạng thái:</dt>
+            <dd class="col-sm-9">
+                <span class="badge bg-warning">@Model.TrangThai</span>
+            </dd>
+        </dl>
+
+        <form asp-action="DeleteApplication" method="post">
+            <input type="hidden" asp-for="MaDonUngTuyen" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash me-2"></i>Xác nhận xóa
+                </button>
+                <a asp-action="Applications" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+

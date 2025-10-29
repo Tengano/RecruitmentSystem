@@ -8,10 +8,12 @@ namespace RecruitmentSystem.Controllers
     public class JobsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IFileUploadService _fileUploadService;
 
-        public JobsController(ApplicationDbContext context)
+        public JobsController(ApplicationDbContext context, IFileUploadService fileUploadService)
         {
             _context = context;
+            _fileUploadService = fileUploadService;
         }
 
         public async Task<IActionResult> Index(string? category, string? location, string? jobType, string? search)
@@ -106,24 +108,40 @@ namespace RecruitmentSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Apply(Application donUngTuyen, IFormFile? hoSo)
         {
+            // Validate file CV/Resume
+            if (hoSo != null && hoSo.Length > 0)
+            {
+                if (!_fileUploadService.ValidateResumeFile(hoSo, out string errorMessage))
+                {
+                    ModelState.AddModelError("hoSo", errorMessage);
+                    var congViecError = await _context.Jobs.FindAsync(donUngTuyen.MaCongViec);
+                    ViewBag.Job = congViecError;
+                    return View(donUngTuyen);
+                }
+            }
+
             if (ModelState.IsValid)
             {
-
+                // Upload và lưu metadata file CV
                 if (hoSo != null && hoSo.Length > 0)
                 {
-                    var thuMucTaiLen = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "resumes");
-                    Directory.CreateDirectory(thuMucTaiLen);
-
-                    var tenFileDuyNhat = Guid.NewGuid().ToString() + "_" + hoSo.FileName;
-                    var duongDanFile = Path.Combine(thuMucTaiLen, tenFileDuyNhat);
-
-                    using (var fileStream = new FileStream(duongDanFile, FileMode.Create))
+                    var uploadResult = await _fileUploadService.UploadResumeAsync(hoSo);
+                    
+                    if (uploadResult.Success)
                     {
-                        await hoSo.CopyToAsync(fileStream);
+                        donUngTuyen.TenFileCV = uploadResult.FileName;
+                        donUngTuyen.DuongDanCV = uploadResult.FilePath;
+                        donUngTuyen.KichThuocFile = uploadResult.FileSize;
+                        donUngTuyen.LoaiFile = uploadResult.FileType;
+                        donUngTuyen.NgayUploadCV = DateTime.Now;
                     }
-
-
-                    donUngTuyen.KyNang += $" | File đính kèm: /uploads/resumes/{tenFileDuyNhat}";
+                    else
+                    {
+                        TempData["ErrorMessage"] = uploadResult.ErrorMessage;
+                        var congViecError = await _context.Jobs.FindAsync(donUngTuyen.MaCongViec);
+                        ViewBag.Job = congViecError;
+                        return View(donUngTuyen);
+                    }
                 }
 
                 donUngTuyen.NgayUngTuyen = DateTime.Now;
@@ -139,9 +157,6 @@ namespace RecruitmentSystem.Controllers
             var congViec = await _context.Jobs.FindAsync(donUngTuyen.MaCongViec);
             ViewBag.Job = congViec;
             return View(donUngTuyen);
-            // chinh sưa
-            //  chỉnh sưa 2
-// chinh sửa 3git
         }
     }
 }

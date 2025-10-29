@@ -58,6 +58,25 @@ namespace RecruitmentSystem.Models
         [Display(Name = "Trạng thái")]
         public string TrangThai { get; set; } = "Chờ xem xét";
 
+        // File metadata
+        [StringLength(500)]
+        [Display(Name = "Tên file CV")]
+        public string? TenFileCV { get; set; }
+
+        [StringLength(500)]
+        [Display(Name = "Đường dẫn CV")]
+        public string? DuongDanCV { get; set; }
+
+        [Display(Name = "Kích thước file (bytes)")]
+        public long? KichThuocFile { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Loại file")]
+        public string? LoaiFile { get; set; }
+
+        [Display(Name = "Ngày upload CV")]
+        public DateTime? NgayUploadCV { get; set; }
+
         [ForeignKey("MaCongViec")]
         public virtual Job? CongViec { get; set; }
     }

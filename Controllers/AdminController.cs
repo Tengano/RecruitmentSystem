@@ -10,11 +10,13 @@ namespace RecruitmentSystem.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IAuthenticationService _authService;
+        private readonly IFileUploadService _fileUploadService;
 
-        public AdminController(ApplicationDbContext context, IAuthenticationService authService)
+        public AdminController(ApplicationDbContext context, IAuthenticationService authService, IFileUploadService fileUploadService)
         {
             _context = context;
             _authService = authService;
+            _fileUploadService = fileUploadService;
         }
 
         private bool IsAdmin()
@@ -176,6 +178,15 @@ namespace RecruitmentSystem.Controllers
 
                     if (relatedApplications.Any())
                     {
+                        // Xóa các file CV trước khi xóa đơn ứng tuyển
+                        foreach (var application in relatedApplications)
+                        {
+                            if (!string.IsNullOrEmpty(application.DuongDanCV))
+                            {
+                                _fileUploadService.DeleteResume(application.DuongDanCV);
+                            }
+                        }
+                        
                         _context.Applications.RemoveRange(relatedApplications);
                     }
 
@@ -252,6 +263,134 @@ namespace RecruitmentSystem.Controllers
                 .OrderBy(c => c.MaUngVien)
                 .ToListAsync();
             return View(ungVien);
+        }
+
+        // Download CV
+        public async Task<IActionResult> DownloadCV(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var donUngTuyen = await _context.Applications.FindAsync(id);
+            
+            if (donUngTuyen == null || string.IsNullOrEmpty(donUngTuyen.DuongDanCV))
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy file CV!";
+                return RedirectToAction(nameof(Applications));
+            }
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", donUngTuyen.DuongDanCV.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                TempData["ErrorMessage"] = "File CV không tồn tại!";
+                return RedirectToAction(nameof(Applications));
+            }
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+
+            var contentType = donUngTuyen.LoaiFile == ".pdf" 
+                ? "application/pdf" 
+                : "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+            return File(memory, contentType, donUngTuyen.TenFileCV ?? "CV.pdf");
+        }
+
+        // Xem CV (inline view)
+        public async Task<IActionResult> ViewCV(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var donUngTuyen = await _context.Applications.FindAsync(id);
+            
+            if (donUngTuyen == null || string.IsNullOrEmpty(donUngTuyen.DuongDanCV))
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy file CV!";
+                return RedirectToAction(nameof(Applications));
+            }
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", donUngTuyen.DuongDanCV.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                TempData["ErrorMessage"] = "File CV không tồn tại!";
+                return RedirectToAction(nameof(Applications));
+            }
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+
+            var contentType = donUngTuyen.LoaiFile == ".pdf" 
+                ? "application/pdf" 
+                : "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+            return File(memory, contentType);
+        }
+
+        // Xóa đơn ứng tuyển
+        public async Task<IActionResult> DeleteApplication(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var donUngTuyen = await _context.Applications
+                .Include(a => a.CongViec)
+                .FirstOrDefaultAsync(m => m.MaDonUngTuyen == id);
+
+            if (donUngTuyen == null)
+            {
+                return NotFound();
+            }
+
+            return View(donUngTuyen);
+        }
+
+        [HttpPost, ActionName("DeleteApplication")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteApplicationConfirmed(int id)
+        {
+            try
+            {
+                var donUngTuyen = await _context.Applications.FindAsync(id);
+                if (donUngTuyen != null)
+                {
+                    // Xóa file CV trước khi xóa đơn ứng tuyển
+                    if (!string.IsNullOrEmpty(donUngTuyen.DuongDanCV))
+                    {
+                        _fileUploadService.DeleteResume(donUngTuyen.DuongDanCV);
+                    }
+
+                    _context.Applications.Remove(donUngTuyen);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Xóa đơn ứng tuyển thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy đơn ứng tuyển!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Lỗi khi xóa đơn ứng tuyển: {ex.Message}";
+            }
+
+            return RedirectToAction(nameof(Applications));
         }
 
         private bool JobExists(int id)
