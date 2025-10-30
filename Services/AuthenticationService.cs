@@ -10,6 +10,10 @@ namespace RecruitmentSystem.Services
         Task<bool> RegisterAsync(User user);
         Task<User?> GetUserByIdAsync(int id);
         Task LogoutAsync();
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<bool> GeneratePasswordResetTokenAsync(string email);
+        Task<bool> ResetPasswordAsync(string token, string newPassword);
+        Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword);
     }
 
     public class AuthenticationService : IAuthenticationService
@@ -57,6 +61,75 @@ namespace RecruitmentSystem.Services
         public Task LogoutAsync()
         {
             return Task.CompletedTask;
+        }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.HoatDong);
+        }
+
+        public async Task<bool> GeneratePasswordResetTokenAsync(string email)
+        {
+            try
+            {
+                var user = await GetUserByEmailAsync(email);
+                if (user == null)
+                    return false;
+
+                // Tạo token reset password (token đơn giản, trong thực tế nên dùng GUID hoặc mã hóa phức tạp hơn)
+                user.MaDatLaiMatKhau = Guid.NewGuid().ToString();
+                user.ThoiGianHetHanMa = DateTime.Now.AddHours(24); // Token có hiệu lực 24 giờ
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> ResetPasswordAsync(string token, string newPassword)
+        {
+            try
+            {
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.MaDatLaiMatKhau == token 
+                                           && u.ThoiGianHetHanMa > DateTime.Now 
+                                           && u.HoatDong);
+                
+                if (user == null)
+                    return false;
+
+                user.MatKhau = newPassword;
+                user.MaDatLaiMatKhau = null;
+                user.ThoiGianHetHanMa = null;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword)
+        {
+            try
+            {
+                var user = await GetUserByIdAsync(userId);
+                if (user == null || user.MatKhau != oldPassword)
+                    return false;
+
+                user.MatKhau = newPassword;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

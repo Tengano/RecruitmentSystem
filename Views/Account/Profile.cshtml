@@ -32,8 +32,11 @@
                 </div>
             </div>
             <div class="profile-actions">
-                <a href="#" class="btn btn-primary">
+                <a asp-action="EditProfile" class="btn btn-primary">
                     <i class="bi bi-pencil me-2"></i>Chỉnh sửa hồ sơ
+                </a>
+                <a asp-action="ChangePassword" class="btn btn-outline-primary">
+                    <i class="bi bi-shield-lock me-2"></i>Đổi mật khẩu
                 </a>
                 <a href="#" class="btn btn-outline-primary">
                     <i class="bi bi-download me-2"></i>Tải CV
@@ -54,10 +57,17 @@
                         <h5>Thông tin cá nhân</h5>
                         <ul class="profile-menu">
                             <li><a href="#personal-info" class="active">Thông tin cơ bản</a></li>
-                            <li><a href="#contact-info">Liên hệ</a></li>
-                            <li><a href="#education">Học vấn</a></li>
-                            <li><a href="#experience">Kinh nghiệm</a></li>
-                            <li><a href="#skills">Kỹ năng</a></li>
+                            <li><a href="#contact-info">Liên hệ (@(ViewBag.ContactInfo != null ? "✓" : ""))</a></li>
+                            <li><a href="#education">Học vấn (@(((List<Education>)ViewBag.Educations).Count))</a></li>
+                            <li><a href="#experience">Kinh nghiệm (@(((List<Experience>)ViewBag.Experiences).Count))</a></li>
+                            <li><a href="#skills">Kỹ năng (@(((List<Skill>)ViewBag.Skills).Count))</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h5>Bảo mật</h5>
+                        <ul class="profile-menu">
+                            <li><a asp-action="ChangePassword"><i class="bi bi-shield-lock me-2"></i>Đổi mật khẩu</a></li>
                         </ul>
                     </div>
                     
@@ -79,9 +89,9 @@
                     <div class="profile-section" id="personal-info">
                         <div class="section-header">
                             <h3>Thông tin cá nhân</h3>
-                            <button class="btn btn-outline-primary btn-sm">
+                            <a asp-action="EditProfile" class="btn btn-outline-primary btn-sm">
                                 <i class="bi bi-pencil me-1"></i>Chỉnh sửa
-                            </button>
+                            </a>
                         </div>
                         <div class="section-content">
                             <div class="row">
@@ -180,6 +190,261 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Contact Information -->
+                    <div class="profile-section" id="contact-info">
+                        <div class="section-header">
+                            <h3>Thông tin liên hệ</h3>
+                            <button class="btn btn-outline-primary btn-sm" onclick="alert('Tính năng đang phát triển!')">
+                                <i class="bi bi-pencil me-1"></i>Chỉnh sửa
+                            </button>
+                        </div>
+                        <div class="section-content">
+                            @if (ViewBag.ContactInfo != null)
+                            {
+                                var contact = (ContactInfo)ViewBag.ContactInfo;
+                                <div class="row">
+                                    @if (!string.IsNullOrEmpty(contact.SoDienThoai))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <label><i class="bi bi-telephone me-2"></i>Số điện thoại</label>
+                                                <p>@contact.SoDienThoai</p>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(contact.DiaChi))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <label><i class="bi bi-geo-alt me-2"></i>Địa chỉ</label>
+                                                <p>@contact.DiaChi</p>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(contact.ThanhPho))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <label><i class="bi bi-building me-2"></i>Thành phố</label>
+                                                <p>@contact.ThanhPho</p>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(contact.QuocGia))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <label><i class="bi bi-flag me-2"></i>Quốc gia</label>
+                                                <p>@contact.QuocGia</p>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(contact.LinkedIn))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <label><i class="bi bi-linkedin me-2"></i>LinkedIn</label>
+                                                <p><a href="@contact.LinkedIn" target="_blank">@contact.LinkedIn</a></p>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(contact.GitHub))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <label><i class="bi bi-github me-2"></i>GitHub</label>
+                                                <p><a href="@contact.GitHub" target="_blank">@contact.GitHub</a></p>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(contact.Website))
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="info-item">
+                                                <label><i class="bi bi-globe me-2"></i>Website</label>
+                                                <p><a href="@contact.Website" target="_blank">@contact.Website</a></p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <i class="bi bi-person-vcard"></i>
+                                    <h5>Chưa có thông tin liên hệ</h5>
+                                    <p>Thêm thông tin liên hệ để nhà tuyển dụng dễ dàng liên lạc với bạn</p>
+                                    <button class="btn btn-primary btn-compact" onclick="alert('Tính năng đang phát triển!')">
+                                        <i class="bi bi-plus me-1"></i>Thêm thông tin liên hệ
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="profile-section" id="education">
+                        <div class="section-header">
+                            <h3>Học vấn</h3>
+                            <button class="btn btn-outline-primary btn-sm" onclick="alert('Tính năng đang phát triển!')">
+                                <i class="bi bi-plus me-1"></i>Thêm học vấn
+                            </button>
+                        </div>
+                        <div class="section-content">
+                            @if (ViewBag.Educations != null && ((List<Education>)ViewBag.Educations).Any())
+                            {
+                                @foreach (var edu in (List<Education>)ViewBag.Educations)
+                                {
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon">
+                                            <i class="bi bi-mortarboard-fill"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <h5>@edu.BangCap</h5>
+                                            <h6>@edu.TenTruong</h6>
+                                            @if (!string.IsNullOrEmpty(edu.ChuyenNganh))
+                                            {
+                                                <p class="timeline-subtitle">@edu.ChuyenNganh</p>
+                                            }
+                                            <p class="timeline-date">
+                                                <i class="bi bi-calendar me-1"></i>
+                                                @edu.NgayBatDau.ToString("MM/yyyy") - 
+                                                @(edu.DangHoc ? "Hiện tại" : edu.NgayKetThuc?.ToString("MM/yyyy"))
+                                            </p>
+                                            @if (edu.DiemGPA.HasValue)
+                                            {
+                                                <p class="timeline-meta"><strong>GPA:</strong> @edu.DiemGPA.Value.ToString("0.00")</p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(edu.MoTa))
+                                            {
+                                                <p class="timeline-description">@edu.MoTa</p>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <i class="bi bi-book"></i>
+                                    <h5>Chưa có thông tin học vấn</h5>
+                                    <p>Thêm thông tin học vấn để hoàn thiện hồ sơ của bạn</p>
+                                    <button class="btn btn-primary btn-compact" onclick="alert('Tính năng đang phát triển!')">
+                                        <i class="bi bi-plus me-1"></i>Thêm học vấn
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="profile-section" id="experience">
+                        <div class="section-header">
+                            <h3>Kinh nghiệm làm việc</h3>
+                            <button class="btn btn-outline-primary btn-sm" onclick="alert('Tính năng đang phát triển!')">
+                                <i class="bi bi-plus me-1"></i>Thêm kinh nghiệm
+                            </button>
+                        </div>
+                        <div class="section-content">
+                            @if (ViewBag.Experiences != null && ((List<Experience>)ViewBag.Experiences).Any())
+                            {
+                                @foreach (var exp in (List<Experience>)ViewBag.Experiences)
+                                {
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon">
+                                            <i class="bi bi-briefcase-fill"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <h5>@exp.ViTri</h5>
+                                            <h6>@exp.TenCongTy</h6>
+                                            @if (!string.IsNullOrEmpty(exp.DiaDiem))
+                                            {
+                                                <p class="timeline-subtitle"><i class="bi bi-geo-alt me-1"></i>@exp.DiaDiem</p>
+                                            }
+                                            <p class="timeline-date">
+                                                <i class="bi bi-calendar me-1"></i>
+                                                @exp.NgayBatDau.ToString("MM/yyyy") - 
+                                                @(exp.DangLamViec ? "Hiện tại" : exp.NgayKetThuc?.ToString("MM/yyyy"))
+                                            </p>
+                                            @if (!string.IsNullOrEmpty(exp.MoTaCongViec))
+                                            {
+                                                <p class="timeline-description">@exp.MoTaCongViec</p>
+                                            }
+                                            @if (!string.IsNullOrEmpty(exp.ThanhTich))
+                                            {
+                                                <p class="timeline-achievement"><strong>Thành tích:</strong> @exp.ThanhTich</p>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <i class="bi bi-briefcase"></i>
+                                    <h5>Chưa có kinh nghiệm làm việc</h5>
+                                    <p>Thêm kinh nghiệm làm việc để tăng cơ hội tuyển dụng</p>
+                                    <button class="btn btn-primary btn-compact" onclick="alert('Tính năng đang phát triển!')">
+                                        <i class="bi bi-plus me-1"></i>Thêm kinh nghiệm
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="profile-section" id="skills">
+                        <div class="section-header">
+                            <h3>Kỹ năng</h3>
+                            <button class="btn btn-outline-primary btn-sm" onclick="alert('Tính năng đang phát triển!')">
+                                <i class="bi bi-plus me-1"></i>Thêm kỹ năng
+                            </button>
+                        </div>
+                        <div class="section-content">
+                            @if (ViewBag.Skills != null && ((List<Skill>)ViewBag.Skills).Any())
+                            {
+                                var skillsByCategory = ((List<Skill>)ViewBag.Skills).GroupBy(s => s.DanhMuc ?? "Khác");
+                                @foreach (var category in skillsByCategory)
+                                {
+                                    <div class="skill-category">
+                                        <h6 class="skill-category-title">@category.Key</h6>
+                                        <div class="skills-grid">
+                                            @foreach (var skill in category)
+                                            {
+                                                <div class="skill-item">
+                                                    <div class="skill-header">
+                                                        <span class="skill-name">@skill.TenKyNang</span>
+                                                        <span class="skill-level">@skill.CapDo</span>
+                                                    </div>
+                                                    <div class="skill-bar">
+                                                        <div class="skill-bar-fill" style="width: @skill.PhanTramThanhThao%">
+                                                            <span class="skill-percent">@skill.PhanTramThanhThao%</span>
+                                                        </div>
+                                                    </div>
+                                                    @if (skill.SoNamKinhNghiem.HasValue)
+                                                    {
+                                                        <small class="skill-experience">@skill.SoNamKinhNghiem năm kinh nghiệm</small>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <i class="bi bi-star"></i>
+                                    <h5>Chưa có kỹ năng</h5>
+                                    <p>Thêm kỹ năng để thể hiện năng lực của bạn</p>
+                                    <button class="btn btn-primary btn-compact" onclick="alert('Tính năng đang phát triển!')">
+                                        <i class="bi bi-plus me-1"></i>Thêm kỹ năng
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -189,20 +454,23 @@
 <style>
 /* Compact Button Override */
 .btn-compact {
-    padding: 0.6rem 1.25rem !important;
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
-    border-radius: 8px !important;
-    background: linear-gradient(135deg, #5b6fd8 0%, #8b5fc7 100%) !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     border: none !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.3s ease !important;
     color: white !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
 }
 
 .btn-compact:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 4px 12px rgba(91, 111, 216, 0.3) !important;
-    background: linear-gradient(135deg, #4e5fcf 0%, #7d52b8 100%) !important;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+    background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%) !important;
     color: white !important;
 }
 
@@ -438,6 +706,154 @@
     margin-bottom: 1rem;
 }
 
+/* Timeline Items */
+.timeline-item {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.timeline-item:last-child {
+    border-bottom: none;
+}
+
+.timeline-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.timeline-content h5 {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content h6 {
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-subtitle {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-date {
+    color: #adb5bd;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.timeline-meta {
+    color: #495057;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-description {
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-achievement {
+    color: #495057;
+    font-size: 0.95rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-left: 3px solid #28a745;
+    border-radius: 4px;
+}
+
+/* Skills */
+.skill-category {
+    margin-bottom: 2rem;
+}
+
+.skill-category-title {
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.skill-item {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid #667eea;
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.skill-name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.skill-level {
+    font-size: 0.85rem;
+    color: #6c757d;
+    background: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+}
+
+.skill-bar {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.skill-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 5px;
+}
+
+.skill-percent {
+    font-size: 0.7rem;
+    color: white;
+    font-weight: 600;
+}
+
+.skill-experience {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
 /* Responsive */
 @@media (max-width: 768px) {
     .profile-banner {
@@ -458,6 +874,14 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+    }
+
+    .timeline-item {
+        flex-direction: column;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
     }
 }
 </style>

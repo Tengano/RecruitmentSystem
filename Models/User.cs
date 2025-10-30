@@ -39,5 +39,12 @@ namespace RecruitmentSystem.Models
         
         [Display(Name = "Hoạt động")]
         public bool HoatDong { get; set; } = true;
+        
+        [StringLength(100)]
+        [Display(Name = "Mã đặt lại mật khẩu")]
+        public string? MaDatLaiMatKhau { get; set; }
+        
+        [Display(Name = "Thời gian hết hạn mã")]
+        public DateTime? ThoiGianHetHanMa { get; set; }
     }
 }

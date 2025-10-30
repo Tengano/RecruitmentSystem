@@ -126,12 +126,240 @@ namespace RecruitmentSystem.Controllers
                 .Take(5)
                 .ToListAsync();
 
+            // Lấy thông tin hồ sơ mở rộng
+            var contactInfo = await _context.ContactInfos
+                .FirstOrDefaultAsync(c => c.UserId == userId.Value);
+
+            var educations = await _context.Educations
+                .Where(e => e.UserId == userId.Value)
+                .OrderByDescending(e => e.NgayBatDau)
+                .ToListAsync();
+
+            var experiences = await _context.Experiences
+                .Where(e => e.UserId == userId.Value)
+                .OrderByDescending(e => e.NgayBatDau)
+                .ToListAsync();
+
+            var skills = await _context.Skills
+                .Where(s => s.UserId == userId.Value)
+                .OrderBy(s => s.DanhMuc)
+                .ThenBy(s => s.TenKyNang)
+                .ToListAsync();
+
             ViewBag.TotalApplications = totalApplications;
             ViewBag.SuccessfulApplications = successfulApplications;
             ViewBag.PendingApplications = pendingApplications;
             ViewBag.RecentApplications = recentApplications;
+            ViewBag.ContactInfo = contactInfo;
+            ViewBag.Educations = educations;
+            ViewBag.Experiences = experiences;
+            ViewBag.Skills = skills;
 
             return View(user);
+        }
+
+        // Quên mật khẩu
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["ErrorMessage"] = "Vui lòng nhập địa chỉ email!";
+                return View();
+            }
+
+            var result = await _authService.GeneratePasswordResetTokenAsync(email);
+            if (result)
+            {
+                var user = await _authService.GetUserByEmailAsync(email);
+                if (user != null)
+                {
+                    TempData["SuccessMessage"] = $"Mã reset mật khẩu của bạn là: {user.MaDatLaiMatKhau}. Mã này có hiệu lực trong 24 giờ.";
+                    TempData["ResetToken"] = user.MaDatLaiMatKhau;
+                    return RedirectToAction("ResetPassword");
+                }
+            }
+            
+            TempData["ErrorMessage"] = "Không tìm thấy tài khoản với email này!";
+            return View();
+        }
+
+        // Reset mật khẩu
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(string token, string newPassword, string confirmPassword)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(newPassword))
+            {
+                TempData["ErrorMessage"] = "Vui lòng nhập đầy đủ thông tin!";
+                return View();
+            }
+
+            if (newPassword != confirmPassword)
+            {
+                TempData["ErrorMessage"] = "Mật khẩu xác nhận không khớp!";
+                return View();
+            }
+
+            if (newPassword.Length < 6)
+            {
+                TempData["ErrorMessage"] = "Mật khẩu phải có ít nhất 6 ký tự!";
+                return View();
+            }
+
+            var result = await _authService.ResetPasswordAsync(token, newPassword);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Đặt lại mật khẩu thành công! Vui lòng đăng nhập.";
+                return RedirectToAction("Login");
+            }
+
+            TempData["ErrorMessage"] = "Mã reset không hợp lệ hoặc đã hết hạn!";
+            return View();
+        }
+
+        // Đổi mật khẩu
+        public IActionResult ChangePassword()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "Vui lòng đăng nhập để đổi mật khẩu!";
+                return RedirectToAction("Login");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword, string confirmPassword)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "Vui lòng đăng nhập để đổi mật khẩu!";
+                return RedirectToAction("Login");
+            }
+
+            if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword))
+            {
+                TempData["ErrorMessage"] = "Vui lòng nhập đầy đủ thông tin!";
+                return View();
+            }
+
+            if (newPassword != confirmPassword)
+            {
+                TempData["ErrorMessage"] = "Mật khẩu mới xác nhận không khớp!";
+                return View();
+            }
+
+            if (newPassword.Length < 6)
+            {
+                TempData["ErrorMessage"] = "Mật khẩu mới phải có ít nhất 6 ký tự!";
+                return View();
+            }
+
+            if (oldPassword == newPassword)
+            {
+                TempData["ErrorMessage"] = "Mật khẩu mới phải khác mật khẩu cũ!";
+                return View();
+            }
+
+            var result = await _authService.ChangePasswordAsync(userId.Value, oldPassword, newPassword);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Đổi mật khẩu thành công!";
+                return RedirectToAction("Profile");
+            }
+
+            TempData["ErrorMessage"] = "Mật khẩu cũ không đúng!";
+            return View();
+        }
+
+        // Chỉnh sửa hồ sơ
+        public async Task<IActionResult> EditProfile()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "Vui lòng đăng nhập để chỉnh sửa hồ sơ!";
+                return RedirectToAction("Login");
+            }
+
+            var user = await _authService.GetUserByIdAsync(userId.Value);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin người dùng!";
+                return RedirectToAction("Login");
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(User user)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "Vui lòng đăng nhập để chỉnh sửa hồ sơ!";
+                return RedirectToAction("Login");
+            }
+
+            if (string.IsNullOrEmpty(user.HoTen) || string.IsNullOrEmpty(user.Email))
+            {
+                TempData["ErrorMessage"] = "Họ tên và email là bắt buộc!";
+                return View(user);
+            }
+
+            // Kiểm tra email đã tồn tại chưa (ngoại trừ email của chính user)
+            var existingUser = await _authService.GetUserByEmailAsync(user.Email);
+            if (existingUser != null && existingUser.Id != userId.Value)
+            {
+                TempData["ErrorMessage"] = "Email đã được sử dụng bởi người dùng khác!";
+                return View(user);
+            }
+
+            // Lấy thông tin user hiện tại từ database
+            var currentUser = await _authService.GetUserByIdAsync(userId.Value);
+            if (currentUser == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin người dùng!";
+                return RedirectToAction("Login");
+            }
+
+            // Cập nhật thông tin
+            currentUser.HoTen = user.HoTen;
+            currentUser.Email = user.Email;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                
+                // Cập nhật lại session
+                HttpContext.Session.SetString("UserName", currentUser.HoTen);
+                
+                TempData["SuccessMessage"] = "Cập nhật hồ sơ thành công!";
+                return RedirectToAction("Profile");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật hồ sơ!";
+                return View(user);
+            }
         }
     }
 }

@@ -1,0 +1,323 @@
+@model User
+@{
+    ViewData["Title"] = "Chỉnh sửa hồ sơ";
+}
+
+<div class="auth-container">
+    <div class="container-fluid">
+        <div class="row min-vh-100">
+            <!-- Left Column - Edit Profile Form -->
+            <div class="col-lg-6 auth-left">
+                <div class="auth-form-wrapper">
+                    <div class="auth-header">
+                        <div class="brand-logo">
+                            <i class="bi bi-briefcase-fill"></i>
+                            <span>Dynamic</span>
+                        </div>
+                    </div>
+                    
+                    <div class="auth-content">
+                        <h1 class="auth-title">Chỉnh sửa hồ sơ</h1>
+                        <p class="auth-subtitle">Cập nhật thông tin cá nhân của bạn.</p>
+                        
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger auth-alert">
+                                <i class="bi bi-exclamation-circle-fill me-2"></i>
+                                @TempData["ErrorMessage"]
+                            </div>
+                        }
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success auth-alert">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                @TempData["SuccessMessage"]
+                            </div>
+                        }
+
+                        <form asp-action="EditProfile" method="post" class="auth-form">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="TenDangNhap" />
+                            <input type="hidden" asp-for="MatKhau" />
+                            <input type="hidden" asp-for="VaiTro" />
+                            <input type="hidden" asp-for="NgayTao" />
+                            <input type="hidden" asp-for="HoatDong" />
+
+                            <div class="form-group">
+                                <label for="HoTen" class="form-label">
+                                    <i class="bi bi-person me-2"></i>Họ và tên
+                                </label>
+                                <input type="text" class="form-control auth-input" id="HoTen" name="HoTen" 
+                                       value="@Model.HoTen" required>
+                                <small class="form-text text-muted">
+                                    Nhập họ và tên đầy đủ của bạn
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Email" class="form-label">
+                                    <i class="bi bi-envelope me-2"></i>Email
+                                </label>
+                                <input type="email" class="form-control auth-input" id="Email" name="Email" 
+                                       value="@Model.Email" required>
+                                <small class="form-text text-muted">
+                                    Email dùng để liên hệ và nhận thông báo
+                                </small>
+                            </div>
+
+                            <div class="info-box">
+                                <i class="bi bi-info-circle-fill"></i>
+                                <div>
+                                    <strong>Lưu ý:</strong>
+                                    <ul>
+                                        <li>Tên đăng nhập không thể thay đổi</li>
+                                        <li>Email phải là duy nhất trong hệ thống</li>
+                                        <li>Để đổi mật khẩu, vui lòng sử dụng chức năng "Đổi mật khẩu"</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="readonly-info">
+                                <div class="info-item">
+                                    <label><i class="bi bi-key me-2"></i>Tên đăng nhập:</label>
+                                    <span>@Model.TenDangNhap</span>
+                                </div>
+                                <div class="info-item">
+                                    <label><i class="bi bi-shield-check me-2"></i>Vai trò:</label>
+                                    <span class="badge bg-primary">@Model.VaiTro</span>
+                                </div>
+                                <div class="info-item">
+                                    <label><i class="bi bi-calendar me-2"></i>Ngày tạo:</label>
+                                    <span>@Model.NgayTao.ToString("dd/MM/yyyy")</span>
+                                </div>
+                            </div>
+                            
+                            <div class="auth-buttons">
+                                <button type="submit" class="btn btn-primary auth-btn-primary auth-submit-btn">
+                                    <span class="btn-text">
+                                        <i class="bi bi-check-circle me-2"></i>Lưu thay đổi
+                                    </span>
+                                    <span class="btn-spinner d-none">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Đang xử lý...
+                                    </span>
+                                </button>
+                                <a asp-action="Profile" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle me-2"></i>Hủy
+                                </a>
+                            </div>
+                        </form>
+                        
+                        <div class="quick-actions mt-4">
+                            <h6><i class="bi bi-lightning-fill me-2"></i>Thao tác nhanh</h6>
+                            <div class="action-links">
+                                <a asp-action="ChangePassword" class="action-link">
+                                    <i class="bi bi-shield-lock"></i>
+                                    <span>Đổi mật khẩu</span>
+                                </a>
+                                <a asp-action="Profile" class="action-link">
+                                    <i class="bi bi-person-circle"></i>
+                                    <span>Xem hồ sơ</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Illustration -->
+            <div class="col-lg-6 auth-right">
+                <div class="auth-illustration">
+                    <div class="illustration-content">
+                        <div class="illustration-icon mb-4">
+                            <i class="bi bi-person-badge" style="font-size: 120px; color: rgba(255,255,255,0.9);"></i>
+                        </div>
+                        <h2>Cập nhật thông tin của bạn</h2>
+                        <p>Giữ thông tin cá nhân luôn chính xác giúp nhà tuyển dụng dễ dàng liên hệ với bạn và tăng cơ hội việc làm.</p>
+                        
+                        <div class="profile-benefits mt-5">
+                            <h5 class="mb-4">Lợi ích của hồ sơ đầy đủ</h5>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h6>Tăng uy tín</h6>
+                                    <p>Hồ sơ đầy đủ thể hiện sự chuyên nghiệp</p>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i class="bi bi-search"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h6>Dễ tìm kiếm</h6>
+                                    <p>Nhà tuyển dụng có thể tìm thấy bạn dễ dàng hơn</p>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h6>Nổi bật hơn</h6>
+                                    <p>Tăng cơ hội được mời phỏng vấn</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .info-box {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+        border-left: 4px solid #ffc107;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        font-size: 0.9rem;
+    }
+    
+    .info-box i {
+        color: #f57c00;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+    
+    .info-box strong {
+        color: #e65100;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .info-box ul {
+        margin: 0;
+        padding-left: 1.25rem;
+        color: #6c757d;
+        line-height: 1.8;
+    }
+    
+    .readonly-info {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+    
+    .readonly-info .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .readonly-info .info-item:last-child {
+        border-bottom: none;
+    }
+    
+    .readonly-info label {
+        font-weight: 600;
+        color: #495057;
+        margin: 0;
+    }
+    
+    .readonly-info span {
+        color: #6c757d;
+    }
+    
+    .quick-actions {
+        background: linear-gradient(135deg, #e7f5ff 0%, #d0ebff 100%);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-color, #0d6efd);
+    }
+    
+    .quick-actions h6 {
+        color: var(--primary-color, #0d6efd);
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .action-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .action-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        background: white;
+        border-radius: 6px;
+        text-decoration: none;
+        color: #495057;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    .action-link:hover {
+        background: var(--primary-color, #0d6efd);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+    
+    .action-link i {
+        font-size: 1.2rem;
+    }
+    
+    .profile-benefits h5 {
+        color: rgba(255,255,255,0.95);
+        font-weight: 600;
+    }
+    
+    .benefit-item {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: rgba(255,255,255,0.1);
+        border-radius: 8px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .benefit-icon {
+        font-size: 2rem;
+        color: #4ade80;
+        flex-shrink: 0;
+    }
+    
+    .benefit-content h6 {
+        color: rgba(255,255,255,0.95);
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+    
+    .benefit-content p {
+        color: rgba(255,255,255,0.8);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    
+    @@media (max-width: 768px) {
+        .action-links {
+            flex-direction: column;
+        }
+        
+        .action-link {
+            width: 100%;
+        }
+    }
+</style>
+
