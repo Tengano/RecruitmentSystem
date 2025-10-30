@@ -61,4 +61,5 @@ namespace RecruitmentSystem.Models
         [ForeignKey("MaCongViec")]
         public virtual Job? CongViec { get; set; }
     }
+    
 }
