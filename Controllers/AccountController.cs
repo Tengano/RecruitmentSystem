@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RecruitmentSystem.Data;
 using RecruitmentSystem.Models;
 using RecruitmentSystem.Services;
+using RecruitmentSystem.Filters;
 
 namespace RecruitmentSystem.Controllers
 {
@@ -91,14 +92,10 @@ namespace RecruitmentSystem.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
         public async Task<IActionResult> Profile()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                TempData["ErrorMessage"] = "Vui lòng đăng nhập để xem hồ sơ!";
-                return RedirectToAction("Login");
-            }
 
             var user = await _authService.GetUserByIdAsync(userId.Value);
             if (user == null)
@@ -230,28 +227,23 @@ namespace RecruitmentSystem.Controllers
         }
 
         // Đổi mật khẩu
+        [Authorize]
         public IActionResult ChangePassword()
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                TempData["ErrorMessage"] = "Vui lòng đăng nhập để đổi mật khẩu!";
-                return RedirectToAction("Login");
-            }
-
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword, string confirmPassword)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                TempData["ErrorMessage"] = "Vui lòng đăng nhập để đổi mật khẩu!";
-                return RedirectToAction("Login");
-            }
+
+            // Trim input để loại bỏ khoảng trắng thừa
+            oldPassword = oldPassword?.Trim() ?? "";
+            newPassword = newPassword?.Trim() ?? "";
+            confirmPassword = confirmPassword?.Trim() ?? "";
 
             if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword))
             {
@@ -289,14 +281,10 @@ namespace RecruitmentSystem.Controllers
         }
 
         // Chỉnh sửa hồ sơ
+        [Authorize]
         public async Task<IActionResult> EditProfile()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                TempData["ErrorMessage"] = "Vui lòng đăng nhập để chỉnh sửa hồ sơ!";
-                return RedirectToAction("Login");
-            }
 
             var user = await _authService.GetUserByIdAsync(userId.Value);
             if (user == null)
@@ -310,14 +298,10 @@ namespace RecruitmentSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> EditProfile(User user)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                TempData["ErrorMessage"] = "Vui lòng đăng nhập để chỉnh sửa hồ sơ!";
-                return RedirectToAction("Login");
-            }
 
             if (string.IsNullOrEmpty(user.HoTen) || string.IsNullOrEmpty(user.Email))
             {

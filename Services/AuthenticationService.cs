@@ -119,15 +119,33 @@ namespace RecruitmentSystem.Services
             try
             {
                 var user = await GetUserByIdAsync(userId);
-                if (user == null || user.MatKhau != oldPassword)
+                if (user == null)
                     return false;
 
-                user.MatKhau = newPassword;
+                // Trim whitespace để tránh lỗi so sánh
+                var trimmedOldPassword = oldPassword?.Trim() ?? "";
+                var trimmedDbPassword = user.MatKhau?.Trim() ?? "";
+
+                // Debug: Log để kiểm tra
+                System.Diagnostics.Debug.WriteLine($"UserId: {userId}");
+                System.Diagnostics.Debug.WriteLine($"Old Password Input: '{oldPassword}' (Length: {oldPassword?.Length})");
+                System.Diagnostics.Debug.WriteLine($"Old Password Trimmed: '{trimmedOldPassword}' (Length: {trimmedOldPassword.Length})");
+                System.Diagnostics.Debug.WriteLine($"DB Password: '{user.MatKhau}' (Length: {user.MatKhau?.Length})");
+                System.Diagnostics.Debug.WriteLine($"DB Password Trimmed: '{trimmedDbPassword}' (Length: {trimmedDbPassword.Length})");
+                System.Diagnostics.Debug.WriteLine($"Passwords match (original): {user.MatKhau == oldPassword}");
+                System.Diagnostics.Debug.WriteLine($"Passwords match (trimmed): {trimmedDbPassword == trimmedOldPassword}");
+
+                // So sánh mật khẩu sau khi trim
+                if (trimmedDbPassword != trimmedOldPassword)
+                    return false;
+
+                user.MatKhau = newPassword.Trim();
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error in ChangePasswordAsync: {ex.Message}");
                 return false;
             }
         }

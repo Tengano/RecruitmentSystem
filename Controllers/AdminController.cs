@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using RecruitmentSystem.Data;
 using RecruitmentSystem.Models;
 using RecruitmentSystem.Services;
+using RecruitmentSystem.Filters;
 
 namespace RecruitmentSystem.Controllers
 {
+    [AdminAuthorize]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,23 +19,8 @@ namespace RecruitmentSystem.Controllers
             _authService = authService;
         }
 
-        private bool IsAdmin()
-        {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null) return false;
-            
-            var user = _authService.GetUserByIdAsync(userId.Value).Result;
-            return user?.VaiTro == "Admin";
-        }
-
         public async Task<IActionResult> Index()
         {
-            if (!IsAdmin())
-            {
-                TempData["ErrorMessage"] = "Bạn không có quyền quản trị để truy cập trang này!";
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 ViewBag.TotalJobs = await _context.Jobs.CountAsync();
