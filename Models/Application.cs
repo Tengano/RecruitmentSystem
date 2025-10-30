@@ -9,6 +9,9 @@ namespace RecruitmentSystem.Models
         [Display(Name = "Mã đơn ứng tuyển")]
         public int MaDonUngTuyen { get; set; }
 
+        [Display(Name = "Mã người dùng")]
+        public int? UserId { get; set; }
+
         [Required]
         [Display(Name = "Mã công việc")]
         public int MaCongViec { get; set; }
@@ -57,6 +60,9 @@ namespace RecruitmentSystem.Models
         [StringLength(50)]
         [Display(Name = "Trạng thái")]
         public string TrangThai { get; set; } = "Chờ xem xét";
+
+        [ForeignKey("UserId")]
+        public virtual User? User { get; set; }
 
         [ForeignKey("MaCongViec")]
         public virtual Job? CongViec { get; set; }

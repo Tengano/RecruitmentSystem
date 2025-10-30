@@ -79,7 +79,6 @@ main {
     gap: 0.5rem;
 }
 
-/* Dashboard cards */
 .border-left-primary {
     border-left: 4px solid #4e73df !important;
 }
@@ -103,19 +102,16 @@ main {
     letter-spacing: 0.05em;
 }
 
-/* Status badges */
 .status-select {
     width: auto;
     min-width: 120px;
 }
 
-/* Admin Body Styles */
 body {
     margin-top: 80px;
     background: #f8f9fa;
 }
 
-/* Completely disable all animations for admin dashboard */
 .stat-number,
 .dashboard-number,
 .stat-card,
@@ -127,7 +123,6 @@ body {
     visibility: visible !important;
 }
 
-/* Override any counter animations */
 .stat-card .stat-number {
     animation: none !important;
     transition: none !important;

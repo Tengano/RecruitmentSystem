@@ -1,6 +1,3 @@
-// Site-wide JavaScript
-
-// Auto-dismiss alerts after 5 seconds
 document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.alert-dismissible');
     alerts.forEach(alert => {
@@ -11,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Add active class to current nav item
 document.addEventListener('DOMContentLoaded', function() {
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
@@ -23,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -35,4 +30,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
-

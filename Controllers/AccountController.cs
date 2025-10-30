@@ -65,7 +65,7 @@ namespace RecruitmentSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.VaiTro = "User"; 
+                user.VaiTro = "User";
                 user.HoatDong = true;
                 user.NgayTao = DateTime.Now;
 
@@ -123,7 +123,6 @@ namespace RecruitmentSystem.Controllers
                 .Take(5)
                 .ToListAsync();
 
-            // Lấy thông tin hồ sơ mở rộng
             var contactInfo = await _context.ContactInfos
                 .FirstOrDefaultAsync(c => c.UserId == userId.Value);
 
@@ -155,7 +154,6 @@ namespace RecruitmentSystem.Controllers
             return View(user);
         }
 
-        // Quên mật khẩu
         public IActionResult ForgotPassword()
         {
             return View();
@@ -187,7 +185,6 @@ namespace RecruitmentSystem.Controllers
             return View();
         }
 
-        // Reset mật khẩu
         public IActionResult ResetPassword()
         {
             return View();
@@ -226,7 +223,6 @@ namespace RecruitmentSystem.Controllers
             return View();
         }
 
-        // Đổi mật khẩu
         [Authorize]
         public IActionResult ChangePassword()
         {
@@ -240,7 +236,6 @@ namespace RecruitmentSystem.Controllers
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
-            // Trim input để loại bỏ khoảng trắng thừa
             oldPassword = oldPassword?.Trim() ?? "";
             newPassword = newPassword?.Trim() ?? "";
             confirmPassword = confirmPassword?.Trim() ?? "";
@@ -280,7 +275,6 @@ namespace RecruitmentSystem.Controllers
             return View();
         }
 
-        // Chỉnh sửa hồ sơ
         [Authorize]
         public async Task<IActionResult> EditProfile()
         {
@@ -309,7 +303,6 @@ namespace RecruitmentSystem.Controllers
                 return View(user);
             }
 
-            // Kiểm tra email đã tồn tại chưa (ngoại trừ email của chính user)
             var existingUser = await _authService.GetUserByEmailAsync(user.Email);
             if (existingUser != null && existingUser.Id != userId.Value)
             {
@@ -317,7 +310,6 @@ namespace RecruitmentSystem.Controllers
                 return View(user);
             }
 
-            // Lấy thông tin user hiện tại từ database
             var currentUser = await _authService.GetUserByIdAsync(userId.Value);
             if (currentUser == null)
             {
@@ -325,15 +317,12 @@ namespace RecruitmentSystem.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Cập nhật thông tin
             currentUser.HoTen = user.HoTen;
             currentUser.Email = user.Email;
 
             try
             {
                 await _context.SaveChangesAsync();
-                
-                // Cập nhật lại session
                 HttpContext.Session.SetString("UserName", currentUser.HoTen);
                 
                 TempData["SuccessMessage"] = "Cập nhật hồ sơ thành công!";

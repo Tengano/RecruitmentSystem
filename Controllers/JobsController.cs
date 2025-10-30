@@ -108,7 +108,6 @@ namespace RecruitmentSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 if (hoSo != null && hoSo.Length > 0)
                 {
                     var thuMucTaiLen = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "resumes");
@@ -121,7 +120,6 @@ namespace RecruitmentSystem.Controllers
                     {
                         await hoSo.CopyToAsync(fileStream);
                     }
-
 
                     donUngTuyen.KyNang += $" | File đính kèm: /uploads/resumes/{tenFileDuyNhat}";
                 }
@@ -139,9 +137,6 @@ namespace RecruitmentSystem.Controllers
             var congViec = await _context.Jobs.FindAsync(donUngTuyen.MaCongViec);
             ViewBag.Job = congViec;
             return View(donUngTuyen);
-            // chinh sưa
-            //  chỉnh sưa 2
-// chinh sửa 3git
         }
     }
 }

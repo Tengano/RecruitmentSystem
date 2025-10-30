@@ -27,7 +27,7 @@ namespace RecruitmentSystem.Controllers
 
             ViewBag.TotalJobs = await _context.Jobs.Where(j => j.HoatDong).CountAsync();
             ViewBag.TotalApplications = await _context.Applications.CountAsync();
-            ViewBag.TotalCandidates = await _context.Candidates.CountAsync();
+            ViewBag.TotalUsers = await _context.Users.CountAsync();
 
             return View(congViecNoiBat);
         }
@@ -92,10 +92,9 @@ namespace RecruitmentSystem.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
-}
 
-public class ErrorViewModel
-{
-    public string? RequestId { get; set; }
-    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-}
+    public class ErrorViewModel
+    {
+        public string? RequestId { get; set; }
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    }

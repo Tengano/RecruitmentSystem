@@ -27,7 +27,7 @@ namespace RecruitmentSystem.Controllers
                 ViewBag.ActiveJobs = await _context.Jobs.Where(j => j.HoatDong == true).CountAsync();
                 ViewBag.TotalApplications = await _context.Applications.CountAsync();
                 ViewBag.PendingApplications = await _context.Applications.Where(a => a.TrangThai == "Chờ xem xét").CountAsync();
-                ViewBag.TotalCandidates = await _context.Candidates.CountAsync();
+                ViewBag.TotalUsers = await _context.Users.CountAsync();
 
                 var donUngTuyenGanDay = await _context.Applications
                     .Include(a => a.CongViec)
@@ -51,7 +51,7 @@ namespace RecruitmentSystem.Controllers
                 ViewBag.ActiveJobs = 0;
                 ViewBag.TotalApplications = 0;
                 ViewBag.PendingApplications = 0;
-                ViewBag.TotalCandidates = 0;
+                ViewBag.TotalUsers = 0;
 
                 return View(new List<Application>());
             }
@@ -233,12 +233,12 @@ namespace RecruitmentSystem.Controllers
             return Json(new { success = false, message = "Không tìm thấy đơn ứng tuyển!" });
         }
 
-        public async Task<IActionResult> Candidates()
+        public async Task<IActionResult> Users()
         {
-            var ungVien = await _context.Candidates
-                .OrderBy(c => c.MaUngVien)
+            var users = await _context.Users
+                .OrderByDescending(u => u.NgayTao)
                 .ToListAsync();
-            return View(ungVien);
+            return View(users);
         }
 
         private bool JobExists(int id)

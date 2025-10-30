@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace RecruitmentSystem.Filters
 {
-    /// <summary>
-    /// Filter kiểm tra quyền Admin - chỉ cho phép Admin truy cập
-    /// </summary>
     public class AdminAuthorizeAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -14,13 +11,11 @@ namespace RecruitmentSystem.Filters
             var userId = context.HttpContext.Session.GetInt32("UserId");
             var userRole = context.HttpContext.Session.GetString("UserRole");
 
-            // Lấy TempData từ controller
             var controller = context.Controller as Controller;
             var tempData = controller?.TempData;
 
             if (userId == null)
             {
-                // Người dùng chưa đăng nhập
                 if (tempData != null)
                 {
                     tempData["ErrorMessage"] = "Vui lòng đăng nhập để tiếp tục!";
@@ -34,7 +29,6 @@ namespace RecruitmentSystem.Filters
 
             if (userRole != "Admin")
             {
-                // Người dùng không có quyền Admin
                 if (tempData != null)
                 {
                     tempData["ErrorMessage"] = "Bạn không có quyền truy cập trang này!";
@@ -47,4 +41,3 @@ namespace RecruitmentSystem.Filters
         }
     }
 }
-

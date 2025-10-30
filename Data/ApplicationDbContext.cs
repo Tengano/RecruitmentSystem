@@ -10,10 +10,8 @@ namespace RecruitmentSystem.Data
         {
         }
 
-
         public DbSet<User> Users { get; set; }
         public DbSet<Job> Jobs { get; set; }
-        public DbSet<Candidate> Candidates { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
@@ -66,22 +64,6 @@ namespace RecruitmentSystem.Data
                 entity.HasIndex(e => e.HoatDong);
             });
 
-            modelBuilder.Entity<Candidate>(entity =>
-            {
-                entity.ToTable("UngVien");
-                entity.HasKey(e => e.MaUngVien);
-                entity.Property(e => e.HoTen).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.SoDienThoai).HasMaxLength(20);
-                entity.Property(e => e.DiaChi).HasMaxLength(200);
-                entity.Property(e => e.GioiTinh).HasMaxLength(10);
-                entity.Property(e => e.TrinhDoHocVan).HasMaxLength(50);
-                entity.Property(e => e.NgayTao).HasDefaultValueSql("GETDATE()");
-
-                entity.HasIndex(e => e.Email);
-                entity.HasIndex(e => e.NgayTao);
-            });
-
             modelBuilder.Entity<Application>(entity =>
             {
                 entity.ToTable("DonUngTuyen");
@@ -96,11 +78,17 @@ namespace RecruitmentSystem.Data
                 entity.Property(e => e.TrangThai).IsRequired().HasMaxLength(50).HasDefaultValue("Chờ xem xét");
                 entity.Property(e => e.NgayUngTuyen).HasDefaultValueSql("GETDATE()");
 
+                entity.HasOne(e => e.User)
+                      .WithMany()
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.SetNull);
+
                 entity.HasOne(e => e.CongViec)
                       .WithMany(e => e.DonUngTuyen)
                       .HasForeignKey(e => e.MaCongViec)
                       .OnDelete(DeleteBehavior.Cascade);
 
+                entity.HasIndex(e => e.UserId);
                 entity.HasIndex(e => e.MaCongViec);
                 entity.HasIndex(e => e.TrangThai);
                 entity.HasIndex(e => e.NgayUngTuyen);

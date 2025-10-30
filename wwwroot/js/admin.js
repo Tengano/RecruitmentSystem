@@ -1,13 +1,10 @@
-// Admin Dashboard JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-    // Disable counter animations
     const counterElements = document.querySelectorAll('.stat-number, .dashboard-number');
     counterElements.forEach(element => {
         element.style.transition = 'none';
         element.style.animation = 'none';
     });
 
-    // Active link highlighting
     const currentPath = window.location.pathname;
     const sidebarLinks = document.querySelectorAll('.sidebar .nav-link, .admin-sidebar .nav-link');
     
@@ -18,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Smooth scrolling for internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -32,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Auto-dismiss alerts after 5 seconds
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach(alert => {
         setTimeout(() => {
@@ -41,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     });
 
-    // Add loading state to buttons
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         form.addEventListener('submit', function(e) {
@@ -51,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const originalText = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Đang xử lý...';
                 
-                // Re-enable after 3 seconds as fallback
                 setTimeout(() => {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalText;
@@ -60,14 +53,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Tooltips initialization
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });
 
-// Delete confirmation with modern styling
 document.querySelectorAll('a[href*="Delete"]').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -79,7 +70,6 @@ document.querySelectorAll('a[href*="Delete"]').forEach(link => {
     });
 });
 
-// Real-time search for tables
 const searchInputs = document.querySelectorAll('input[type="search"], .table-search');
 searchInputs.forEach(input => {
     input.addEventListener('input', function() {
@@ -97,11 +87,9 @@ searchInputs.forEach(input => {
     });
 });
 
-// Performance monitoring
 if (window.location.pathname.includes('/Admin')) {
     console.log('🚀 Admin Dashboard Loaded');
     
-    // Log performance metrics
     window.addEventListener('load', function() {
         if (window.performance) {
             const perfData = window.performance.timing;
@@ -110,4 +98,3 @@ if (window.location.pathname.includes('/Admin')) {
         }
     });
 }
-

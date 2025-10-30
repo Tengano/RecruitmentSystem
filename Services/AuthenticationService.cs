@@ -76,9 +76,8 @@ namespace RecruitmentSystem.Services
                 if (user == null)
                     return false;
 
-                // Tạo token reset password (token đơn giản, trong thực tế nên dùng GUID hoặc mã hóa phức tạp hơn)
                 user.MaDatLaiMatKhau = Guid.NewGuid().ToString();
-                user.ThoiGianHetHanMa = DateTime.Now.AddHours(24); // Token có hiệu lực 24 giờ
+                user.ThoiGianHetHanMa = DateTime.Now.AddHours(24);
 
                 await _context.SaveChangesAsync();
                 return true;
@@ -122,20 +121,9 @@ namespace RecruitmentSystem.Services
                 if (user == null)
                     return false;
 
-                // Trim whitespace để tránh lỗi so sánh
                 var trimmedOldPassword = oldPassword?.Trim() ?? "";
                 var trimmedDbPassword = user.MatKhau?.Trim() ?? "";
 
-                // Debug: Log để kiểm tra
-                System.Diagnostics.Debug.WriteLine($"UserId: {userId}");
-                System.Diagnostics.Debug.WriteLine($"Old Password Input: '{oldPassword}' (Length: {oldPassword?.Length})");
-                System.Diagnostics.Debug.WriteLine($"Old Password Trimmed: '{trimmedOldPassword}' (Length: {trimmedOldPassword.Length})");
-                System.Diagnostics.Debug.WriteLine($"DB Password: '{user.MatKhau}' (Length: {user.MatKhau?.Length})");
-                System.Diagnostics.Debug.WriteLine($"DB Password Trimmed: '{trimmedDbPassword}' (Length: {trimmedDbPassword.Length})");
-                System.Diagnostics.Debug.WriteLine($"Passwords match (original): {user.MatKhau == oldPassword}");
-                System.Diagnostics.Debug.WriteLine($"Passwords match (trimmed): {trimmedDbPassword == trimmedOldPassword}");
-
-                // So sánh mật khẩu sau khi trim
                 if (trimmedDbPassword != trimmedOldPassword)
                     return false;
 

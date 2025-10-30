@@ -20,7 +20,7 @@ namespace RecruitmentSystem.Models
         [Required]
         [StringLength(50)]
         [Display(Name = "Cấp độ")]
-        public string CapDo { get; set; } = "Trung bình"; // Cơ bản, Trung bình, Khá, Giỏi, Xuất sắc
+        public string CapDo { get; set; } = "Trung bình";
 
         [Range(0, 100)]
         [Display(Name = "Phần trăm thành thạo")]
@@ -28,7 +28,7 @@ namespace RecruitmentSystem.Models
 
         [StringLength(100)]
         [Display(Name = "Danh mục")]
-        public string? DanhMuc { get; set; } // Ngôn ngữ lập trình, Framework, Tool, Soft skill, etc.
+        public string? DanhMuc { get; set; }
 
         [Display(Name = "Số năm kinh nghiệm")]
         public int? SoNamKinhNghiem { get; set; }
@@ -36,4 +36,3 @@ namespace RecruitmentSystem.Models
         public virtual User? User { get; set; }
     }
 }
-
